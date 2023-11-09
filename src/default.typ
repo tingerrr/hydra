@@ -7,8 +7,8 @@
     loc = query(selector(<hydra>).before(loc), loc).last().location()
   }
 
-  let prev = query(sel.before(loc), loc).filter(filter)
-  let next = query(sel.after(loc), loc).filter(filter)
+  let prev = query(sel.before(loc), loc).filter(x => filter(x, loc))
+  let next = query(sel.after(loc), loc).filter(x => filter(x, loc))
 
   let prev = if prev != () { prev.last() }
   let next = if next != () { next.first() }
@@ -36,8 +36,10 @@
 #let display(element, loc) = {
   import "/src/util.typ": assert-element
   assert-element(element, heading)
-  numbering(element.numbering, ..counter(heading).at(element.location()))
-  [ ]
+  if element.numbering != none {
+    numbering(element.numbering, ..counter(heading).at(element.location()))
+    [ ]
+  }
   element.body
 }
 
