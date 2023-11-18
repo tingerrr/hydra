@@ -10,7 +10,8 @@ size or margins.
 ## Example
 ```typst
 #import "@preview/hydra:0.0.1": hydra
-#set page(header: #[hydra() #line(length: 100%)])
+
+#set page(header: hydra() + line(length: 100%))
 #set heading(numbering: "1.1")
 #show heading.where(level: 1): it => pagebreak(weak: true) + it
 
@@ -28,8 +29,11 @@ size or margins.
 = Annex
 #lorem(10)
 ```
-![example1][example1]
-![example2][example2]
+![ex1]
+![ex2]
+![ex3]
+![ex4]
+![ex5]
 
 ## Non-default behavior
 Changing the default behavior can be done using its keyword arguments:
@@ -100,6 +104,9 @@ than headings only, consider setting `display` too.
 `next-filter: default.next-filter.with(top-margin: ...)`. This margin must be known for the default
 implementation. If it does but you are using `a4`, then you found a bug.
 
-[example1]: example1.png
-[example2]: example2.png
+[ex1]: examples/example1.png
+[ex2]: examples/example2.png
+[ex3]: examples/example3.png
+[ex4]: examples/example4.png
+[ex5]: examples/example5.png
 [typst]: https://github.com/typst/typst
