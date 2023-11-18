@@ -7,6 +7,10 @@ page.
 By default hydra also assumes that you use `a4` page size, see the FAQ if you use different page
 size or margins.
 
+## Note on API
+The current API is subject to change in the next version when new features for general handling of
+headings is added.
+
 ## Example
 ```typst
 #import "@preview/hydra:0.0.1": hydra
