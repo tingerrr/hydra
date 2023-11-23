@@ -3,8 +3,8 @@ Hydra is a [typst] package allowing you to easily display the current section an
 document. In short it will show you the current section only when you need to know it, that is
 when the last section still has remainig text but it's heading is nowhere to be seen.
 
-By default hydra also assumes that you use `a4` page size, see the FAQ if you use different page
-size or margins.
+By default hydra also assumes that you use `a4` page size and margin, see it's named parameters
+to adjust this.
 
 ## Note on API
 The current API is subject to change in the next version when new features for general handling of
@@ -38,8 +38,8 @@ headings is added.
 ![ex4]
 ![ex5]
 
-## Non-default behavior
-Changing the default behavior can be done using its keyword arguments:
+## Documentation
+Changing the default behavior can be done using the vairous named parameters:
 ```typst
 #let hydra(
   sel: heading,                   // the elements to consider
