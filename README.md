@@ -42,14 +42,15 @@ headings is added.
 Changing the default behavior can be done using the vairous named parameters:
 ```typst
 #let hydra(
-  sel: heading,                   // the elements to consider
-  prev-filter: (_, _, _) => true, // check if the last element is eligible
-  next-filter: (_, _, _) => true, // check if the next element is eligible
-  display: core.display,          // displays the eligible element
-  paper: "a4",                    // the paper size to use
-  page-size: auto,                // the smaller page size if set
-  top-margin: auto,               // the top margin is set
-  loc: none,                      // a location from which to search
+  sel: heading,                     // the elements to consider
+  prev-filter: (ctx, p, n) => true, // check if the last element is eligible
+  next-filter: (ctx, p, n) => true, // check if the next element is eligible
+  display: core.display,            // displays the eligible element
+  is-book: false,                   // whether the redundancy check should be book aware
+  paper: "a4",                      // the paper size to use
+  page-size: auto,                  // the smaller page size if set
+  top-margin: auto,                 // the top margin is set
+  loc: none,                        // a location from which to search
 ) = {
   ...
 }
@@ -61,10 +62,15 @@ a complicated selector `(heading, h => h.level in (1, 2, 3))`. This function is 
 matching element in your document.
 
 `loc` can be used in contexts where location is already known, this avoids a call to `locate`,
-allowing you to inspect the result of `display` directly. `prev-filter` and `next-filter` are used
-to check if an element is eligible for being displayed. They receive the `context`, the previous and
-next element relative to the given `loc`, the element thast is checked for is not `none`, but the
-other may be.
+allowing you to inspect the result of `display` directly.
+
+`prev-filter` and `next-filter` are used to check if an element is eligible for being displayed.
+They receive the `context`, the previous and next element relative to the given `loc`, the element
+that is checked for is not `none`, but the other may be. These fucntions are executed at most once.
+
+If `is-book` is set to `true`, it will not display the element if it is visible on the previous
+open page. This means for a book with `left` binding, if hydra is used on the right page while the
+previous section is visible on the left page, it will display nothing.
 
 Of `paper`, `page-size` and `top-margin` exactly one must be given. `paper` and `page-size` are for
 convenience aand will be used to calculate the `top-margin` for you. Use them as follows:
