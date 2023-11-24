@@ -67,6 +67,7 @@ other may be.
 
 Of `paper`, `page-size` and `top-margin` exactly one must be given. `paper` and `page-size` are for
 convenience aand will be used to calculate the `top-margin` for you. Use them as follows:
+
 1. If you use a custom top margin, pass it to `top-margin`
 2. If you use no custom top margin but a custom page size, pass the *smaller* page size to
    `page-size`

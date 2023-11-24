@@ -30,8 +30,6 @@
     top-margin = (2.5 / 21) * page-size
   }
 
-  
-
   let func = loc => {
     let ctx = (
       top-margin: top-margin,
