@@ -3,7 +3,7 @@ Hydra is a [typst] package allowing you to easily display the current section an
 document. In short it will show you the current section only when you need to know it, that is
 when the last section still has remainig text but it's heading is nowhere to be seen.
 
-By default hydra also assumes that you use `a4` page size and margin, see it's named parameters
+By default hydra also assumes that you use `a4` page size and margin, see its named parameters
 to adjust this.
 
 ## Note on API
@@ -57,7 +57,8 @@ Changing the default behavior can be done using the vairous named parameters:
 
 `sel` can be a `selector`/`element`, or a tuple of (`selector`/`element`, `function`), where the
 function is used in querying this is mainly useful for selecting ranges of headings without building
-a complicated selector `(heading, h => h.level in (1, 2, 3))`.
+a complicated selector `(heading, h => h.level in (1, 2, 3))`. This function is executed for each
+matching element in your document.
 
 `loc` can be used in contexts where location is already known, this avoids a call to `locate`,
 allowing you to inspect the result of `display` directly. `prev-filter` and `next-filter` are used
@@ -74,7 +75,7 @@ convenience aand will be used to calculate the `top-margin` for you. Use them as
 3. If you use no custom top margin or page size, but a custom paper, pass it `paper`
 
 ### Anywhere but the header
-To use the hydra functon out side of the header of your doc while retaining its behavior, place the
+To use the hydra function out side of the header of your doc while retaining its behavior, place the
 `hydra-anchor()` in the header of your document, it'll use this to search as if it was used in the
 header itself.
 
