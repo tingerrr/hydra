@@ -46,6 +46,7 @@ Changing the default behavior can be done using the various named parameters:
   prev-filter: (ctx, p, n) => true, // check if the last element is eligible
   next-filter: (ctx, p, n) => true, // check if the next element is eligible
   display: core.display,            // displays the eligible element
+  fallback-next: false,             // fallback to the next heading if necessary
   is-book: false,                   // whether the redundancy check should be book aware
   paper: "a4",                      // the paper size to use
   page-size: auto,                  // the smaller page size if set
@@ -58,8 +59,8 @@ Changing the default behavior can be done using the various named parameters:
 
 `sel` can be a `selector`/`element`, or a tuple of (`selector`/`element`, `function`), where the
 function is used in querying this is mainly useful for selecting ranges of headings without building
-a complicated selector `(heading, h => h.level in (1, 2, 3))`. This function is executed for each
-matching element in your document.
+a complicated selector `(heading, (ctx, h) => h.level in (1, 2, 3))`. This function is executed for
+each matching element in your document.
 
 `loc` can be used in contexts where location is already known, this avoids a call to `locate`,
 allowing you to inspect the result of `display` directly.
@@ -71,6 +72,9 @@ that is checked for is not `none`, but the other may be. These fucntions are exe
 If `is-book` is set to `true`, it will not display the element if it is visible on the previous
 open page. This means for a book with `left` binding, if hydra is used on the right page while the
 previous section is visible on the left page, it will display nothing.
+
+To display the current section even if it's right at the top of the page, set `fallback-next` to
+`true`, this will, if no previous section is eligible, display the next one if it is.
 
 Of `paper`, `page-size` and `top-margin` exactly one must be given. `paper` and `page-size` are for
 convenience and will be used to calculate the `top-margin` for you. Use them as follows:
