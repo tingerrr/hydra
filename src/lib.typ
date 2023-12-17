@@ -44,17 +44,16 @@
     let (prev, next, loc) = core.get-adjacent-from(ctx, sel, filter)
     ctx.loc = loc
 
-    let (prev-in-scope, next-in-scope) = core.check-scope(prev, next, loc, sel, level)
+    let (higher-prev, higher-next) = core.check-scope(ctx, sel, prev, next)
 
-    // TODO also check if there is a higher-level heading at the top of the page
-
-    let prev-eligible = prev != none and prev-filter(ctx, prev, next) and prev-in-scope
-    let next-eligible = next != none and next-filter(ctx, prev, next) and next-in-scope
+    let prev-eligible = prev != none and prev-filter(ctx, prev, next) and higher-prev == none
+    let next-eligible = next != none and next-filter(ctx, prev, next) and higher-next == none
     let prev-redundant = (
       prev-eligible
-        and next-eligible
+        // and next-eligible
         and ctx.top-margin != none
-        and core.is-redundant(ctx, prev, next)
+        and (core.is-redundant(ctx, prev, next) 
+          or core.is-redundant(ctx, higher-prev, higher-next))
     )
 
     if prev-eligible and not prev-redundant {
