@@ -19,6 +19,20 @@
   )
 }
 
+#let level-filter(ctx, x) = ctx.level == none or not x.has("level") or x.level in ctx.level
+
+#let into-levels-array(level) = {
+  if level == none {
+    none
+  } else if type(level) == int {
+    (level,)
+  } else if type(level) == array {
+    level.map(x => int(x))
+  } else {
+    panic(oxi.strfmt("`{}` must be an integer heading level or an array of such", level))
+  }
+}
+
 // split a selector into a pair of selector and post filter
 #let into-sel-filter-pair(sel, name: "sel") = {
   if type(sel) in (selector, function) {

@@ -5,6 +5,7 @@
 
 #let hydra(
   sel: heading,
+  level: none,
   prev-filter: (ctx, p, n) => true,
   next-filter: (ctx, p, n) => true,
   display: core.display,
@@ -16,6 +17,7 @@
   loc: none,
 ) = {
   let (sel, filter) = util.into-sel-filter-pair(sel)
+  let level = util.into-levels-array(level)
 
   assert((paper, page-size, top-margin).filter(x => x != auto).len() >= 1,
     message: "Must set one of (`paper`, `page-size` or `top-margin`)",
@@ -35,14 +37,19 @@
     let ctx = (
       is-book: is-book,
       top-margin: top-margin,
+      level: level,
       loc: loc,
     )
 
     let (prev, next, loc) = core.get-adjacent-from(ctx, sel, filter)
     ctx.loc = loc
 
-    let prev-eligible = prev != none and prev-filter(ctx, prev, next)
-    let next-eligible = next != none and next-filter(ctx, prev, next)
+    let (prev-in-scope, next-in-scope) = core.check-scope(prev, next, loc, sel, level)
+
+    // TODO also check if there is a higher-level heading at the top of the page
+
+    let prev-eligible = prev != none and prev-filter(ctx, prev, next) and prev-in-scope
+    let next-eligible = next != none and next-filter(ctx, prev, next) and next-in-scope
     let prev-redundant = (
       prev-eligible
         and next-eligible
