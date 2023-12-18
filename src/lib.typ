@@ -5,6 +5,7 @@
 
 #let hydra(
   sel: heading,
+  sel-higher: auto,
   prev-filter: (ctx, p, n) => true,
   next-filter: (ctx, p, n) => true,
   display: core.display,
@@ -36,7 +37,30 @@
       binding: binding,
       top-margin: top-margin,
       loc: loc,
+      prev-higher: none,
+      next-higher: none,
     )
+
+    if sel-higher == auto {
+      if repr(sel).starts-with("heading.where") {
+        let unhacked = util.unhack-selector(sel)
+
+        assert("level" in unhacked.fields, message: "`sel` must select over `heading.level`" + repr(unhacked.fields))
+
+        let (sel-higher, filter-higher) = util.into-sel-filter-pair(
+          unhacked.func.where(level: unhacked.fields.level - 1)
+        )
+
+        let (prev-higher, next-higher, _) = core.get-adjacent-from(ctx, sel-higher, filter-higher)
+        ctx.prev-higher = prev-higher
+        ctx.next-higher = next-higher
+      }
+    } else {
+      let (sel-higher, filter-higher) = util.into-sel-filter-pair(sel-higher)
+      let (prev-higher, next-higher, _) = core.get-adjacent-from(ctx, sel-higher, filter-higher)
+      ctx.prev-higher = prev-higher
+      ctx.next-higher = next-higher
+    }
 
     let (prev, next, loc) = core.get-adjacent-from(ctx, sel, filter)
     ctx.loc = loc

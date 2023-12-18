@@ -43,6 +43,7 @@ Changing the default behavior can be done using the various named parameters:
 ```typst
 #let hydra(
   sel: heading,                     // the elements to consider
+  sel-higher: auto,                 // the elements to consider as higher scope if set
   prev-filter: (ctx, p, n) => true, // check if the last element is eligible
   next-filter: (ctx, p, n) => true, // check if the next element is eligible
   display: core.display,            // displays the eligible element
@@ -61,6 +62,11 @@ Changing the default behavior can be done using the various named parameters:
 function is used in querying this is mainly useful for selecting ranges of headings without building
 a complicated selector `(heading, (ctx, h) => h.level in (1, 2, 3))`. This function is executed for
 each matching element in your document.
+
+`sel-higher` works the same as `sel`, if set, it is used as fences within `sel` should look. If
+`sel` is `heading.where(level: n)` where `n >= 2`, and `sel-higher` is `auto`, it'll be set to
+`heading.where(level: n - 1)`. The main purpose of this is to avoid looking too far when certain
+levels are skipped.
 
 `loc` can be used in contexts where location is already known, this avoids a call to `locate`,
 allowing you to inspect the result of `display` directly.

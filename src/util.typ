@@ -34,6 +34,25 @@
   }
 }
 
+// a hacky way to get from a selector to it's inner representation
+#let unhack-selector(sel) = {
+  let parts = repr(sel).split(".")
+
+  let fields = (:)
+  let func = if parts.len() == 1 {
+    eval(parts.at(0))
+  } else {
+    for arg in parts.at(1).trim("where").trim(regex("\(|\)"), repeat: false).split(", ") {
+      let (name, val) = arg.split(": ")
+      fields.insert(name, eval(val))
+    }
+
+    eval(parts.at(0))
+  }
+
+  (func: func, fields: fields)
+}
+
 // taken from `page.rs`
 #let page-sizes = (
   // ---------------------------------------------------------------------- //

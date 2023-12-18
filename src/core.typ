@@ -11,8 +11,19 @@
     ctx.loc = starting-locs.last().location()
   }
 
-  let prev = query(sel.before(ctx.loc), ctx.loc).filter(x => filter(ctx, x))
-  let next = query(sel.after(ctx.loc), ctx.loc).filter(x => filter(ctx, x))
+  let look-behind = sel.before(ctx.loc)
+  let look-ahead = sel.after(ctx.loc)
+
+  if ctx.prev-higher != none {
+    look-behind = look-behind.after(ctx.prev-higher.location())
+  }
+
+  if ctx.next-higher != none {
+    look-ahead = look-ahead.before(ctx.next-higher.location())
+  }
+
+  let prev = query(look-behind, ctx.loc).filter(x => filter(ctx, x))
+  let next = query(look-ahead, ctx.loc).filter(x => filter(ctx, x))
 
   let prev = if prev != () { prev.last() }
   let next = if next != () { next.first() }
