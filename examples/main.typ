@@ -1,4 +1,4 @@
-#import "@local/hydra:0.2.0": hydra
+#import "/src/lib.typ": hydra
 
 #set page(header: hydra() + line(length: 100%))
 #set heading(numbering: "1.1")
