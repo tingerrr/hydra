@@ -47,7 +47,7 @@ Changing the default behavior can be done using the various named parameters:
   next-filter: (ctx, p, n) => true, // check if the next element is eligible
   display: core.display,            // displays the eligible element
   fallback-next: false,             // fallback to the next heading if necessary
-  is-book: false,                   // whether the redundancy check should be book aware
+  binding: none,                    // whether the redundancy check should be book binding aware
   paper: "a4",                      // the paper size to use
   page-size: auto,                  // the smaller page size if set
   top-margin: auto,                 // the top margin is set
@@ -67,11 +67,12 @@ allowing you to inspect the result of `display` directly.
 
 `prev-filter` and `next-filter` are used to check if an element is eligible for being displayed.
 They receive the `context`, the previous and next element relative to the given `loc`, the element
-that is checked for is not `none`, but the other may be. These fucntions are executed at most once.
+that is checked for is not `none`, but the other may be. These functions are executed at most once.
 
-If `is-book` is set to `true`, it will not display the element if it is visible on the previous
-open page. This means for a book with `left` binding, if hydra is used on the right page while the
-previous section is visible on the left page, it will display nothing.
+If `binding` is set to `left`/`right`, it will not display the element if it is visible on the
+previous open page. This means for a book with `left` binding, if hydra is used on the right page
+while the previous section is visible on the left page, it will display nothing. Does nothing on
+`none`.
 
 To display the current section even if it's right at the top of the page, set `fallback-next` to
 `true`, this will, if no previous section is eligible, display the next one if it is.

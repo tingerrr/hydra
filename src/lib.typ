@@ -9,7 +9,7 @@
   next-filter: (ctx, p, n) => true,
   display: core.display,
   fallback-next: false,
-  is-book: false,
+  binding: none,
   paper: "a4",
   page-size: auto,
   top-margin: auto,
@@ -33,7 +33,7 @@
 
   let func = loc => {
     let ctx = (
-      is-book: is-book,
+      binding: binding,
       top-margin: top-margin,
       loc: loc,
     )
@@ -43,12 +43,7 @@
 
     let prev-eligible = prev != none and prev-filter(ctx, prev, next)
     let next-eligible = next != none and next-filter(ctx, prev, next)
-    let prev-redundant = (
-      prev-eligible
-        and next-eligible
-        and ctx.top-margin != none
-        and core.is-redundant(ctx, prev, next)
-    )
+    let prev-redundant = core.is-redundant(ctx, prev, next)
 
     if prev-eligible and not prev-redundant {
       display(ctx, prev)

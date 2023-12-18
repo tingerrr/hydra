@@ -20,19 +20,28 @@
   (prev, next, ctx.loc)
 }
 
+// checks if the next heading is on top of the current page
+#let is-next-on-top(ctx, next) = {
+  (next.location().page() == ctx.loc.page()
+    and next.location().position().y <= ctx.top-margin)
+}
+
+// checks if the previous heading is still visible
+#let is-prev-visible(ctx, prev) = {
+  if ctx.binding == left {
+    calc.odd(ctx.loc.page())
+  } else if ctx.binding == right {
+    calc.even(ctx.loc.page())
+  } else {
+    false
+  } and prev.location().page() == ctx.loc.page() - 1
+}
+
+
 // check if the next heading is on the current page
 #let is-redundant(ctx, prev, next) = {
-  let is-next-on-top = (
-    next.location().page() == ctx.loc.page()
-      and next.location().position().y <= ctx.top-margin
-  )
-
-  let is-prev-visible = (
-    ctx.is-book
-      and calc.odd(ctx.loc.page()) and prev.location().page() == ctx.loc.page() - 1
-  )
-
-  is-next-on-top or is-prev-visible
+  ((prev != none and is-prev-visible(ctx, prev))
+    or (next != none and is-next-on-top(ctx, next)))
 }
 
 // display the heading as closely as it occured at the given loc
