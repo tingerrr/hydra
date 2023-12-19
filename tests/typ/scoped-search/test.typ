@@ -21,8 +21,15 @@
 == First chapter second section
 #lorem(20)
 = Second
-#lorem(10)
-=== Second chapter first subsection
 #lorem(30)
-=== Second chapter second subsection
-#lorem(40)
+== Second section zero
+=== Second subsection one
+#lorem(90)
+== Second section one
+#lorem(25)
+= Third
+#lorem(20)
+== Third section one
+#lorem(180)
+= Fourth
+#lorem(200)

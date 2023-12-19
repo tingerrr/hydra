@@ -1,37 +1,25 @@
 #import "@preview/oxifmt:0.2.0" as oxi
 
-// assert the element is of the given typ
-#let assert-element(element, func, message: none, name: "element") = {
-  assert.eq(type(element), content,
-    message: if message != none {
-      message
-    } else {
-      oxi.strfmt("`{}` must be content, was `{}`", name , element)
-    }
-  )
+// helper method for none value fallbacks
+#let or-default(value, default, check: none) = if value == check { default() } else { value }
 
-  assert.eq(element.func(), func,
-    message: if message != none {
-      message
-    } else {
-      oxi.strfmt("`{}` must be a `{}`", name, func)
-    }
-  )
+// assert the value is of a given type
+#let assert-type(name, value, execpted-type, message: auto) = {
+  let given-type = type(value)
+  let message = or-default(check: auto, message, () => {
+    oxi.strfmt("`{}` must be `{}`, was `{}`", name, execpted-type, given-type)
+  })
+  assert.eq(given-type, execpted-type, message: message)
 }
 
-// split a selector into a pair of selector and post filter
-#let into-sel-filter-pair(sel, name: "sel") = {
-  if type(sel) in (selector, function) {
-    (selector(sel), (_, _) => true)
-  } else if (
-    type(sel) == array and sel.len() == 2
-    and type(sel.at(0)) in (selector, function) and type(sel.at(1)) == function
-  ) {
-    let (sel, func) = sel
-    (selector(sel), func)
-  } else {
-    panic(oxi.strfmt("`{}` must be a selector or a selector and filter function", name))
-  }
+// assert the element is of the given element type
+#let assert-element(name, element, expected-func, message: auto) = {
+  assert-type(name, element, content)
+  let given-func = element.func()
+  let message = or-default(check: auto, message, () => {
+    oxi.strfmt("`{}` must be a `{}`, was `{}`", name, expected-func, given-func)
+  })
+  assert.eq(given-func, expected-func, message: message)
 }
 
 // a hacky way to get from a selector to it's inner representation
@@ -40,17 +28,54 @@
 
   let fields = (:)
   let func = if parts.len() == 1 {
-    eval(parts.at(0))
+    eval(parts.first())
   } else {
-    for arg in parts.at(1).trim("where").trim(regex("\(|\)"), repeat: false).split(", ") {
+    for arg in parts.last().trim("where").trim(regex("\(|\)"), repeat: false).split(", ") {
       let (name, val) = arg.split(": ")
       fields.insert(name, eval(val))
     }
 
-    eval(parts.at(0))
+    eval(parts.first())
   }
 
   (func: func, fields: fields)
+}
+
+// get from user friendly input to hydra friendly selectors
+#let unhack(name, sel, message: auto) = {
+  let message = or-default(check: auto, message, () => oxi.strfmt(
+    "`{}` must be a `heading`, `heading.where(level: n)`, or the result of `custom`",
+    name,
+  ))
+
+  if type(sel) == selector {
+    assert(repr(sel).starts-with("heading"), message: message)
+
+    let sel = unhack-selector(sel)
+
+    assert.eq(sel.fields.len(), 1, message: message)
+    assert("level" in sel.fields, message: message)
+
+    let self = (func: sel.func.where(level: sel.fields.level), filter: none)
+    let parent = if sel.fields.level >= 2 {
+      (func: sel.func, filter: (ctx, e) => e.level < sel.fields.level)
+    }
+
+    (
+      self: self,
+      ancestor: parent,
+    )
+  } else if type(sel) == function {
+    assert.eq(sel, heading, message: message)
+    (
+      self: (func: heading, filter: none),
+      ancestor: none,
+    )
+  } else if true {
+    panic("UNIMPLEMENTED: `custom` result")
+  } else {
+    panic(message)
+  }
 }
 
 // taken from `page.rs`

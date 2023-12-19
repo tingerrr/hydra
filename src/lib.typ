@@ -5,7 +5,6 @@
 
 #let hydra(
   sel: heading,
-  sel-higher: auto,
   prev-filter: (ctx, p, n) => true,
   next-filter: (ctx, p, n) => true,
   display: core.display,
@@ -16,13 +15,14 @@
   top-margin: auto,
   loc: none,
 ) = {
-  let (sel, filter) = util.into-sel-filter-pair(sel)
-
+  // we need this for the next-on-top redundancy check
   assert((paper, page-size, top-margin).filter(x => x != auto).len() >= 1,
     message: "Must set one of (`paper`, `page-size` or `top-margin`)",
   )
 
+  // if margin is auto we need the page size
   if top-margin == auto {
+    // if page size is auto then only paper was given
     if page-size == auto {
       page-size = util.page-sizes.at(paper, default: none)
       assert.ne(page-size, none, message: util.oxi.strfmt("Unknown paper: `{}`", paper))
@@ -33,50 +33,32 @@
   }
 
   let func = loc => {
+    let unhacked = util.unhack("sel", sel)
+
     let ctx = (
       binding: binding,
       top-margin: top-margin,
       loc: loc,
-      prev-higher: none,
-      next-higher: none,
+      self: unhacked.self,
+      ancestor: unhacked.ancestor,
     )
 
-    if sel-higher == auto {
-      if repr(sel).starts-with("heading.where") {
-        let unhacked = util.unhack-selector(sel)
-
-        assert("level" in unhacked.fields, message: "`sel` must select over `heading.level`" + repr(unhacked.fields))
-
-        let (sel-higher, filter-higher) = util.into-sel-filter-pair(
-          unhacked.func.where(level: unhacked.fields.level - 1)
-        )
-
-        let (prev-higher, next-higher, _) = core.get-adjacent-from(ctx, sel-higher, filter-higher)
-        ctx.prev-higher = prev-higher
-        ctx.next-higher = next-higher
-      }
-    } else {
-      let (sel-higher, filter-higher) = util.into-sel-filter-pair(sel-higher)
-      let (prev-higher, next-higher, _) = core.get-adjacent-from(ctx, sel-higher, filter-higher)
-      ctx.prev-higher = prev-higher
-      ctx.next-higher = next-higher
-    }
-
-    let (prev, next, loc) = core.get-adjacent-from(ctx, sel, filter)
+    let (prev, next, prev-ancestor, next-ancestor, loc) = core.get-candidates(ctx)
     ctx.loc = loc
 
     let prev-eligible = prev != none and prev-filter(ctx, prev, next)
     let next-eligible = next != none and next-filter(ctx, prev, next)
-    let prev-redundant = core.is-redundant(ctx, prev, next)
+    let prev-redundant = core.is-redundant(ctx, prev, next, next-ancestor)
 
     if prev-eligible and not prev-redundant {
       display(ctx, prev)
-    } else if fallback-next and next-eligible {
+    } else if next-eligible and fallback-next {
       display(ctx, next)
     }
   }
 
-  if type(loc) == location {
+  if loc != none {
+    util.assert-type("loc", loc, location)
     func(loc)
   } else {
     locate(func)
