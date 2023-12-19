@@ -43,8 +43,16 @@
       ancestor: unhacked.ancestor,
     )
 
-    let (prev, next, prev-ancestor, next-ancestor, loc) = core.get-candidates(ctx)
-    ctx.loc = loc
+    if ctx.loc.position().y >= ctx.top-margin {
+      ctx.loc = core.get-anchor-pos(ctx)
+    }
+
+    let candidates = core.get-candidates(ctx)
+    let (prev, next, next-ancestor) = (
+      candidates.self.prev,
+      candidates.self.next,
+      candidates.ancestor.next,
+    )
 
     let prev-eligible = prev != none and prev-filter(ctx, prev, next)
     let next-eligible = next != none and next-filter(ctx, prev, next)

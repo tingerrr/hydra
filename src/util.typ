@@ -30,12 +30,13 @@
   let func = if parts.len() == 1 {
     eval(parts.first())
   } else {
-    for arg in parts.last().trim("where").trim(regex("\(|\)"), repeat: false).split(", ") {
+    let args = parts.remove(parts.len() - 1)
+    for arg in args.trim("where").trim(regex("\(|\)"), repeat: false).split(", ") {
       let (name, val) = arg.split(": ")
       fields.insert(name, eval(val))
     }
 
-    eval(parts.first())
+    eval(parts.join("."))
   }
 
   (func: func, fields: fields)

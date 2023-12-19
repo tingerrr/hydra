@@ -1,16 +1,23 @@
 #import "/src/util.typ"
 
+// get the anchor
+#let get-anchor-pos(ctx) = {
+  let starting-locs = query(selector(<hydra-anchor>).before(ctx.loc), ctx.loc)
+  assert.ne(starting-locs.len(), 0,
+    message: "No `hydra-anchor()` found while searching from outside the page header, did you forget to set `paper`/`page-size` or `top-margin`?",
+  )
+
+  let anchor = starting-locs.last().location()
+
+  assert.eq(anchor.page(), ctx.loc.page(),
+    message: "`hydra-anchor()` must be on every page before the first use of `hydra`"
+  )
+
+  anchor
+}
+
 // get the adjacent headings
 #let get-candidates(ctx) = {
-  if ctx.loc.position().y >= ctx.top-margin {
-    let starting-locs = query(selector(<hydra-anchor>).before(ctx.loc), ctx.loc)
-    assert.ne(starting-locs.len(), 0,
-      message: "No `hydra-anchor()` found while searching from outside the page header, did you forget to set `paper`/`page-size` or `top-margin`?",
-    )
-
-    ctx.loc = starting-locs.last().location()
-  }
-
   let look-behind = selector(ctx.self.func).before(ctx.loc)
   let look-ahead = selector(ctx.self.func).after(ctx.loc)
 
@@ -48,7 +55,10 @@
   let prev = if prev != () { prev.last() }
   let next = if next != () { next.first() }
 
-  (prev, next, prev-ancestor, next-ancestor, ctx.loc)
+  (
+    self: (prev: prev, next: next),
+    ancestor: (prev: prev-ancestor, next: next-ancestor),
+  )
 }
 
 // checks if the current context is on a starting page
