@@ -12,6 +12,16 @@
   assert.eq(given-type, execpted-type, message: message)
 }
 
+// assert element is of the given types
+#let assert-types(name, value, expected-types, message: auto) = {
+  let given-type = type(value)
+  expected-types = expected-types.map(t => if t == none { type(none) } else { t })
+  let message = or-default(check: auto, message, () => {
+    oxi.strfmt("`{}` must be one of `{}`, was `{}`", name, expected-types, given-type)
+  })
+  assert(given-type in expected-types, message: message)
+}
+
 // assert the element is of the given element type
 #let assert-element(name, element, expected-func, message: auto) = {
   assert-type(name, element, content)
@@ -22,7 +32,7 @@
   assert.eq(given-func, expected-func, message: message)
 }
 
-// a hacky way to get from a selector to it's inner representation
+// a hacky way to get from a selector to its inner representation
 #let unhack-selector(sel) = {
   let parts = repr(sel).split(".")
 
@@ -50,7 +60,7 @@
   ))
 
   if type(sel) == selector {
-    assert(repr(sel).starts-with("heading"), message: message)
+    assert(repr(sel).starts-with("heading.where"), message: message)
 
     let sel = unhack-selector(sel)
 
@@ -72,8 +82,8 @@
       self: (func: heading, filter: none),
       ancestor: none,
     )
-  } else if true {
-    panic("UNIMPLEMENTED: `custom` result")
+  } else if type(sel) == dictionary and "self" in sel and "ancestor" in sel {
+    sel
   } else {
     panic(message)
   }

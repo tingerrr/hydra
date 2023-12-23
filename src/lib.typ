@@ -1,7 +1,32 @@
 #import "/src/core.typ"
 #import "/src/util.typ"
 
-#let hydra-anchor() = [#metadata(()) <hydra-anchor>]
+#let custom(
+  element,
+  filter: none,
+  ancestor: none,
+  ancestor-filter: none,
+) = {
+  let message(name, val) = util.oxi.strfmt.with(
+    "`{}` must be a queryable element function or selector, was `{}`", name, type(val),
+  )
+
+  util.assert-types("element", element, (function, selector))
+  util.assert-types("filter", filter, (none, function, selector))
+  util.assert-types("ancestor", ancestor, (none, function, selector))
+  util.assert-types("ancestor-filter", ancestor-filter, (none, function, selector))
+
+  if ancestor == none and ancestor-filter != none {
+    panic("`ancestor` must be set if `ancestor-filter` is set")
+  }
+
+  (
+    self: (func: element, filter: filter),
+    ancestor: if ancestor != none { (func: ancestor, filter: ancestor-filter) },
+  )
+}
+
+#let anchor() = [#metadata(()) <hydra-anchor>]
 
 #let hydra(
   sel: heading,
@@ -14,6 +39,7 @@
   page-size: auto,
   top-margin: auto,
   loc: none,
+  debug: false,
 ) = {
   // we need this for the next-on-top redundancy check
   assert((paper, page-size, top-margin).filter(x => x != auto).len() >= 1,
@@ -48,20 +74,25 @@
     }
 
     let candidates = core.get-candidates(ctx)
-    let (prev, next, next-ancestor) = (
-      candidates.self.prev,
-      candidates.self.next,
-      candidates.ancestor.next,
-    )
 
-    let prev-eligible = prev != none and prev-filter(ctx, prev, next)
-    let next-eligible = next != none and next-filter(ctx, prev, next)
-    let prev-redundant = core.is-redundant(ctx, prev, next, next-ancestor)
+    if debug {
+      candidates
+    } else {
+      let (prev, next, next-ancestor) = (
+        candidates.self.prev,
+        candidates.self.next,
+        candidates.ancestor.next,
+      )
 
-    if prev-eligible and not prev-redundant {
-      display(ctx, prev)
-    } else if next-eligible and fallback-next {
-      display(ctx, next)
+      let prev-eligible = prev != none and prev-filter(ctx, prev, next)
+      let next-eligible = next != none and next-filter(ctx, prev, next)
+      let prev-redundant = core.is-redundant(ctx, prev, next, next-ancestor)
+
+      if prev-eligible and not prev-redundant {
+        display(ctx, prev)
+      } else if next-eligible and fallback-next {
+        display(ctx, next)
+      }
     }
   }
 
