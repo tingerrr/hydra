@@ -1,7 +1,7 @@
 # hydra
 Hydra is a [typst] package allowing you to easily display the current section anywhere in your
 document. In short it will show you the current section only when you need to know it, that is
-when the last section still has remainig text but it's heading is nowhere to be seen.
+when the last section still has remainig text but its heading is nowhere to be seen.
 
 By default hydra also assumes that you use `a4` page size and margin, see its named parameters
 to adjust this.
@@ -72,7 +72,7 @@ levels are skipped.
 allowing you to inspect the result of `display` directly.
 
 `prev-filter` and `next-filter` are used to check if an element is eligible for being displayed.
-They receive the `context`, the previous and next element relative to the given `loc`, the element
+They receive the `context`. The previous and next element relative to the given `loc`, the element
 that is checked for is not `none`, but the other may be. These functions are executed at most once.
 
 If `binding` is set to `left`/`right`, it will not display the element if it is visible on the

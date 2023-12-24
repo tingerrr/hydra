@@ -18,16 +18,26 @@ let c = {
 
 # show some output, optionally going back by n lines
 def show [
-  --go_back: int
+  --back(-b): int
+  --indent(-i): int
   msg: string
 ] {
-  let back = if $go_back == null or $go_back == 0 {
+  let back = if $back == null or $back == 0 {
     ''
   } else {
-    0..($go_back - 1) | each { ansi --escape 'F' } | str join
+    0..($back - 1) | each { ansi --escape 'F' } | str join
   }
 
-  echo $"($back)(ansi --escape 'K')($msg)"
+  let indent = if $indent == null or $indent == 0 {
+    ''
+  } else {
+    0..($indent - 1) | each { '  ' } | str join
+  }
+
+  print --no-newline $"($c.c)($back)(ansi --escape 'K')"
+  for l in ($msg | lines) {
+    print ($indent + $l)
+  }
 }
 
 # run a single test
@@ -43,25 +53,32 @@ def one [ test: string ] {
   show $"($c.y)testing($c.c) ($test)"
 
   try {
-    show $"  ($c.y)compiling"
+    show -i 1 $"($c.y)compiling"
     rm --recursive --force $output_dir
     mkdir $output_dir
     mkdir $ref_dir
     rm --recursive --force $diff_dir
     mkdir $diff_dir
-    typst compile --root $root $input $output
-    show --go_back 1 $"  ($c.g)compiling succeeded"
+    let res = do { typst compile --root $root $input $output } | complete
+    # TODO: enable always color mode (see: https://github.com/typst/typst/pull/3060)
+    # let res = do { typst --color compile --root $root $input $output } | complete
+    if $res.exit_code != 0 {
+      error make { msg: $res.stderr }
+    }
+    show -b 1 -i 1 $"($c.g)compiling succeeded"
   } catch {|err|
-    show --go_back 1 $"  ($c.r)compiling failed($c.c)\n($err)"
+    show -b 1 -i 1 $"($c.r)compiling failed"
+    show -i 2 $err.msg
     return
   }
 
   let outputs = ls $output_dir
   let refs = ls $ref_dir
 
-  show $"  ($c.y)comparing($c.c)"
+  show -i 1 $"($c.y)comparing"
   if ($refs | length) != ($outputs | length) {
-    show --go_back 1 $"  ($c.r)comparing failed($c.c)\n      references outputs differed in count \(($refs | length) != ($outputs | length)\)"
+    show -b 1 -i 1 $"($c.r)comparing failed"
+    show -i 2 $"references outputs differed in count \(($refs | length) != ($outputs | length)\)"
     return
   }
 
@@ -78,16 +95,14 @@ def one [ test: string ] {
       } else {
         1
       }
-      show --go_back $back $"  ($c.r)comparing failed($c.c) for page ($x.1)"
-      for l in ($res.stdout | str trim --char "\n" | lines) {
-        show $"    ($l)"
-      }
+      show -b $back -i 1 $"($c.r)comparing failed($c.c) for page ($x.1)"
+      show -i 2 $res.stdout
       $failed_once = true
     }
   }
 
   if not $failed_once {
-    show --go_back 3 $"($c.g)tested($c.c) ($test)"
+    show -b 3 $"($c.g)tested($c.c) ($test)"
   }
 }
 
