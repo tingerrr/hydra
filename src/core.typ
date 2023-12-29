@@ -21,7 +21,7 @@
 
 /// Get the element candidates for the given context.
 ///
-/// - ctx (context): The context for which to get the candiates.
+/// - ctx (context): The context for which to get the candidates.
 /// -> dictionary
 #let get-candidates(ctx) = {
   let look-behind = selector(ctx.self.func).before(ctx.loc)
@@ -71,7 +71,7 @@
 /// this context's page.
 ///
 /// - ctx (context): The context in which the visibility of the next candidates should be checked.
-/// - candiates (dictionary): The primary and ancestor candidates.
+/// - candidates (dictionary): The primary and ancestor candidates.
 /// -> bool
 #let is-on-starting-page(ctx, candidates) = {
   let next = if candidates.self.next != none { candidates.self.next.location() }
@@ -96,7 +96,7 @@
 ///
 /// - ctx (context): The context in which the visibility of the previous self candidate should be
 ///   checked.
-/// - candiates (dictionary): The primary and ancestor candidates.
+/// - candidates (dictionary): The primary and ancestor candidates.
 /// -> bool
 #let is-prev-visible(ctx, candidates) = {
   let prev-page-visible = if ctx.binding == left {
@@ -116,7 +116,7 @@
 ///
 /// - ctx (context): The context in which the redundancy of the previous self candidate should be
 ///   checked.
-/// - candiates (dictionary): The primary and ancestor candidates.
+/// - candidates (dictionary): The primary and ancestor candidates.
 /// -> bool
 #let is-prev-redundant(ctx, candidates) = {
   let prev-visible = candidates.self.prev != none and is-prev-visible(ctx, candidates)

@@ -8,7 +8,6 @@
 /// - name (str): The name use for the value in the assertion message.
 /// - value (any): The value to check for.
 /// - expected-type (type): The expected type of `value`.
-/// -> none
 #let type(name, value, expected-type, message: auto) = {
   let given-type = _std-type(value)
 	expected-type = if expected-type == none { _std-type(none) } else { expected-type }
@@ -23,8 +22,7 @@
 ///
 /// - name (str): The name use for the value in the assertion message.
 /// - value (any): The value to check for.
-/// - expected-type (type): The expected types of `value`.
-/// -> none
+/// - expected-types (type): The expected types of `value`.
 #let types(name, value, expected-types, message: auto) = {
   let given-type = _std-type(value)
   expected-types = expected-types.map(t => if t == none { _std-type(none) } else { t })
@@ -40,7 +38,6 @@
 /// - name (str): The name use for the value in the assertion message.
 /// - element (any): The value to check for.
 /// - expected-func (type): The expected element function of `element`.
-/// -> none
 #let element(name, element, expected-func, message: auto) = {
   let given-func = element.func()
   let message = _core.or-default(check: auto, message, () => {
@@ -55,7 +52,6 @@
 ///
 /// - name (str): The name use for the value in the assertion message.
 /// - value (any): The value to check for.
-/// -> none
 #let queryable(name, value, message: auto) = {
   let given-type = _std-type(value)
   let message = _core.or-default(check: auto, message, () => _core.fmt(

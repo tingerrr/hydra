@@ -24,6 +24,9 @@
 /// - display (function): A function which receives the context and element to display
 /// - fallback-next (bool): Whether hydra should show the current element even if it's on top of the
 ///   current page.
+/// - binding (alignment): The binding direction if it should be considered, `none` if
+///   not. If the binding direction is set it'll be used to check for redundancy when an element is
+///   visible on the last page.
 /// - paper (str): The paper size of the current page, used to calculate the top-margin.
 /// - page-size (length): The smaller page size of the current page, used to calculated the
 ///   top-margin.
