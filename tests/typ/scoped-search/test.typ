@@ -7,9 +7,9 @@
 #set page(paper: "a7",
   header: locate(loc => {
     if calc.even(loc.page()) {
-      hydra(sel: heading.where(level: 1), paper: "a7")
+      hydra(paper: "a7", 1)
     } else {
-      [#h(1fr)#hydra(sel: heading.where(level: 2), paper: "a7")]
+      [#h(1fr)#hydra(paper: "a7", 2)]
     }
   }),
 )

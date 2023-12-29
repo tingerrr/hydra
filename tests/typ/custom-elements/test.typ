@@ -1,4 +1,6 @@
-#import "/src/lib.typ": hydra, custom
+#import "/src/lib.typ" as hydra
+#import hydra.selectors: custom
+#import hydra: hydra
 
 #let chapter = figure.with(supplement: [Chapter], kind: "chapter")
 #let chapter-sel = figure.where(kind: "chapter")
@@ -20,7 +22,7 @@
 
 #set page(paper: "a7", header: locate(loc => {
   let chap = hydra(
-    sel: custom(chapter-sel),
+    custom(chapter-sel),
     display: (ctx, e) => {
       if e.has("numbering") and e.numbering != none {
         numbering(e.numbering, ..counter(ctx.self.func).at(e.location()))
@@ -32,7 +34,7 @@
     loc: loc,
   )
   let sec = hydra(
-    sel: custom(heading.where(level: 1), ancestor: chapter-sel),
+    custom(heading.where(level: 1), ancestor: chapter-sel),
     loc: loc,
   )
 
