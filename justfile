@@ -12,7 +12,7 @@ gen:
 	typst compile \
 		--root {{ self }} \
 		examples/main.typ \
-		examples/expample{n}.png
+		examples/example{n}.png
 
 	ls examples/ \
 		| where name =~ '^example\d.png$' \
