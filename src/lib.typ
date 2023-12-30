@@ -41,7 +41,7 @@
   prev-filter: (ctx, c) => true,
   next-filter: (ctx, c) => true,
   display: core.display,
-  fallback-next: false,
+  fallback-next: false, // BUG: this will not look ahead if an ancestor is in the way
   binding: none,
   paper: "a4",
   page-size: auto,

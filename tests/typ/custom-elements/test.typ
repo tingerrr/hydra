@@ -1,3 +1,8 @@
+// Synopsis:
+// - the figure doesnt interfere with chapter numbering
+// - the use of `loc: loc` ensures that return values can be used for logic
+// - the use of `custom` ensures that heading searches are scoped by chapters
+
 #import "/src/lib.typ" as hydra
 #import hydra.selectors: custom
 #import hydra: hydra
@@ -18,43 +23,34 @@
   it.body
 }
 
-#let hydra = hydra.with(paper: "a7")
+#let display-chapter(ctx, chapter) = {
+  if chapter.has("numbering") and chapter.numbering != none {
+    numbering(chapter.numbering, ..counter(chapter-sel).at(chapter.location()))
+    [ ]
+  }
+
+  chapter.body
+}
 
 #set page(paper: "a7", header: locate(loc => {
-  let chap = hydra(
-    custom(chapter-sel),
-    display: (ctx, e) => {
-      if e.has("numbering") and e.numbering != none {
-        numbering(e.numbering, ..counter(ctx.self.func).at(e.location()))
-        [ ]
-      }
-
-      e.body
-    },
-    loc: loc,
-  )
-  let sec = hydra(
-    custom(heading.where(level: 1), ancestor: chapter-sel),
-    loc: loc,
-  )
+  let hydra = hydra.with(paper: "a7", loc: loc)
+  let chap = hydra(chapter-sel, display: display-chapter)
+  let sec = hydra(custom(heading.where(level: 1), ancestor: chapter-sel))
 
   chap
   if chap != none and sec != none [ --- ]
   sec
 }))
 #set heading(numbering: "1.1")
+#set par(justify: true)
 
 #chapter[Introduction]
-#lorem(150)
+#lorem(100)
 
 #chapter[Content]
 = First Section
-#lorem(100)
-= Second Section
-#lorem(50)
 #figure[Fake figure]
-= Third Section
-#lorem(100)
+#lorem(120)
 
-#chapter[Annex]
+= Second Section
 #lorem(50)

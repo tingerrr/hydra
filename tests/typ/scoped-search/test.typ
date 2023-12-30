@@ -1,35 +1,29 @@
+// Synopsis:
+// - fixes https://github.com/tingerrr/hydra/issues/5
+// - if a level 2 heading cannot be found we don't go further than a level 1 heading back
+
 #import "/src/lib.typ": hydra
 
 #set heading(numbering: "1.1")
 #show heading.where(level: 1): it => pagebreak(weak: true) + it
 #set par(justify: true)
 
-#set page(paper: "a7",
+#set page(
+  paper: "a7",
   header: locate(loc => {
+    let hydra = hydra.with(loc: loc, paper: "a7")
     if calc.even(loc.page()) {
-      hydra(paper: "a7", 1)
+      align(left, hydra(1))
     } else {
-      [#h(1fr)#hydra(paper: "a7", 2)]
+      align(right, hydra(2))
     }
   }),
 )
 
-= First chapter
-#lorem(10)
-== First chapter first section
-#lorem(150)
-== First chapter second section
-#lorem(20)
-= Second
-#lorem(30)
-== Second section zero
-=== Second subsection one
-#lorem(90)
-== Second section one
-#lorem(25)
-= Third
-#lorem(20)
-== Third section one
+= First Chapter
+== First section
 #lorem(180)
-= Fourth
-#lorem(200)
+
+= Second Chapter
+=== Second Subscetion
+#lorem(100)

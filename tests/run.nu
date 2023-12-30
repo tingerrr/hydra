@@ -107,15 +107,14 @@ def one [ test: string ] {
 }
 
 # entry point, collect the files matching the filter and run them one by one
-def main [ filter?: string ] {
+def main [ filter?: string = ''] {
   cd ($env.FILE_PWD | path join 'typ')
 
-  let filter = if $filter != null { $filter } else { '' }
-	let matches = (ls
-		| where name =~ $filter
-		| get name)
+  let matches = (ls
+    | where name =~ $filter
+    | get name)
 
-	for it in $matches {
-		one ($it | str replace '.typ' '')
-	}
+  for it in $matches {
+    one ($it | str replace '.typ' '')
+  }
 }
