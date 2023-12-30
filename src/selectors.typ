@@ -2,11 +2,11 @@
 
 /// Create a custom selector for `hydra`.
 ///
-/// - element (function, selector): The primary element to search for
-/// - filter (function): The filter to apply to the element
+/// - element (function, selector): The primary element to search for.
+/// - filter (function): The filter to apply to the element.
 /// - ancestor (function, selector): The ancestor elements, this should match the immediate
-///   ancestor and all of its ancestors
-/// - ancestor-filter (function): The filter applied to the ancestors
+///   ancestor and all of its ancestors.
+/// - ancestor-filter (function): The filter applied to the ancestors.
 /// -> dictionary
 #let custom(
   element,
@@ -14,10 +14,10 @@
   ancestor: none,
   ancestor-filter: none,
 ) = {
-  util.assert.types("element", element, (function, selector, label))
-  util.assert.types("filter", filter, (none, function))
-  util.assert.types("ancestor", ancestor, (none, function, selector, label))
-  util.assert.types("ancestor-filter", ancestor-filter, (none, function))
+  util.assert.types("element", element, function, selector, label)
+  util.assert.types("filter", filter, function, none)
+  util.assert.types("ancestor", ancestor, function, selector, label, none)
+  util.assert.types("ancestor-filter", ancestor-filter, function, none)
 
   util.assert.queryable("element", element)
 
@@ -47,20 +47,14 @@
   ..exact,
 ) = {
   let (named, pos) = (exact.named(), exact.pos())
-
-  assert.eq(named.len(), 0,
-    message: util.fmt("Unexected named arguments: `{}`", named),
-  )
-
-  assert(pos.len() <= 1,
-    message: util.fmt("Unexected positional arguments: `{}`", pos),
-  )
+  assert.eq(named.len(), 0, message: util.fmt("Unexected named arguments: `{}`", named))
+  assert(pos.len() <= 1, message: util.fmt("Unexpected positional arguments: `{}`", pos))
 
   exact = pos.at(0, default: none)
 
-  util.assert.types("min", min, (int, none))
-  util.assert.types("max", max, (int, none))
-  util.assert.types("exact", exact, (int, none))
+  util.assert.types("min", min, int, none)
+  util.assert.types("max", max, int, none)
+  util.assert.types("exact", exact, int, none)
 
   if min == none and max == none and exact == none {
     panic("Use `heading` directly if you have no `min`, `max` or `exact` level bound")
@@ -104,35 +98,44 @@
 
 /// Turn a selector or function into a hydra selector.
 ///
-/// This function is considered unstable.
+/// *This function is considered unstable.*
 ///
-/// - sel (any): The selector to sanitize
+/// - name (str): The name to use in the assertion message.
+/// - sel (any): The selector to sanitize.
+/// - message (str, auto): The assertion message to use.
 /// -> dictionary
 #let sanitize(name, sel, message: auto) = {
   let message = util.core.or-default(check: auto, message, () => util.fmt(
-    "`{}` must be a `heading`, `heading.where(level: n)`, a level, or a hydra-selector", name,
+    "`{}` must be a `selector`, a level, or a custom hydra-selector", name,
   ))
 
   if type(sel) == selector {
-    assert(repr(sel).starts-with("heading.where"), message: message)
     let parts = repr(sel).split(".")
 
-    let fields = (:)
-    let func = if parts.len() == 1 {
-      eval(parts.first())
+    // NOTE: because `repr(math.equation) == equation` we add it to the scope
+    // NOTE: No, I don't like this either
+    let func = eval(if parts.len() == 1 {
+      parts.first()
     } else {
-      let args = parts.remove(parts.len() - 1)
-      for arg in args.trim("where").trim(regex("\(|\)"), repeat: false).split(", ") {
-        let (name, val) = arg.split(": ")
-        fields.insert(name, eval(val))
+      parts.slice(0, -1).join(".")
+    }, scope: (equation: math.equation))
+
+    if func == heading {
+      let fields = (:)
+      if parts.len() > 1 {
+        let args = parts.remove(-1)
+        for arg in args.trim("where").trim(regex("\(|\)"), repeat: false).split(",") {
+          let (name, val) = arg.split(":").map(str.trim)
+          fields.insert(name, eval(val))
+        }
       }
 
-      eval(parts.join("."))
+      assert.eq(fields.len(), 1, message: message)
+      assert("level" in fields, message: message)
+      by-level(fields.level)
+    } else {
+      custom(sel)
     }
-
-    assert.eq(fields.len(), 1, message: message)
-    assert("level" in fields, message: message)
-    by-level(fields.level)
   } else if type(sel) == int {
     by-level(sel)
   } else if type(sel) == function {
