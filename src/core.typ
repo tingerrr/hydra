@@ -28,19 +28,19 @@
 /// - ctx (context): The context for which to get the candidates.
 /// -> candidates
 #let get-candidates(ctx) = {
-  let look-behind = selector(ctx.self.func).before(ctx.loc)
-  let look-ahead = selector(ctx.self.func).after(ctx.loc)
+  let look-behind = selector(ctx.primary.target).before(ctx.loc)
+  let look-ahead = selector(ctx.primary.target).after(ctx.loc)
 
   let prev-ancestor = none
   let next-ancestor = none
 
-  if ctx.ancestor != none {
-    let prev = query(selector(ctx.ancestor.func).before(ctx.loc), ctx.loc)
-    let next = query(selector(ctx.ancestor.func).after(ctx.loc), ctx.loc)
+  if ctx.ancestors != none {
+    let prev = query(selector(ctx.ancestors.target).before(ctx.loc), ctx.loc)
+    let next = query(selector(ctx.ancestors.target).after(ctx.loc), ctx.loc)
 
-    if ctx.ancestor.filter != none {
-      prev = prev.filter(x => (ctx.ancestor.filter)(ctx, x))
-      next = next.filter(x => (ctx.ancestor.filter)(ctx, x))
+    if ctx.ancestors.filter != none {
+      prev = prev.filter(x => (ctx.ancestors.filter)(ctx, x))
+      next = next.filter(x => (ctx.ancestors.filter)(ctx, x))
     }
 
     if prev != () {
@@ -57,16 +57,16 @@
   let prev = query(look-behind, ctx.loc)
   let next = query(look-ahead, ctx.loc)
 
-  if ctx.self.filter != none {
-    prev = prev.filter(x => (ctx.self.filter)(ctx, x))
-    next = next.filter(x => (ctx.self.filter)(ctx, x))
+  if ctx.primary.filter != none {
+    prev = prev.filter(x => (ctx.primary.filter)(ctx, x))
+    next = next.filter(x => (ctx.primary.filter)(ctx, x))
   }
 
   let prev = if prev != () { prev.last() }
   let next = if next != () { next.first() }
 
   (
-    self: (prev: prev, next: next),
+    primary: (prev: prev, next: next),
     ancestor: (prev: prev-ancestor, next: next-ancestor),
   )
 }
@@ -75,10 +75,10 @@
 /// this context's page.
 ///
 /// - ctx (context): The context in which the visibility of the next candidates should be checked.
-/// - candidates (candidates): The primary and ancestor candidates.
+/// - candidates (candidates): The candidates for this context.
 /// -> bool
 #let is-on-starting-page(ctx, candidates) = {
-  let next = if candidates.self.next != none { candidates.self.next.location() }
+  let next = if candidates.primary.next != none { candidates.primary.next.location() }
   let next-ancestor = if candidates.ancestor.next != none { candidates.ancestor.next.location() }
 
   let next-starting = if next != none {
@@ -100,7 +100,7 @@
 ///
 /// - ctx (context): The context in which the visibility of the previous primary candidate should be
 ///   checked.
-/// - candidates (candidates): The primary and ancestor candidates.
+/// - candidates (candidates): The candidates for this context.
 /// -> bool
 #let is-prev-visible(ctx, candidates) = {
   let prev-page-visible = if ctx.binding == left {
@@ -111,7 +111,7 @@
     return false
   }
 
-  let prev-on-prev-page = candidates.self.prev.location().page() == ctx.loc.page() - 1
+  let prev-on-prev-page = candidates.primary.prev.location().page() == ctx.loc.page() - 1
 
   prev-page-visible and prev-on-prev-page
 }
@@ -120,10 +120,10 @@
 ///
 /// - ctx (context): The context in which the redundancy of the previous primary candidate should be
 ///   checked.
-/// - candidates (candidates): The primary and ancestor candidates.
+/// - candidates (candidates): The candidates for this context.
 /// -> bool
 #let is-prev-redundant(ctx, candidates) = {
-  let prev-visible = candidates.self.prev != none and is-prev-visible(ctx, candidates)
+  let prev-visible = candidates.primary.prev != none and is-prev-visible(ctx, candidates)
   let starting-page = is-on-starting-page(ctx, candidates)
 
   prev-visible or starting-page
@@ -132,19 +132,19 @@
 /// Display a heading's numbering and body.
 ///
 /// - ctx (context): The context in which the element was found.
-/// - element (content): The heading to display, panics if this is not a heading.
+/// - candidate (content): The heading to display, panics if this is not a heading.
 /// -> content
-#let display(ctx, element) = {
-  util.assert.element("element", element, heading,
+#let display(ctx, candidate) = {
+  util.assert.element("candidate", candidate, heading,
     message: "Use a custom `display` function for elements other than headings",
   )
 
-  if element.has("numbering") and element.numbering != none {
-    numbering(element.numbering, ..counter(heading).at(element.location()))
+  if candidate.has("numbering") and candidate.numbering != none {
+    numbering(candidate.numbering, ..counter(heading).at(candidate.location()))
     [ ]
   }
 
-  element.body
+  candidate.body
 }
 
 /// Execute the core logic to find and display elements for the current context.
@@ -156,14 +156,16 @@
     ctx.loc = get-anchor-pos(ctx)
   }
 
+  // BUG: fallback-next will not work if an ancestor is in the way
+
   let candidates = get-candidates(ctx)
-  let prev-eligible = candidates.self.prev != none and (ctx.prev-filter)(ctx, candidates)
-  let next-eligible = candidates.self.next != none and (ctx.next-filter)(ctx, candidates)
+  let prev-eligible = candidates.primary.prev != none and (ctx.prev-filter)(ctx, candidates)
+  let next-eligible = candidates.primary.next != none and (ctx.next-filter)(ctx, candidates)
   let prev-redundant = is-prev-redundant(ctx, candidates)
 
   if prev-eligible and not prev-redundant {
-    (ctx.display)(ctx, candidates.self.prev)
+    (ctx.display)(ctx, candidates.primary.prev)
   } else if next-eligible and ctx.fallback-next {
-    (ctx.display)(ctx, candidates.self.next)
+    (ctx.display)(ctx, candidates.primary.next)
   }
 }

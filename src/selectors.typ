@@ -4,34 +4,33 @@
 ///
 /// - element (function, selector): The primary element to search for.
 /// - filter (function): The filter to apply to the element.
-/// - ancestor (function, selector): The ancestor elements, this should match the immediate
-///   ancestor and all of its ancestors.
-/// - ancestor-filter (function): The filter applied to the ancestors.
+/// - ancestors (function, selector): The ancestor elements, this should match all of its ancestors.
+/// - ancestors-filter (function): The filter applied to the ancestors.
 /// -> dictionary
 #let custom(
   element,
   filter: none,
-  ancestor: none,
-  ancestor-filter: none,
+  ancestors: none,
+  ancestors-filter: none,
 ) = {
   util.assert.types("element", element, function, selector, label)
   util.assert.types("filter", filter, function, none)
-  util.assert.types("ancestor", ancestor, function, selector, label, none)
-  util.assert.types("ancestor-filter", ancestor-filter, function, none)
+  util.assert.types("ancestors", ancestors, function, selector, label, none)
+  util.assert.types("ancestors-filter", ancestors-filter, function, none)
 
   util.assert.queryable("element", element)
 
-  if ancestor != none {
-    util.assert.queryable("ancestor", ancestor)
+  if ancestors != none {
+    util.assert.queryable("ancestors", ancestors)
   }
 
-  if ancestor == none and ancestor-filter != none {
+  if ancestors == none and ancestors-filter != none {
     panic("`ancestor` must be set if `ancestor-filter` is set")
   }
 
   (
-    self: (func: element, filter: filter),
-    ancestor: if ancestor != none { (func: ancestor, filter: ancestor-filter) },
+    primary: (target: element, filter: filter),
+    ancestors: if ancestors != none { (target: ancestors, filter: ancestors-filter) },
   )
 }
 
@@ -70,7 +69,7 @@
     max = none
   }
 
-  let (self, self-filter) = if exact != none {
+  let (primary, primary-filter) = if exact != none {
     (heading.where(level: exact), none)
   } else if min != none and max != none {
     (heading, (ctx, e) => min <= e.level and e.level <= max)
@@ -80,7 +79,7 @@
     (heading, (ctx, e) => e.level <= max)
   }
 
-  let (ancestor, ancestor-filter) = if exact != none {
+  let (ancestors, ancestors-filter) = if exact != none {
     (heading, (ctx, e) => e.level < exact)
   } else  if min != none and min > 1 {
     (heading, (ctx, e) => e.level < min)
@@ -89,10 +88,10 @@
   }
 
   custom(
-    self,
-    filter: self-filter,
-    ancestor: heading,
-    ancestor-filter: ancestor-filter,
+    primary,
+    filter: primary-filter,
+    ancestors: heading,
+    ancestors-filter: ancestors-filter,
   )
 }
 
@@ -140,7 +139,7 @@
     by-level(sel)
   } else if type(sel) == function {
     custom(sel)
-  } else if type(sel) == dictionary and "self" in sel and "ancestor" in sel {
+  } else if type(sel) == dictionary and "primary" in sel and "ancestors" in sel {
     sel
   } else {
     panic(message)

@@ -3,27 +3,28 @@
 #import "/src/selectors.typ"
 
 /// An anchor used to search from. When using `hydra` ouside of the page header, this should be
-/// placed inside the header to find the correct searching context. `hydra` always searches from the
-/// last anchor it finds, if and only if it detects that it is outside of the top-margin.
+/// placed inside the pge header to find the correct searching context. `hydra` always searches from
+/// the last anchor it finds, if and only if it detects that it is outside of the top-margin.
 #let anchor() = [#metadata(()) <hydra-anchor>]
 
 /// Query for an element within the bounds of its ancestors.
 ///
 /// The context passed to various callbacks contains the resolved top-margin, the current location,
-/// as well as the binding direction, primary and ancestor element selectors.
+/// as well as the binding direction, primary and ancestor element selectors and customized
+/// functions.
 ///
 /// - ..sel (any): The element to look for, to use other elements than headings, read the
 ///   documentation on selectors. This can be an element function or selector, an integer declaring
-///   a heading level, or a string/content declaring a range of heading levels.
-/// - prev-filter (function): A function which receives the context, previous and next element and
-///   returns if they are eligible for display. This function is called at most once. The next
-///   element may be none.
-/// - next-filter (function): A function which receives the context, previous and next element and
-///   returns if they are eligible for display. This function is called at most once. The prev
-///   element may be none.
-/// - display (function): A function which receives the context and element to display
-/// - fallback-next (bool): Whether hydra should show the current element even if it's on top of the
-///   current page.
+///   a heading level.
+/// - prev-filter (function): A function which receives the `context` and `candidates`, and returns
+///   if they are eligible for display. This function is called at most once. The primary next
+///   candidate may be none.
+/// - next-filter (function): A function which receives the `context` and `candidates`, and returns
+///   if they are eligible for display. This function is called at most once. The primary prev
+///   candidate may be none.
+/// - display (function): A function which receives the context and candidate to display.
+/// - fallback-next (bool): Whether `hydra` should show the current candidate even if it's on top of
+///   the current page.
 /// - binding (alignment, none): The binding direction if it should be considered, `none` if not.
 ///   If the binding direction is set it'll be used to check for redundancy when an element is
 ///   visible on the last page.
@@ -31,17 +32,17 @@
 /// - page-size (length, auto): The smaller page size of the current page, used to calculated the
 ///   top-margin.
 /// - top-margin (length, auto): The top margin of the current page, used to check if the current
-///   page has a primary element on top.
+///   page has a primary candidate on top.
 /// - anchor (label, none): The label to use for the anchor if `hydra` is used outside the header.
 ///   If this is `none`, the anchor is not searched.
-/// - loc (location): The location to use for the callback, if this is not given hydra calls locate
-///   internally, making the return value opaque.
+/// - loc (location, none): The location to use for the callback, if this is not given `hydra` calls
+///   locate internally, making the return value opaque.
 /// -> content
 #let hydra(
   prev-filter: (ctx, c) => true,
   next-filter: (ctx, c) => true,
   display: core.display,
-  fallback-next: false, // BUG: this will not look ahead if an ancestor is in the way
+  fallback-next: false,
   binding: none,
   paper: "a4",
   page-size: auto,
@@ -91,8 +92,8 @@
       top-margin: top-margin,
       anchor: anchor,
       loc: loc,
-      self: sanitized.self,
-      ancestor: sanitized.ancestor,
+      primary: sanitized.primary,
+      ancestors: sanitized.ancestors,
     )
 
     core.execute(ctx)

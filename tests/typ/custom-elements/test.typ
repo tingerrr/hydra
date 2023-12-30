@@ -35,7 +35,7 @@
 #set page(paper: "a7", header: locate(loc => {
   let hydra = hydra.with(paper: "a7", loc: loc)
   let chap = hydra(chapter-sel, display: display-chapter)
-  let sec = hydra(custom(heading.where(level: 1), ancestor: chapter-sel))
+  let sec = hydra(custom(heading.where(level: 1), ancestors: chapter-sel))
 
   chap
   if chap != none and sec != none [ --- ]
