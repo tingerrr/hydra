@@ -10,7 +10,7 @@
 /// Query for an element within the bounds of its ancestors.
 ///
 /// The context passed to various callbacks contains the resolved top-margin, the current location,
-/// as well as the binding direction, self and ancestor element selectors.
+/// as well as the binding direction, primary and ancestor element selectors.
 ///
 /// - ..sel (any): The element to look for, to use other elements than headings, read the
 ///   documentation on selectors. This can be an element function or selector, an integer declaring
@@ -28,10 +28,10 @@
 ///   If the binding direction is set it'll be used to check for redundancy when an element is
 ///   visible on the last page.
 /// - paper (str): The paper size of the current page, used to calculate the top-margin.
-/// - page-size (length): The smaller page size of the current page, used to calculated the
+/// - page-size (length, auto): The smaller page size of the current page, used to calculated the
 ///   top-margin.
-/// - top-margin (length): The top margin of the current page, used to check if the curren page has
-///   an element on top.
+/// - top-margin (length, auto): The top margin of the current page, used to check if the current
+///   page has a primary element on top.
 /// - anchor (label, none): The label to use for the anchor if `hydra` is used outside the header.
 ///   If this is `none`, the anchor is not searched.
 /// - loc (location): The location to use for the callback, if this is not given hydra calls locate
