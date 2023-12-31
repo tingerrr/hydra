@@ -1,6 +1,6 @@
 #import "@preview/oxifmt:0.2.0": strfmt as fmt
 
-/// Substitute `value` for the returnvalue of `default()` if it is a sentinel value.
+/// Substitute `value` for the return value of `default()` if it is a sentinel value.
 ///
 /// - value (any): The value to check.
 /// - default (function): The function to produce the default value with.

@@ -102,18 +102,11 @@
 ///   checked.
 /// - candidates (candidates): The candidates for this context.
 /// -> bool
-#let is-prev-visible(ctx, candidates) = {
-  let prev-page-visible = if ctx.binding == left {
-    calc.odd(ctx.loc.page())
-  } else if ctx.binding == right {
-    calc.even(ctx.loc.page())
-  } else {
-    return false
-  }
+#let is-active-visible(ctx, candidates) = {
+  let active-page-visible = calc.odd(ctx.loc.page())
+  let active-on-prev-page = candidates.primary.prev.location().page() == ctx.loc.page() - 1
 
-  let prev-on-prev-page = candidates.primary.prev.location().page() == ctx.loc.page() - 1
-
-  prev-page-visible and prev-on-prev-page
+  active-page-visible and active-on-prev-page
 }
 
 /// Check if showing the active element would be redudnant in the current context.
@@ -122,11 +115,13 @@
 ///   checked.
 /// - candidates (candidates): The candidates for this context.
 /// -> bool
-#let is-prev-redundant(ctx, candidates) = {
-  let prev-visible = candidates.primary.prev != none and is-prev-visible(ctx, candidates)
+#let is-active-redundant(ctx, candidates) = {
+  let active-visible = (
+    ctx.book and candidates.primary.prev != none and is-active-visible(ctx, candidates)
+  )
   let starting-page = is-on-starting-page(ctx, candidates)
 
-  prev-visible or starting-page
+  active-visible or starting-page
 }
 
 /// Display a heading's numbering and body.
@@ -156,16 +151,14 @@
     ctx.loc = get-anchor-pos(ctx)
   }
 
-  // BUG: fallback-next will not work if an ancestor is in the way
-
   let candidates = get-candidates(ctx)
   let prev-eligible = candidates.primary.prev != none and (ctx.prev-filter)(ctx, candidates)
   let next-eligible = candidates.primary.next != none and (ctx.next-filter)(ctx, candidates)
-  let prev-redundant = is-prev-redundant(ctx, candidates)
+  let active-redundant = is-active-redundant(ctx, candidates)
 
-  if prev-eligible and not prev-redundant {
+  if prev-eligible and not active-redundant {
     (ctx.display)(ctx, candidates.primary.prev)
-  } else if next-eligible and ctx.fallback-next {
+  } else if next-eligible and not ctx.skip-starting {
     (ctx.display)(ctx, candidates.primary.next)
   }
 }

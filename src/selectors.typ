@@ -6,7 +6,7 @@
 /// - filter (function): The filter to apply to the element.
 /// - ancestors (function, selector): The ancestor elements, this should match all of its ancestors.
 /// - ancestors-filter (function): The filter applied to the ancestors.
-/// -> dictionary
+/// -> hydra-selector
 #let custom(
   element,
   filter: none,
@@ -36,10 +36,10 @@
 
 /// Create a heading selector for a given range of levels.
 ///
-/// - ..exact (int): The exact level to consider as the primary element
-/// - min (int): The inclusive minimum level to consider as the primary heading
-/// - max (int): The inclusive maximum level to consider as the primary heading
-/// -> dictionary
+/// - ..exact (int, none): The exact level to consider as the primary element
+/// - min (int, none): The inclusive minimum level to consider as the primary heading
+/// - max (int, none): The inclusive maximum level to consider as the primary heading
+/// -> hydra-selector
 #let by-level(
   min: none,
   max: none,
@@ -102,10 +102,10 @@
 /// - name (str): The name to use in the assertion message.
 /// - sel (any): The selector to sanitize.
 /// - message (str, auto): The assertion message to use.
-/// -> dictionary
+/// -> hydra-selector
 #let sanitize(name, sel, message: auto) = {
   let message = util.core.or-default(check: auto, message, () => util.fmt(
-    "`{}` must be a `selector`, a level, or a custom hydra-selector", name,
+    "`{}` must be a `selector`, a level, or a custom hydra-selector, was {}", name, sel,
   ))
 
   if type(sel) == selector {
