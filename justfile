@@ -36,7 +36,7 @@ gen-docs:
 					$"out/($it){n}.png" \
 			}; \
 			let pages = (ls out | length) / 2; \
-			{pages: $pages } | to toml | save out.toml \
+			{ pages: $pages } | to toml | save out.toml \
 		} \
 		| ignore
 

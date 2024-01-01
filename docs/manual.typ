@@ -1,9 +1,21 @@
 #import "@preview/tidy:0.1.0"
 
+#import "template.typ": project
+
 #let package = toml("/typst.toml").package
+
+#show: project.with(
+  package: package,
+  date: datetime.today().display(),
+  abstract: [
+    A package for querying and displaying heading-like elements.
+  ]
+)
 
 #let load-examples(example) = {
   let path = "/docs/examples/" + example
+  // NOTE: this breaks for docs with more than 10 pages, but at this point the example is too large
+  //       anyway
   let example = (v, i) => image(path + "/out/" + v + str(i) + ".png")
   let r = range(1, toml(path + "/out.toml").pages + 1)
 
