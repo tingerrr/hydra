@@ -35,12 +35,45 @@ not work.
 ![ex5]
 
 ## Documentation
-For a more in-depth description of hydra's functionality and the reference read it's [manual].
+For a more in-depth description of hydra's functionality and the reference read its [manual].
+
+## Contribution
+### Testing
+This package serves as my real-world test for [`typst-test`][typst-test], it is not required for
+contributions, but encouraged as it speeds up the review process. You can install it using:
+```bsh
+cargo install --git https://github.com/tingerrr/typst-test
+```
+or
+```bsh
+git clone https://github.com/tingerrr/typst-test
+cargo install --path ./typst-test
+```
+
+**WARNING:** Make sure to run it only if you have no unsaved changes. It's still experimental and
+may accidentally discard work if I implemented something incorrectly. Generally it'sa good idea to
+commit changes to tests after you have saved your work using git or your editor's revision history.
+
+Other than that test can be run using the following command structure for each test:
+```bsh
+test=...
+typst --root . "tests/typ/${test}.typ" "tests/out/${test}/{n}.png"
+# some command to compare images in tests/ref/${test} and tests/out/${test}
+```
+
+## Examples and manual
+Furthermore, I use [`just`][just] and [`nushell`][nushell] to run common commands. It's once again
+not required, as I'll generate those myself if you don't on a PR, but if you already use both you
+can run the example and manual generation using `just gen`.
 
 [ex1]: examples/example1.png
 [ex2]: examples/example2.png
 [ex3]: examples/example3.png
 [ex4]: examples/example4.png
 [ex5]: examples/example5.png
-[typst]: https://github.com/typst/typst
 [manual]: docs/manual.pdf
+
+[typst]: https://github.com/typst/typst
+[typst-test]: https://github.com/tingerrr/typst-test
+[just]: https://just.systems/
+[nushell]: https://www.nushell.sh/

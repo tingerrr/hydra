@@ -57,4 +57,4 @@ gen: gen-examples gen-docs
 
 # run a minimal test harness
 test filter='':
-	@{{ self }}/tests/run.nu '{{ filter }}'
+	@typst-test run {{ filter }} err> /dev/null
