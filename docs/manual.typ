@@ -109,8 +109,20 @@ their semantic relationships are established.
 = Features
 == Sane Defaults
 If `hydra` is called with no arguments it will not assume anything about your document other than
-the typst defaults. I.e. that the paper size is `a4`, that the margins and page sizes are not set
-and that you intend to simply show the last active heading without showing it where it's obvious.
+the typst defaults. If any of these defaults are changed they must be set for hydra too:
+- paper size: `a4`
+  - affects page size if not explicitly set
+- page size: computed from paper size
+  - affects top-margin if not set explicitly
+- top margin: computed from page size
+  - affects starting page check (see @starting-page)
+- binding: `left`
+  - the binding direction of the document as a book
+  - affects book mode (see @book-mode)
+- dir: `ltr`
+  - denotes the reading direction of the pages (i.e. in which direction the document is read as a
+    book)
+  - affects book mode (see @book-mode)
 
 == Custom Elements <custom>
 Because some documents may use custom elements of some kind to display chapters or section like
@@ -155,7 +167,7 @@ section of a document. Whenever `hydra` is used in a place where its output woul
 will not show any output by default. The following sections explain the those checks more closely
 and will generally assume that hydra is looking for headings.
 
-=== Starting Page
+=== Starting Page <starting-page>
 Given a page which starts with a primary element, it will not show anything. If `skip-starting` is
 set to `false`, it will fallback to the next element, in this case the heaiding at the top of the
 page.
@@ -172,7 +184,7 @@ For more complex selectors this will not correctly work if the first element on 
 ancestor. See #issue(8).
 
 #pagebreak()
-=== Book Mode
+=== Book Mode <book-mode>
 Given an odd page, if `book` is set to `true`, then if the previous primary element is still
 visible on the previous page it is also skipped. If a document is meant to be read right to left or
 has a non-standard binding direction then `dir` or `binding` must be set.
