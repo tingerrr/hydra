@@ -103,7 +103,7 @@ For this the ancestors of an element must be known. For headings this is simple:
 ).join([ #sym.arrow ]))
 
 If `hydra` is used to query for level 2 headings it will only do so within the bounds of the closest
-level 3 headings. In principle, elements other than headings can be used (see @custom), as long as
+level 1-3 headings. In principle, elements other than headings can be used (see @custom), as long as
 their semantic relationships are established.
 
 = Features
@@ -185,7 +185,7 @@ visible on the previous page it is also skipped.
 #pagebreak()
 == Optional Function Coloring
 Hydra requires a context to work, more specifically it needs to know it's own location relative to
-the elements it queries for. To avoid the need for a user having to use hdyra inside `locate` all
+the elements it queries for. To avoid the need for a user having to use hydra inside `locate` all
 the time `hydra` will do it by itself. But if it always did this, it would not allow the user to
 actually check the return value. The following will not work:
 
