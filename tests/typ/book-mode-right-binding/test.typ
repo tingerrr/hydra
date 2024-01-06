@@ -1,6 +1,6 @@
 // Synopsis:
-// - on odd pages we still see the last heading if its on the previous page
-// - on even pages we don't see it and display it
+// - on even pages we still see the last heading if its on the previous page
+// - on odd pages we don't see it and display it
 
 #import "/src/lib.typ": hydra
 
