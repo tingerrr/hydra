@@ -40,21 +40,9 @@ For a more in-depth description of hydra's functionality and the reference read 
 ## Contribution
 ### Testing
 This package serves as my real-world test for [`typst-test`][typst-test], it is not required for
-contributions, but encouraged as it speeds up the review process. You can install it using:
-```bsh
-cargo install --git https://github.com/tingerrr/typst-test
-```
-or
-```bsh
-git clone https://github.com/tingerrr/typst-test
-cargo install --path ./typst-test
-```
+contributions, but encouraged as it speeds up the review process.
 
-**WARNING:** Make sure to run it only if you have no unsaved changes. It's still experimental and
-may accidentally discard work if I implemented something incorrectly. Generally it'sa good idea to
-commit changes to tests after you have saved your work using git or your editor's revision history.
-
-Other than that test can be run using the following command structure for each test:
+Other than that tests can be run using the following command structure for each test:
 ```bsh
 test=...
 typst --root . "tests/typ/${test}.typ" "tests/out/${test}/{n}.png"
