@@ -27,7 +27,11 @@
 ///   the current page.
 /// - book (bool): The binding direction if it should be considered, `none` if not. If the binding
 ///   direction is set it'll be used to check for redundancy when an element is visible on the last
-///   page.
+///   page. Make sure to set `binding` and `dir` if the document is not using left-to-right reading
+///   direction.
+/// - binding (alignment): The binding direction of the document.
+/// - dir (direction): The reading direction, that is, the direction pages are read in, this is
+///   usually the same as the text direction, but doesn't have to be.
 /// - paper (str): The paper size of the current page, used to calculate the top-margin.
 /// - page-size (length, auto): The smaller page size of the current page, used to calculated the
 ///   top-margin.
@@ -44,6 +48,8 @@
   display: core.display,
   skip-starting: true,
   book: false,
+  binding: left,
+  dir: ltr,
   paper: "a4",
   page-size: auto,
   top-margin: auto,
@@ -56,6 +62,8 @@
   util.assert.types("display", display, function)
   util.assert.types("skip-starting", skip-starting, bool)
   util.assert.types("book", book, bool)
+  util.assert.enum("binding", binding, left, right)
+  util.assert.enum("dir", dir, ltr, rtl)
   util.assert.types("paper", paper, str)
   util.assert.types("page-size", page-size, length, auto)
   util.assert.types("top-margin", top-margin, length, auto)
@@ -92,6 +100,8 @@
       display: display,
       skip-starting: skip-starting,
       book: book,
+      binding: binding,
+      dir: dir,
       top-margin: top-margin,
       anchor: anchor,
       loc: loc,

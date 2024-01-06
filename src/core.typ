@@ -103,10 +103,23 @@
 /// - candidates (candidates): The candidates for this context.
 /// -> bool
 #let is-active-visible(ctx, candidates) = {
-  let active-page-visible = calc.odd(ctx.loc.page())
+  // depending on the reading direction and binding combination the leading page is either on an odd
+  // or even number, if it is leading it means the previous page is visible
+  let cases = (
+    left: (
+      ltr: calc.odd,
+      rtl: calc.even,
+    ),
+    right: (
+      ltr: calc.even,
+      rtl: calc.odd,
+    ),
+  )
+
+  let is-leading-page = (cases.at(repr(ctx.binding)).at(repr(ctx.dir)))(ctx.loc.page())
   let active-on-prev-page = candidates.primary.prev.location().page() == ctx.loc.page() - 1
 
-  active-page-visible and active-on-prev-page
+  is-leading-page and active-on-prev-page
 }
 
 /// Check if showing the active element would be redudnant in the current context.

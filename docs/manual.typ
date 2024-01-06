@@ -174,7 +174,8 @@ ancestor. See #issue(8).
 #pagebreak()
 === Book Mode
 Given an odd page, if `book` is set to `true`, then if the previous primary element is still
-visible on the previous page it is also skipped.
+visible on the previous page it is also skipped. If a document is meant to be read right to left or
+has a non-standard binding direction then `dir` or `binding` must be set.
 
 #let book = load-examples("book")
 #figure(
