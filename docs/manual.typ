@@ -1,4 +1,4 @@
-#import "@preview/tidy:0.1.0"
+#import "@preview/tidy:0.2.0"
 
 #import "template.typ": project
 
