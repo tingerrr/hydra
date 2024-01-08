@@ -151,9 +151,9 @@ A user my want to query for the current chapter and section respectively:
 #let sect = custom(heading.where(level: 1), ancestor: chap)
 
 #set page(header: locate(loc => if calc.odd(loc.page()) {
-  algin(left, hydra(chap))
+  align(left, hydra(chap))
 } else {
-  algin(right, hydra(sect))
+  align(right, hydra(sect))
 }))
 ```
 
