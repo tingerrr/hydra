@@ -78,7 +78,12 @@ document.
     A level 3 heading is ancestor to both level 2 (directly) and level 1 headings (transitively).
   / scope: The scope of a primary element refers to the section of a document which is between the
     closest ancestors.
-  / active: The active element refers to whatever element is considered for display. While this is usually the previous primary element, it may sometimes be the next primary element.
+  / active: The active element refers to whatever element is considered for display. While this is
+    usually the previous primary element, it may sometimes be the next primary element.
+  / leading page: A leading page in a book is that, which is further along the content of the two
+    visible pages at any time, this is the `end` alignement with respect to the document readin
+    direction.
+  / trailing page: A trailing page is that, which is not the leading page in a book.
 ]
 
 The search for a primary element is always bounded to it's scope, such that, for the following
@@ -185,9 +190,9 @@ ancestor. See #issue(8).
 
 #pagebreak()
 === Book Mode <book-mode>
-Given an odd page, if `book` is set to `true`, then if the previous primary element is still
-visible on the previous page it is also skipped. If a document is meant to be read right to left or
-has a non-standard binding direction then `dir` or `binding` must be set.
+Given a leading page, if `book` is set to `true`, then if the previous primary element is still
+visible on the previous (trailing) page it is also skipped. If a document is meant to be read right
+to left or has a non-standard binding direction, then `dir` or `binding` must be set.
 
 #let book = load-examples("book")
 #figure(
