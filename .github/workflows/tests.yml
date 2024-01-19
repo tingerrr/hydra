@@ -7,7 +7,7 @@ on:
 
 jobs:
   setup:
-    uses: tingerrr/typst-test/.github/workflows/setup.yml@test-ci
+    uses: tingerrr/hydra/.github/workflows/setup.yml@test-ci
   tests:
     steps:
       - run: |
