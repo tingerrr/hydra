@@ -1,0 +1,13 @@
+name: Tests
+on:
+  push:
+    branches: [ master" ]
+  pull_request:
+    branches: [ master" ]
+
+jobs:
+  tests:
+    - uses: tingerrr/typst-test/.github/workflows/setup.yml@master
+    - run: |
+        just gen
+        just test

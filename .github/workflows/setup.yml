@@ -1,17 +1,16 @@
-name: Tests
-on: [push, pull_request]
+name: Setup
+on:
+  workflow_call:
 
 jobs:
-  ci:
+  setup:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
-        with:
-          submodules: recursive
 
       - uses: awalsh128/cache-apt-pkgs-action@latest
         with:
-          packages: imagemagick cargo parallel
+          packages: imagemagick cargo
           version: 1.0
 
       - name: Install nushell from crates.io
@@ -35,7 +34,3 @@ jobs:
         id: setup-typst
         with:
           version: 'v0.10.0'
-
-      - run: |
-          just gen
-          just test
