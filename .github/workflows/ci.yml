@@ -9,7 +9,7 @@ jobs:
 
       - uses: awalsh128/cache-apt-pkgs-action@latest
         with:
-          packages: imagemagick cargo parallel nushell
+          packages: imagemagick cargo parallel
           version: 1.0
 
       - name: Install nushell from crates.io
