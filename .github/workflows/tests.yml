@@ -6,8 +6,9 @@ on:
     branches: [ master ]
 
 jobs:
-  tests:
+  setup:
     uses: tingerrr/typst-test/.github/workflows/setup-B.yml@master
+  tests:
     steps:
       - run: |
           just gen
