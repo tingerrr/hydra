@@ -9,6 +9,7 @@ jobs:
   setup:
     uses: tingerrr/hydra/.github/workflows/setup.yml@test-ci
   tests:
+    runs-on: ubuntu-latest
     steps:
       - run: |
           just gen
