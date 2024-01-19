@@ -7,8 +7,8 @@ on:
 
 jobs:
   tests:
+    uses: tingerrr/typst-test/.github/workflows/setup-B.yml@master
     steps:
-      - uses: tingerrr/typst-test/.github/workflows/setup-B.yml@master
       - run: |
           just gen
           just test
