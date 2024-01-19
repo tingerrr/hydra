@@ -15,7 +15,7 @@ jobs:
       - name: Install nushell from crates.io
         uses: baptiste0928/cargo-install@v2.2.0
         with:
-          crate: nushell
+          crate: nu
 
       - name: Install just from crates.io
         uses: baptiste0928/cargo-install@v2.2.0
