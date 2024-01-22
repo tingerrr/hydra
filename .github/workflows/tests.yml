@@ -1,16 +1,39 @@
 name: Tests
-on:
-  push:
-    branches: [ master ]
-  pull_request:
-    branches: [ master ]
+on: [push, pull_request]
 
 jobs:
   tests:
     runs-on: ubuntu-latest
     steps:
-      - uses: tingerrr/hydra/.github/workflows/setup.yml@master
-      - name: Run tests
-        run: |
+      - uses: actions/checkout@v3
+
+      - uses: awalsh128/cache-apt-pkgs-action@latest
+        with:
+          packages: imagemagick cargo
+          version: 1.0
+
+      - name: Install nushell from crates.io
+        uses: baptiste0928/cargo-install@v2.2.0
+        with:
+          crate: nu
+
+      - name: Install just from crates.io
+        uses: baptiste0928/cargo-install@v2.2.0
+        with:
+          crate: just
+
+      - name: Install typst-test from github
+        uses: baptiste0928/cargo-install@v2.2.0
+        with:
+          crate: typst-test
+          git: https://github.com/tingerrr/typst-test.git
+          branch: core-rework
+
+      - uses: yusancky/setup-typst@v2
+        id: setup-typst
+        with:
+          version: 'v0.10.0'
+
+      - run: |
           just gen
           just test
