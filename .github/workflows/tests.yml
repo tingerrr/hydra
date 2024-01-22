@@ -9,14 +9,16 @@ jobs:
   tests:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v3
+      - name: Checkout
+        uses: actions/checkout@v3
 
-      - uses: awalsh128/cache-apt-pkgs-action@latest
+      - name: Probe runner package cache
+        uses: awalsh128/cache-apt-pkgs-action@latest
         with:
           packages: imagemagick cargo
           version: 1.0
 
-      - name: Install nushell from crates.io
+      - name: Install nu from crates.io
         uses: baptiste0928/cargo-install@v2.2.0
         with:
           crate: nu
@@ -33,11 +35,13 @@ jobs:
           git: https://github.com/tingerrr/typst-test.git
           branch: core-rework
 
-      - uses: yusancky/setup-typst@v2
-        id: setup-typst
+      - name: Setup typst
+        uses: yusancky/setup-typst@v2
         with:
           version: 'v0.10.0'
 
-      - run: |
-          just gen
-          just test
+      - name: Test manual and example generation
+        run: just gen
+
+      - name: Run test suite
+        run: just test
