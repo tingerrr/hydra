@@ -21,3 +21,7 @@
 #lorem(50)
 == Second Section
 #lorem(150)
+
+#pagebreak()
+#pagebreak()
+#pagebreak()
