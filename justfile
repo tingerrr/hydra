@@ -9,12 +9,12 @@ default:
 
 # generate example images
 gen-examples:
-	typst compile \
+	@typst compile \
 		--root {{ self }} \
 		examples/main.typ \
 		examples/example{n}.png
 
-	ls examples \
+	@ls examples \
 		| where name =~ '\.png$' \
 		| get name \
 		| each {|it| magick convert $it -crop 1191x200++0+0 $it} \
@@ -22,7 +22,7 @@ gen-examples:
 
 # generate docs
 gen-docs:
-	ls docs/examples \
+	@ls docs/examples \
 		| where type == dir \
 		| get name \
 		| each {|it| \
@@ -40,7 +40,7 @@ gen-docs:
 		} \
 		| ignore
 
-	typst compile \
+	@typst compile \
 		--root {{ self }} \
 		docs/manual.typ \
 		docs/manual.pdf
@@ -55,6 +55,6 @@ watch-docs:
 # generate examples and docs
 gen: gen-examples gen-docs
 
-# run a minimal test harness
+# run the test suite
 test filter='':
-	typst-test run {{ filter }}
+	@typst-test run {{ filter }}
