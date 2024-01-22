@@ -55,6 +55,6 @@ watch-docs:
 # generate examples and docs
 gen: gen-examples gen-docs
 
-# run a minimal test harness
+# run the test suite
 test filter='':
 	@typst-test run {{ filter }}
