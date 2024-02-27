@@ -155,11 +155,11 @@ A user my want to query for the current chapter and section respectively:
 #let chap = figure.where(kind: "chapter")
 #let sect = custom(heading.where(level: 1), ancestor: chap)
 
-#set page(header: locate(loc => if calc.odd(loc.page()) {
+#set page(header: context if calc.odd(here().page()) {
   align(left, hydra(chap))
 } else {
   align(right, hydra(sect))
-}))
+})
 ```
 
 The usage of `custom` allows specifying an element's ancestors, to ensure the scope is corectly
@@ -191,8 +191,7 @@ ancestor. See #issue(8).
 #pagebreak()
 === Book Mode <book-mode>
 Given a leading page, if `book` is set to `true`, then if the previous primary element is still
-visible on the previous (trailing) page it is also skipped. If a document is meant to be read right
-to left or has a non-standard binding direction, then `dir` or `binding` must be set.
+visible on the previous (trailing) page it is also skipped.
 
 #let book = load-examples("book")
 #figure(
@@ -200,12 +199,15 @@ to left or has a non-standard binding direction, then `dir` or `binding` must be
   caption: [An example document showing `book: false` (left) and `book: true` (right).],
 )
 
+This may produce unexpected results with `hydra` is used outside the header and the text direction
+where it is used is different to where it's anchor (see @anchor) is placed.
+
 #pagebreak()
 == Optional Function Coloring
-Hydra requires a context to work, more specifically it needs to know it's own location relative to
-the elements it queries for. To avoid the need for a user having to use hydra inside `locate` all
-the time `hydra` will do it by itself. But if it always did this, it would not allow the user to
-actually check the return value. The following will not work:
+Hydra requires a context to work, more specifically it needs to know it's own location relative
+to the elements it queries for. To avoid the need for a user having to use hydra inside context
+expression all the time, `hydra` will do it by itself. But if it always did this, it would not allow
+the user to actually check the return value. The following will not work:
 
 ```typst
 #import "@preview/hydra:{{VERSION}}": hydra
@@ -217,25 +219,25 @@ actually check the return value. The following will not work:
 })
 ```
 
-Because `hydra` needs a location it'll internally call `locate`, making the return value a `locate`
-element. The fix is quite simple, if a location is provided the return is not wrapped and the
-callback result is returned as is.
+Because `hydra` needs a location it'll internally construct a context expression. The fix is quite
+simple, if a location is provided the return is not opqaue and the callback result is returned as
+is.
 
 ```typst
 #import "@preview/hydra:{{VERSION}}": hydra
-#set page(header: locate(loc => {
-  let chap = hydra(1, loc: loc)
+#set page(header: context {
+  let chap = hydra(1, loc: here())
   if chap != none [
     Chapter #chap
   ]
-}))
+})
 ```
 
 This means that passing a location in contexts where one is already available will generally avoid
 uncessary function coloring. This allows for more complex queries in casese where both a chapter
 and section are shown for example.
 
-== Anchoring
+== Anchoring <anchor>
 To use `hydra` outside of the header, an `anchor` must be placed to get the correct active elements.
 `hydra` will always use the last anchor it finds to search, it doesn't have ot be inside the header,
 but should generally be, otherwise the behavior may be unexpected.
