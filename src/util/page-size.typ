@@ -1,7 +1,10 @@
-/// A dictionary of papers sizes as they are accepted by `page`.
+/// Returns the size of a paper or `none` if it is unknown.
 ///
-/// Taken from `page.rs`
-#let page-sizes = (
+/// Source: github:typst/typst#9646a13 crates/typst/src/layout/page.rs:L822-L975
+///
+/// paper (str): The paper name to get the page sizes for.
+/// -> (dictionary, none)
+#let page-size(paper) = (
   // ---------------------------------------------------------------------- //
   // ISO 216 A Series
   a0:  (w: 841.0mm, h: 1189.0mm),
@@ -147,4 +150,4 @@
   newspaper-broadsheet: (w: 381.0mm, h: 578.0mm),
   presentation-16-9:    (w: 297.0mm, h: 167.0625mm),
   presentation-4-3:     (w: 280.0mm, h: 210.0mm),
-)
+).at(paper, default: none)

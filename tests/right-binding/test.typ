@@ -8,7 +8,7 @@
   paper: "a7",
   binding: right,
   margin: (inside: 30pt, outside: 15pt),
-  header: hydra(paper: "a7", binding: right, book: true),
+  header: hydra(book: true),
 )
 #set heading(numbering: "1.1")
 #show heading.where(level: 1): it => pagebreak(weak: true) + it

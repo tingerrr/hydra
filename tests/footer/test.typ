@@ -6,7 +6,7 @@
 #set page(
   paper: "a7",
   header: anchor(),
-  footer: hydra(paper: "a7"),
+  footer: hydra(),
 )
 #set heading(numbering: "1.1")
 #show heading.where(level: 1): it => pagebreak(weak: true) + it

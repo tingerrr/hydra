@@ -33,7 +33,7 @@
 }
 
 #set page(paper: "a7", header: locate(loc => {
-  let hydra = hydra.with(paper: "a7", loc: loc)
+  let hydra = hydra.with(loc: loc)
   let chap = hydra(chapter-sel, display: display-chapter)
   let sec = hydra(custom(heading.where(level: 1), ancestors: chapter-sel))
 

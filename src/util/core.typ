@@ -7,3 +7,9 @@
 /// - check (any): The sentinel value to check for.
 /// -> any
 #let or-default(value, default, check: none) = if value == check { default() } else { value }
+
+/// An alias for `or-default` with `check: auto`.
+#let auto-or = or-default.with(check: auto)
+
+/// An alias for `or-default` with `check: none`.
+#let none-or = or-default.with(check: none)
