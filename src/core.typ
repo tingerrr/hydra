@@ -80,7 +80,7 @@
   // NOTE: this check ensures that get rules are done within the same page as the queries
   // ideally those would be done within the context of the anchor, such that a change in text
   // direction between anchor and query does not cause any issues
-  assert.eq(anchor.page(), ctx.loc.page(),
+  assert.eq(anchor.page(), here().page(),
     message: "`anchor()` must be on every page before the first use of `hydra`"
   )
 
@@ -94,15 +94,15 @@
 /// - ctx (context): The context for which to get the candidates.
 /// -> candidates
 #let get-candidates(ctx) = {
-  let look-behind = selector(ctx.primary.target).before(ctx.loc)
-  let look-ahead = selector(ctx.primary.target).after(ctx.loc)
+  let look-behind = selector(ctx.primary.target).before(ctx.anchor-loc)
+  let look-ahead = selector(ctx.primary.target).after(ctx.anchor-loc)
 
   let prev-ancestor = none
   let next-ancestor = none
 
   if ctx.ancestors != none {
-    let prev = query(selector(ctx.ancestors.target).before(ctx.loc))
-    let next = query(selector(ctx.ancestors.target).after(ctx.loc))
+    let prev = query(selector(ctx.ancestors.target).before(ctx.anchor-loc))
+    let next = query(selector(ctx.ancestors.target).after(ctx.anchor-loc))
 
     if ctx.ancestors.filter != none {
       prev = prev.filter(x => (ctx.ancestors.filter)(ctx, x))
@@ -120,8 +120,8 @@
     }
   }
 
-  let prev = query(look-behind, ctx.loc)
-  let next = query(look-ahead, ctx.loc)
+  let prev = query(look-behind, ctx.anchor-loc)
+  let next = query(look-ahead, ctx.anchor-loc)
 
   if ctx.primary.filter != none {
     prev = prev.filter(x => (ctx.primary.filter)(ctx, x))
@@ -150,13 +150,13 @@
   let next-ancestor = if candidates.ancestor.next != none { candidates.ancestor.next.location() }
 
   let next-starting = if next != none {
-    next.page() == ctx.loc.page() and next.position().y <= get-top-margin()
+    next.page() == here().page() and next.position().y <= get-top-margin()
   } else {
     false
   }
 
   let next-ancestor-starting = if next-ancestor != none {
-    next-ancestor.page() == ctx.loc.page() and next-ancestor.position().y <= get-top-margin()
+    next-ancestor.page() == here().page() and next-ancestor.position().y <= get-top-margin()
   } else {
     false
   }
@@ -186,8 +186,8 @@
     ),
   )
 
-  let is-leading-page = (cases.at(repr(get-binding())).at(repr(get-text-dir())))(ctx.loc.page())
-  let active-on-prev-page = candidates.primary.prev.location().page() == ctx.loc.page() - 1
+  let is-leading-page = (cases.at(repr(get-binding())).at(repr(get-text-dir())))(here().page())
+  let active-on-prev-page = candidates.primary.prev.location().page() == here().page() - 1
 
   is-leading-page and active-on-prev-page
 }
@@ -232,8 +232,10 @@
 /// - ctx (context): The context for which to find and display the element.
 /// -> content
 #let execute(ctx) = {
-  if ctx.anchor != none and ctx.loc.position().y >= get-top-margin() {
-    ctx.loc = locate-last-anchor(ctx)
+  ctx.anchor-loc = if ctx.anchor != none and here().position().y >= get-top-margin() {
+    locate-last-anchor(ctx)
+  } else {
+    here()
   }
 
   let candidates = get-candidates(ctx)

@@ -32,15 +32,14 @@
   chapter.body
 }
 
-#set page(paper: "a7", header: locate(loc => {
-  let hydra = hydra.with(loc: loc)
+#set page(paper: "a7", header: context {
   let chap = hydra(chapter-sel, display: display-chapter)
   let sec = hydra(custom(heading.where(level: 1), ancestors: chapter-sel))
 
   chap
   if chap != none and sec != none [ --- ]
   sec
-}))
+})
 #set heading(numbering: "1.1")
 #set par(justify: true)
 

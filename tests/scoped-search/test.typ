@@ -10,14 +10,13 @@
 
 #set page(
   paper: "a7",
-  header: locate(loc => {
-    let hydra = hydra.with(loc: loc)
-    if calc.even(loc.page()) {
+  header: context {
+    if calc.even(here().page()) {
       align(left, hydra(1))
     } else {
       align(right, hydra(2))
     }
-  }),
+  },
 )
 
 = First Chapter

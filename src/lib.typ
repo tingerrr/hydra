@@ -41,7 +41,6 @@
   skip-starting: true,
   book: false,
   anchor: <hydra-anchor>,
-  loc: none,
   ..sel,
 ) = {
   util.assert.types("prev-filter", prev-filter, function)
@@ -57,25 +56,16 @@
 
   let sanitized = selectors.sanitize("sel", pos.at(0, default: heading))
 
-  let func = loc => {
-    let ctx = (
-      prev-filter: prev-filter,
-      next-filter: next-filter,
-      display: display,
-      skip-starting: skip-starting,
-      book: book,
-      anchor: anchor,
-      loc: loc,
-      primary: sanitized.primary,
-      ancestors: sanitized.ancestors,
-    )
+  let ctx = (
+    prev-filter: prev-filter,
+    next-filter: next-filter,
+    display: display,
+    skip-starting: skip-starting,
+    book: book,
+    anchor: anchor,
+    primary: sanitized.primary,
+    ancestors: sanitized.ancestors,
+  )
 
-    core.execute(ctx)
-  }
-
-  if loc != none {
-    func(loc)
-  } else {
-    context func(here())
-  }
+  core.execute(ctx)
 }
