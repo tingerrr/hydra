@@ -1,71 +1,108 @@
-// Modified version of https://github.com/Mc-Zen/tidy/blob/abedd7abbb7f072e67ef95867e3b89c0db987441/docs/template.typ
+#import "util.typ": raw-bg
 
-// The project function defines how your document looks.
-// It takes your content and some metadata and formats it.
-// Go ahead and customize it to your liking!
 #let project(
   package: (:),
-  subtitle: "",
+  subtitle: none,
   abstract: [],
   date: none,
   body,
 ) = {
-  // Set the document's basic properties.
   set document(author: package.authors, title: package.name)
-  set text(font: "Linux Libertine", lang: "en")
+  set text(font: "Linux Libertine")
+
+  show heading.where(level: 1): smallcaps
  
-  show heading.where(level: 1): it => block(smallcaps(it), below: 1em)
-  set heading(numbering: (..args) => if args.pos().len() == 1 { numbering("I", ..args) })
+  // title page
+  page({
+    v(4em)
 
-  // show link: set text(fill: purple.darken(30%))
-  show link: set text(fill: rgb("#1e8f6f"))
+    align(center, {
+      block(text(weight: 700, 1.75em, package.name))
+      if subtitle != none {
+        block(subtitle)
+      }
+      v(4em, weak: true)
+      [v#package.version]
+      if date != none {
+        h(1.2cm)
+        date.display()
+      }
+      block(text(eastern, link(package.repository)))
+    })
+
+    v(1.5em, weak: true)
+
+    pad(top: 0.5em, x: 2em,
+      grid(
+        columns: (1fr,) * calc.min(3, package.authors.len()),
+        gutter: 1em,
+        ..package.authors.map(author => align(center, strong(author))),
+      ),
+    )
+
+    v(3cm, weak: true)
   
-  v(4em)
+    pad(x: 3.8em, top: 1em, bottom: 1.1em,
+      align(center)[
+        #heading(outlined: false, text(0.85em)[Abstract])
+        #abstract
+      ],
+    )
+  })
 
-  // Title row.
-  align(center)[
-    #block(text(weight: 700, 1.75em, package.name))
-    #block(text(1.0em, subtitle))
-    #v(4em, weak: true)
-    v#package.version #h(1.2cm) #date
-    #block(link(package.repository))
-    #v(1.5em, weak: true)
-  ]
+  set par(justify: true)
+  show list: set par(justify: false)
+  show enum: set par(justify: false)
+  show terms: set par(justify: false)
+  show raw.where(block: true): set par(justify: false)
 
-  // Author information.
-  pad(
-    top: 0.5em,
-    x: 2em,
-    grid(
-      columns: (1fr,) * calc.min(3, package.authors.len()),
-      gutter: 1em,
-      ..package.authors.map(author => align(center, strong(author))),
-    ),
+  // abstract
+  page({
+    show outline.entry: it => if it.level == 1 {
+      strong(it)
+    } else {
+      it
+    }
+    v(10em)
+    outline(indent: auto)
+  })
+
+  set heading(numbering: (..args) => numbering("1.", ..args.pos().slice(1)))
+  show heading.where(level: 1): it => pagebreak(weak: true) + it
+  show heading.where(level: 1): set heading(
+    numbering: (..args) => box(width: 1.5em, align(left, numbering("I", ..args))),
+    supplement: [Chapter],
   )
 
-  v(3cm, weak: true)
-  
-  // Abstract.
-  pad(
-    x: 3.8em,
-    top: 1em,
-    bottom: 1.1em,
-    align(center)[
-      #heading(
-        outlined: false,
-        numbering: none,
-        text(0.85em, smallcaps[Abstract]),
-      )
-      #abstract
-    ],
+  show raw.where(block: true): set block(
+    fill: raw-bg,
+    radius: 0.5em,
+    inset: 0.5em,
+    width: 100%,
+  )
+  show raw.where(block: true): it => {
+    show "{{VERSION}}": package.version
+    it
+  }
+
+  set table(stroke: none)
+  show table: pad.with(x: 1em)
+
+  show terms: its => table(
+    columns: (auto, auto),
+    align: (right, left),
+    table.header(
+      [*Term*], [*Description*],
+      table.hline(stroke: 1pt),
+    ),
+    ..its.children.map(it => (
+      align(right)[*#it.term*],
+      align(left, par(justify: true, it.description)),
+    )).flatten(),
   )
 
   set page(numbering: "1", number-align: center)
   counter(page).update(1)
-
-  // Main body.
-  set par(justify: true)
-  v(10em)
 
   body
 }

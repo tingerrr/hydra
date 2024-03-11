@@ -1,6 +1,6 @@
 #import "/src/lib.typ": hydra
 
-#set page(header: hydra() + line(length: 100%))
+#set page(header: context hydra() + line(length: 100%))
 #set heading(numbering: "1.1")
 #show heading.where(level: 1): it => pagebreak(weak: true) + it
 

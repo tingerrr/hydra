@@ -63,6 +63,8 @@
 
 /// Get the last anchor location. Panics if the last anchor was not on the page of this context.
 ///
+/// This function is contextual.
+///
 /// - ctx (context): The context from which to start.
 /// -> location
 #let locate-last-anchor(ctx) = {
@@ -193,6 +195,8 @@
 }
 
 /// Check if showing the active element would be redudnant in the current context.
+///
+/// This function is contextual.
 ///
 /// - ctx (context): The context in which the redundancy of the previous primary candidate should be
 ///   checked.
