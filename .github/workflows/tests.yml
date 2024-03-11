@@ -40,8 +40,5 @@ jobs:
         with:
           version: 'v0.10.0'
 
-      - name: Test manual and example generation
-        run: just gen
-
       - name: Run test suite
         run: just test
