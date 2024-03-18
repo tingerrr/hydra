@@ -1,7 +1,6 @@
 #import "/src/lib.typ": hydra
 
 #set page(paper: "a7", margin: (y: 4em), numbering: "1", header: context {
-  // set text(8pt)
   if calc.odd(here().page()) {
     align(right, emph(hydra(1)))
   } else {

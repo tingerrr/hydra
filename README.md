@@ -6,23 +6,25 @@ document. In short, it will show you the currently active element only when it i
 ```typst
 #import "@preview/hydra:0.4.0": hydra
 
-#set page(header: context hydra() + line(length: 100%))
+#set page(paper: "a7", margin: (y: 4em), numbering: "1", header: context {
+  if calc.odd(here().page()) {
+    align(right, emph(hydra(1)))
+  } else {
+    align(left, emph(hydra(2)))
+  }
+  line(length: 100%)
+})
 #set heading(numbering: "1.1")
 #show heading.where(level: 1): it => pagebreak(weak: true) + it
 
 = Introduction
-#lorem(750)
+#lorem(50)
 
 = Content
 == First Section
-#lorem(500)
+#lorem(50)
 == Second Section
-#lorem(250)
-== Third Section
-#lorem(500)
-
-= Annex
-#lorem(10)
+#lorem(100)
 ```
 ![ex]
 
