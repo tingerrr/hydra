@@ -1,0 +1,5 @@
+docs
+examples/*.typ
+tests
+README.md
+Justfile

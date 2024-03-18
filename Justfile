@@ -1,7 +1,6 @@
-set quiet
 set shell := ['nu', '-c']
 
-root := justfile_directory()
+export TYPST_ROOT := justfile_directory()
 
 # list recipes
 [private]
@@ -10,22 +9,14 @@ default:
 
 # generate example images
 gen-examples:
-	#! /usr/bin/env nu
-	(typst compile
-		--root {{ root }}
-		examples/main.typ
-		examples/example{n}.png)
-
-	(ls examples
-		| where name =~ '\.png$'
-		| get name
-		| each {|it| magick convert $it -crop 1191x200++0+0 $it}
-		| ignore)
+	typst compile --ppi 300 examples/pages.typ examples/page{n}.png
+	typst compile examples/main.typ examples/example.png
+	oxipng --recursive --opt max examples
 
 # generate doc examples
 gen-doc-examples:
 	#! /usr/bin/env nu
-	ls docs/examples
+	ls doc/examples
 		| where type == dir
 		| get name
 		| each {|it|
@@ -34,7 +25,6 @@ gen-doc-examples:
 			mkdir out
 			[a b] | each {|it|
 				(typst compile
-					--root {{ root }}
 					$"($it).typ"
 					$"out/($it){n}.png")
 			};
@@ -43,13 +33,15 @@ gen-doc-examples:
 		}
 		| ignore
 
+	oxipng --recursive --opt max doc
+
 # generate the manual
 doc: gen-doc-examples
-	#! /usr/bin/env nu
-	(typst compile
-		--root {{ root }}
-		docs/manual.typ
-		docs/manual.pdf)
+	typst compile doc/manual.typ doc/manual.pdf
+
+# copy the files relevant for the package repo
+publish output:
+	alabaster package {{ output }}
 
 # run the test suite
 test filter='':

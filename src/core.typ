@@ -55,10 +55,13 @@
     }
   }
 
-  util.auto-or(margin, () => {
-    let size = get-page-size()
-    (2.5 / 21) * calc.min(size.w, size.h)
+  let size = get-page-size()
+
+  margin = util.auto-or(margin, () => {
+    ((2.5 / 21) * calc.min(size.w, size.h)) + 0%
   })
+
+  size.h * margin.ratio + margin.length.to-absolute()
 }
 
 /// Get the last anchor location. Panics if the last anchor was not on the page of this context.
