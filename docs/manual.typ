@@ -13,11 +13,11 @@
   #show raw.where(block: false): bbox.with(fill: raw-bg)
 
   = Introduction
-  #include "1-intro.typ"
+  #include "chapters/1-intro.typ"
 
   = Features
-  #include "2-features.typ"
+  #include "chapters/2-features.typ"
 ]
 
 = Reference
-#include "3-reference.typ"
+#include "chapters/3-reference.typ"
