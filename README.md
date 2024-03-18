@@ -8,7 +8,7 @@ not work.
 
 ## Example
 ```typst
-#import "@preview/hydra:0.3.0": hydra
+#import "@preview/hydra:0.4.0": hydra
 
 #set page(header: hydra() + line(length: 100%))
 #set heading(numbering: "1.1")
