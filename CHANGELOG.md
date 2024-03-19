@@ -22,7 +22,6 @@ Almost all changes in this release are **BREAKING CHANGES**.
 ## Removed
 - various parameters on `hydra` have been removed
   - `binding` has been removed in favor of get rule
-  - `dir` has been removed in favor of get rule
   - `paper` has been removed in favor of get rule
   - `page-size` has been removed in favor of get rule
   - `top-margin` has been removed in favor of get rule
@@ -35,6 +34,8 @@ Almost all changes in this release are **BREAKING CHANGES**.
 - the internal context dictionary now holds a `anchor-loc` instead of a `loc`
 - `get-anchor-pos` has been renamed to `locate-last-anchor`
 - the internal `page-sizes` dictionary was changed to function
+- changed `hydra.prev-filter`, `hydra.next-filter` and `hydra.display` to be auto by default
+- `hydra.dir` is now auto by default
 
 ---
 

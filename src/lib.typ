@@ -16,17 +16,20 @@
 /// This function is contextual.
 ///
 /// - ..sel (any): The element to look for, to use other elements than headings, read the
-///   documentation on selectors. This can be an element function or selector, an integer declaring
-///   a heading level.
-/// - prev-filter (function): A function which receives the `context` and `candidates`, and returns
-///   if they are eligible for display. This function is called at most once. The primary next
-///   candidate may be none.
-/// - next-filter (function): A function which receives the `context` and `candidates`, and returns
-///   if they are eligible for display. This function is called at most once. The primary prev
-///   candidate may be none.
-/// - display (function): A function which receives the `context` and candidate element to display.
+///   documentation on selectors. This can be an element function or selector, or an integer
+///   declaring a heading level.
+/// - prev-filter (function, auto): A function which receives the `context` and `candidates`, and
+///   returns if they are eligible for display. This function is called at most once. The primary
+///   next candidate may be none. If this is `auto` no filter is applied.
+/// - next-filter (function, auto): A function which receives the `context` and `candidates`, and
+///   returns if they are eligible for display. This function is called at most once. The primary
+///   prev candidate may be none. If this is `auto` no filter is applied.
+/// - display (function, auto): A function which receives the `context` and candidate element to
+///   display. If this is `auto`, the default implementaion will be used.
 /// - skip-starting (bool): Whether `hydra` should show the current candidate even if it's on top of
 ///   the current page.
+/// - dir (direction, auto): The reading direction of the document. If this is `auto`, the text
+///   direction is used.
 /// - book (bool): The binding direction if it should be considered, `none` if not. If the binding
 ///   direction is set it'll be used to check for redundancy when an element is visible on the last
 ///   page. Make sure to set `binding` and `dir` if the document is not using left-to-right reading
@@ -35,18 +38,20 @@
 ///   If this is `none`, the anchor is not searched.
 /// -> content
 #let hydra(
-  prev-filter: (ctx, c) => true,
-  next-filter: (ctx, c) => true,
-  display: core.display,
+  prev-filter: auto,
+  next-filter: auto,
+  display: auto,
   skip-starting: true,
+  dir: auto,
   book: false,
   anchor: <hydra-anchor>,
   ..sel,
 ) = {
-  util.assert.types("prev-filter", prev-filter, function)
-  util.assert.types("next-filter", next-filter, function)
-  util.assert.types("display", display, function)
+  util.assert.types("prev-filter", prev-filter, function, auto)
+  util.assert.types("next-filter", next-filter, function, auto)
+  util.assert.types("display", display, function, auto)
   util.assert.types("skip-starting", skip-starting, bool)
+  util.assert.types("dir", dir, direction, auto)
   util.assert.types("book", book, bool)
   util.assert.types("anchor", anchor, label, none)
 
@@ -56,11 +61,14 @@
 
   let sanitized = selectors.sanitize("sel", pos.at(0, default: heading))
 
+  let default-filter = (_, _) => true
+
   let ctx = (
-    prev-filter: prev-filter,
-    next-filter: next-filter,
-    display: display,
+    prev-filter: util.auto-or(prev-filter, () => default-filter),
+    next-filter: util.auto-or(next-filter, () => default-filter),
+    display: util.auto-or(display, () => core.display),
     skip-starting: skip-starting,
+    dir: util.auto-or(dir, () => core.get-text-dir()),
     book: book,
     anchor: anchor,
     primary: sanitized.primary,
