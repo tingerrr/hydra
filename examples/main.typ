@@ -9,7 +9,7 @@
     grid(
       columns: 4,
       gutter: 1em,
-      ..range(1, 5).map(i => image("page" + str(i) + ".png"))
+      ..range(1, 5).map(i => image("pages/" + str(i) + ".png"))
     ),
   ),
 )

@@ -9,9 +9,12 @@ default:
 
 # generate example images
 gen-examples:
-	typst compile --ppi 300 examples/pages.typ examples/page{n}.png
+	rm --recursive --force pages examples/pages
+	mkdir examples/pages
+	typst compile --ppi 300 examples/pages.typ examples/pages/{n}.png
 	typst compile examples/main.typ examples/example.png
-	oxipng --recursive --opt max examples
+	rm --recursive --force pages examples/pages
+	oxipng --opt max examples/example.png
 
 # generate doc examples
 gen-doc-examples:
