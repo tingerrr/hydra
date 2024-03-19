@@ -16,7 +16,7 @@
 
 /// Returns the text direction for a given language, defaults to `ltr` for unknown languages.
 ///
-/// Source: github:typst/typst#9646a13 crates/typst/src/text/lang.rs:L50-57
+/// Source: #link("https://github.com/typst/typst/blob/9646a132a80d11b37649b82c419833003ac7f455/crates/typst/src/text/lang.rs#L50-57")[`lang.rs#L50-L57`]
 ///
 /// lang (str): The languge to get the text direction for.
 /// -> direction
@@ -26,7 +26,7 @@
 
 /// Returns the page binding for a text direction.
 ///
-/// Source: github:typst/typst#9646a13 crates/typst/src/layout/page.rs#L368-L373
+/// Source: #link("https://github.com/typst/typst/blob/9646a132a80d11b37649b82c419833003ac7f455/crates/typst/src/layout/page.rs#L368-L373")[`page.rs#L368-L373`]
 ///
 /// dir (direction): The direction to get the page binding for.
 /// -> alignement

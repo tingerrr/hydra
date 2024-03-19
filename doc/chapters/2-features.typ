@@ -76,7 +76,8 @@ visible on the previous (trailing) page it is also skipped.
 )
 
 This may produce unexpected results with hydra is used outside the header and the text direction
-where it is used is different to where it's anchor (see @anchor) is placed.
+where it is used is different to where it's anchor (see @anchor) is placed. This can be prevented by
+explicitly setting it's `binding` and `dir` arguments.
 
 == Anchoring <anchor>
 To use hydra outside of the header, an anchor must be placed to get the correct active elements.
