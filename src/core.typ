@@ -5,38 +5,14 @@
 /// This function is contextual.
 ///
 /// -> direction
-#let get-text-dir() = util.auto-or(text.dir, () => util.text-direction(text.dir))
+#let get-text-dir() = util.auto-or(text.dir, () => util.text-direction(text.lang))
 
 /// Returns the current page binding.
 ///
 /// This function is contextual.
 ///
 /// -> alignment
-#let get-binding() = util.auto-or(
-  page.binding,
-  () => (ltr: left, rtl: right).at(repr(get-text-dir())),
-)
-
-/// Returns the current page size.
-///
-/// This function is contextual.
-///
-/// -> dictionary
-#let get-page-size() = {
-  let width = page.width
-  let height = page.height
-  let inf = float("inf")
-
-  if width == auto and height == auto {
-    util.page-sizes.at(page.paper)
-  } else if width == auto {
-    (w: width, h: inf)
-  } else if height == auto {
-    (w: inf, h: height)
-  } else {
-    (w: width, h: height)
-  }
-}
+#let get-page-binding() = util.auto-or(page.binding, () => util.page-binding(get-text-dir()))
 
 /// Returns the current top margin.
 ///
@@ -55,13 +31,19 @@
     }
   }
 
-  let size = get-page-size()
+  let inf = float("inf") * 1mm
+  let width = util.auto-or(page.width, () => inf)
+  let height = util.auto-or(page.height, () => inf)
+  let min = calc.min(width, height)
 
-  margin = util.auto-or(margin, () => {
-    ((2.5 / 21) * calc.min(size.w, size.h)) + 0%
-  })
+  // if both were auto, we fallback to a4 margins
+  if min == inf {
+    min = 210.0mm
+  }
 
-  size.h * margin.ratio + margin.length.to-absolute()
+  // `+ 0%` forces this to be a relative length
+  margin = util.auto-or(margin, () => (2.5 / 21) * min) + 0%
+  margin.length.to-absolute() + (min * margin.ratio)
 }
 
 /// Get the last anchor location. Panics if the last anchor was not on the page of this context.
@@ -125,8 +107,8 @@
     }
   }
 
-  let prev = query(look-behind, ctx.anchor-loc)
-  let next = query(look-ahead, ctx.anchor-loc)
+  let prev = query(look-behind)
+  let next = query(look-ahead)
 
   if ctx.primary.filter != none {
     prev = prev.filter(x => (ctx.primary.filter)(ctx, x))
@@ -191,7 +173,7 @@
     ),
   )
 
-  let is-leading-page = (cases.at(repr(get-binding())).at(repr(get-text-dir())))(here().page())
+  let is-leading-page = (cases.at(repr(ctx.binding)).at(repr(ctx.dir)))(here().page())
   let active-on-prev-page = candidates.primary.prev.location().page() == here().page() - 1
 
   is-leading-page and active-on-prev-page

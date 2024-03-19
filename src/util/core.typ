@@ -13,3 +13,35 @@
 
 /// An alias for `or-default` with `check: none`.
 #let none-or = or-default.with(check: none)
+
+/// Returns the text direction for a given language, defaults to `ltr` for unknown languages.
+///
+/// Source: github:typst/typst#9646a13 crates/typst/src/text/lang.rs:L50-57
+///
+/// lang (str): The languge to get the text direction for.
+/// -> direction
+#let text-direction(lang) = if lang in (
+  "ar", "dv", "fa", "he", "ks", "pa", "ps", "sd", "ug", "ur", "yi",
+) { rtl } else { ltr }
+
+/// Returns the page binding for a text direction.
+///
+/// Source: github:typst/typst#9646a13 crates/typst/src/layout/page.rs#L368-L373
+///
+/// dir (direction): The direction to get the page binding for.
+/// -> alignement
+#let page-binding(dir) = (ltr: left, rtl: right).at(repr(dir))
+
+/// A list of queryable element functions.
+#let queryable-functions = (
+  bibliography,
+  cite,
+  figure,
+  footnote,
+  heading,
+  locate,
+  math.equation,
+  metadata,
+  ref,
+)
+

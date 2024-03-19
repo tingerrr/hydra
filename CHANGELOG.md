@@ -15,17 +15,17 @@ Almost all changes in this release are **BREAKING CHANGES**.
   compiler
   - `core.get-text-dir` - returns the text direction
   - `core.get-binding` - returns the page binding
-  - `core.get-page-size` - returns the page size
   - `core.get-top-margin` - returns the absolute top margin
   - `util.text-direction` - returns the text direction for a given language
+  - `util.page-binding` - returns the page binding for a given text direction
 
 ## Removed
 - various parameters on `hydra` have been removed
-  - `binding` has been removed in favor of get rule
   - `paper` has been removed in favor of get rule
   - `page-size` has been removed in favor of get rule
   - `top-margin` has been removed in favor of get rule
   - `loc` has been removed in favor of user provided context
+- internal util dictionary for page sizes
 
 ## Changed
 - hydra now requires a minimum Typst compiler version of `0.11.0`
@@ -34,8 +34,12 @@ Almost all changes in this release are **BREAKING CHANGES**.
 - the internal context dictionary now holds a `anchor-loc` instead of a `loc`
 - `get-anchor-pos` has been renamed to `locate-last-anchor`
 - the internal `page-sizes` dictionary was changed to function
-- changed `hydra.prev-filter`, `hydra.next-filter` and `hydra.display` to be auto by default
-- `hydra.dir` is now auto by default
+- various parameters on `hydra` are now auto by default
+  - `prev-filter`
+  - `next-filter`
+  - `display`
+  - `dir`
+  - `binding`
 
 ---
 
