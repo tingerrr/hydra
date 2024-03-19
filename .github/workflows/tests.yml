@@ -41,4 +41,4 @@ jobs:
           version: 'v0.11.0'
 
       - name: Run test suite
-        run: just test
+        run: just ci
