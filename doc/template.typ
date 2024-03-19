@@ -17,7 +17,7 @@
     v(4em)
 
     align(center, {
-      block(text(weight: 700, 1.75em, package.name))
+      block(text(weight: 700, 1.75em, eastern, package.name))
       if subtitle != none {
         block(subtitle)
       }
@@ -56,7 +56,7 @@
   show terms: set par(justify: false)
   show raw.where(block: true): set par(justify: false)
 
-  // abstract
+  // outline
   page({
     show outline.entry: it => if it.level == 1 {
       strong(it)
@@ -84,6 +84,8 @@
     show "{{VERSION}}": package.version
     it
   }
+
+  show link: set text(eastern)
 
   set table(stroke: none)
   show table: pad.with(x: 1em)

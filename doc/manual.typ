@@ -3,10 +3,9 @@
 
 #show: project.with(
   package: package,
+  subtitle: [/ˈhaɪdrə/ \ Of headings and headers],
   date: datetime.today(),
-  abstract: [
-    A package for querying and displaying heading-like elements.
-  ],
+  abstract: package.description,
 )
 
 #[

@@ -22,12 +22,11 @@ gen` to generate a new manual and examples.
 
 The examples inside the docs currently don't make it easy to simplify this without generating them
 manually the whole time. Typst is missing a feature or plugin that allows embedding whole other
-typst documents at the moment.
+Typst documents at the moment.
 
 That being said, it's fine to leave this step out on a PR and have me generate it once the rest of
 the PR is done.
 
-[typst]: https://github.com/typst/typst
 [typst-test]: https://github.com/tingerrr/typst-test
 [just]: https://just.systems/
 [nushell]: https://www.nushell.sh/

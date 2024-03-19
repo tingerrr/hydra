@@ -1,6 +1,7 @@
 # hydra
-Hydra is a [typst] package allowing you to easily display the heading like elements anywhere in your
-document. In short, it will show you the currently active element only when it is not visible.
+Hydra is a Typst package allowing you to easily display the heading like elements anywhere in your
+document. It's primary focus is to provide the reader with a reminder of where they currently are in
+your document only when it is needed.
 
 ## Example
 ```typst
@@ -34,8 +35,10 @@ For a more in-depth description of hydra's functionality and the reference read 
 ## Contribution
 For contributing, please take a look [CONTRIBUTING][contrib].
 
+## Etymology
+The package name hydra /ˈhaɪdrə/ is a word play headings and headers, inspired by the monster in
+greek and roman mythology resembling a serpent with many heads.
+
 [ex]: examples/example.png
 [manual]: doc/manual.pdf
 [contrib]: CONTRIBUTING.md
-
-[typst]: https://github.com/typst/typst
