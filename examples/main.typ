@@ -1,19 +1,15 @@
-#import "/src/lib.typ": hydra
-
-#set page(header: hydra() + line(length: 100%))
-#set heading(numbering: "1.1")
-#show heading.where(level: 1): it => pagebreak(weak: true) + it
-
-= Introduction
-#lorem(750)
-
-= Content
-== First Section
-#lorem(500)
-== Second Section
-#lorem(250)
-== Third Section
-#lorem(500)
-
-= Annex
-#lorem(10)
+#page(
+  width: auto,
+  height: auto,
+  margin: 0pt,
+  block(
+    fill: gray,
+    inset: 1em,
+    radius: 1em,
+    grid(
+      columns: 4,
+      gutter: 1em,
+      ..range(1, 5).map(i => image("pages/" + str(i) + ".png"))
+    ),
+  ),
+)

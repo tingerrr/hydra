@@ -1,5 +1,5 @@
 #import "/src/util/core.typ" as _core
-#import "/src/util/queryable-functions.typ": queryable-functions as _queryable-functions
+#import _core: queryable-functions as _queryable-functions
 
 /// Assert that `value` is any of the given `expected-values`.
 ///

@@ -104,7 +104,7 @@
 /// - message (str, auto): The assertion message to use.
 /// -> hydra-selector
 #let sanitize(name, sel, message: auto) = {
-  let message = util.core.or-default(check: auto, message, () => util.fmt(
+  let message = util.or-default(check: auto, message, () => util.fmt(
     "`{}` must be a `selector`, a level, or a custom hydra-selector, was {}", name, sel,
   ))
 

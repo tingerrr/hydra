@@ -1,11 +1,59 @@
 #import "/src/util.typ"
 
+/// Returns the current text direction.
+///
+/// This function is contextual.
+///
+/// -> direction
+#let get-text-dir() = util.auto-or(text.dir, () => util.text-direction(text.lang))
+
+/// Returns the current page binding.
+///
+/// This function is contextual.
+///
+/// -> alignment
+#let get-page-binding() = util.auto-or(page.binding, () => util.page-binding(get-text-dir()))
+
+/// Returns the current top margin.
+///
+/// This function is contextual.
+///
+/// -> length
+#let get-top-margin() = {
+  let margin = page.margin
+  if type(margin) == dictionary {
+    margin = if "top" in margin {
+      margin.top
+    } else if "y" in margin {
+      margin.y
+    } else {
+      panic(util.fmt("Margin did not contain `top` or `y` key: `{}`", margin))
+    }
+  }
+
+  let inf = float("inf") * 1mm
+  let width = util.auto-or(page.width, () => inf)
+  let height = util.auto-or(page.height, () => inf)
+  let min = calc.min(width, height)
+
+  // if both were auto, we fallback to a4 margins
+  if min == inf {
+    min = 210.0mm
+  }
+
+  // `+ 0%` forces this to be a relative length
+  margin = util.auto-or(margin, () => (2.5 / 21) * min) + 0%
+  margin.length.to-absolute() + (min * margin.ratio)
+}
+
 /// Get the last anchor location. Panics if the last anchor was not on the page of this context.
+///
+/// This function is contextual.
 ///
 /// - ctx (context): The context from which to start.
 /// -> location
-#let get-anchor-pos(ctx) = {
-  let starting-locs = query(selector(ctx.anchor).before(ctx.loc), ctx.loc)
+#let locate-last-anchor(ctx) = {
+  let starting-locs = query(selector(ctx.anchor).before(here()))
 
   let message = (
     "No `anchor()` found while searching from outside the page header, did you forget to set",
@@ -16,7 +64,10 @@
 
   let anchor = starting-locs.last().location()
 
-  assert.eq(anchor.page(), ctx.loc.page(),
+  // NOTE: this check ensures that get rules are done within the same page as the queries
+  // ideally those would be done within the context of the anchor, such that a change in text
+  // direction between anchor and query does not cause any issues
+  assert.eq(anchor.page(), here().page(),
     message: "`anchor()` must be on every page before the first use of `hydra`"
   )
 
@@ -25,18 +76,20 @@
 
 /// Get the element candidates for the given context.
 ///
+/// This function is contextual.
+///
 /// - ctx (context): The context for which to get the candidates.
 /// -> candidates
 #let get-candidates(ctx) = {
-  let look-behind = selector(ctx.primary.target).before(ctx.loc)
-  let look-ahead = selector(ctx.primary.target).after(ctx.loc)
+  let look-behind = selector(ctx.primary.target).before(ctx.anchor-loc)
+  let look-ahead = selector(ctx.primary.target).after(ctx.anchor-loc)
 
   let prev-ancestor = none
   let next-ancestor = none
 
   if ctx.ancestors != none {
-    let prev = query(selector(ctx.ancestors.target).before(ctx.loc), ctx.loc)
-    let next = query(selector(ctx.ancestors.target).after(ctx.loc), ctx.loc)
+    let prev = query(selector(ctx.ancestors.target).before(ctx.anchor-loc))
+    let next = query(selector(ctx.ancestors.target).after(ctx.anchor-loc))
 
     if ctx.ancestors.filter != none {
       prev = prev.filter(x => (ctx.ancestors.filter)(ctx, x))
@@ -54,8 +107,8 @@
     }
   }
 
-  let prev = query(look-behind, ctx.loc)
-  let next = query(look-ahead, ctx.loc)
+  let prev = query(look-behind)
+  let next = query(look-ahead)
 
   if ctx.primary.filter != none {
     prev = prev.filter(x => (ctx.primary.filter)(ctx, x))
@@ -74,6 +127,8 @@
 /// Checks if the current context is on a starting page, i.e. if the next candidates are on top of
 /// this context's page.
 ///
+/// This function is contextual.
+///
 /// - ctx (context): The context in which the visibility of the next candidates should be checked.
 /// - candidates (candidates): The candidates for this context.
 /// -> bool
@@ -82,13 +137,13 @@
   let next-ancestor = if candidates.ancestor.next != none { candidates.ancestor.next.location() }
 
   let next-starting = if next != none {
-    next.page() == ctx.loc.page() and next.position().y <= ctx.top-margin
+    next.page() == here().page() and next.position().y <= get-top-margin()
   } else {
     false
   }
 
   let next-ancestor-starting = if next-ancestor != none {
-    next-ancestor.page() == ctx.loc.page() and next-ancestor.position().y <= ctx.top-margin
+    next-ancestor.page() == here().page() and next-ancestor.position().y <= get-top-margin()
   } else {
     false
   }
@@ -97,6 +152,8 @@
 }
 
 /// Checks if the previous primary candidate is still visible.
+///
+/// This function is contextual.
 ///
 /// - ctx (context): The context in which the visibility of the previous primary candidate should be
 ///   checked.
@@ -116,13 +173,15 @@
     ),
   )
 
-  let is-leading-page = (cases.at(repr(ctx.binding)).at(repr(ctx.dir)))(ctx.loc.page())
-  let active-on-prev-page = candidates.primary.prev.location().page() == ctx.loc.page() - 1
+  let is-leading-page = (cases.at(repr(ctx.binding)).at(repr(ctx.dir)))(here().page())
+  let active-on-prev-page = candidates.primary.prev.location().page() == here().page() - 1
 
   is-leading-page and active-on-prev-page
 }
 
 /// Check if showing the active element would be redudnant in the current context.
+///
+/// This function is contextual.
 ///
 /// - ctx (context): The context in which the redundancy of the previous primary candidate should be
 ///   checked.
@@ -157,11 +216,15 @@
 
 /// Execute the core logic to find and display elements for the current context.
 ///
+/// This function is contextual.
+///
 /// - ctx (context): The context for which to find and display the element.
 /// -> content
 #let execute(ctx) = {
-  if ctx.anchor != none and ctx.loc.position().y >= ctx.top-margin {
-    ctx.loc = get-anchor-pos(ctx)
+  ctx.anchor-loc = if ctx.anchor != none and here().position().y >= get-top-margin() {
+    locate-last-anchor(ctx)
+  } else {
+    here()
   }
 
   let candidates = get-candidates(ctx)
