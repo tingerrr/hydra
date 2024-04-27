@@ -1,3 +1,5 @@
+#import "@local/mantys:0.1.2"
+
 #let package = toml("/typst.toml").package
 
 #let load-examples(example) = {

@@ -32,7 +32,7 @@ gen-doc-examples:
 					$"out/($it){n}.png")
 			};
 			let pages = (ls out | length) / 2;
-			{ pages: $pages } | to toml | save out.toml
+			{ pages: $pages } | to toml | save -f out.toml
 		}
 		| ignore
 
@@ -41,6 +41,10 @@ gen-doc-examples:
 # generate the manual
 doc: gen-doc-examples
 	typst compile doc/manual.typ doc/manual.pdf
+
+# watch the manual
+watch-doc: gen-doc-examples
+	typst watch doc/manual.typ doc/manual.pdf
 
 # copy the files relevant for the package repo
 publish output:
