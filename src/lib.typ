@@ -2,38 +2,39 @@
 #import "/src/util.typ"
 #import "/src/selectors.typ"
 
-/// An anchor used to search from. When using `hydra` ouside of the page header, this should be
-/// placed inside the pge header to find the correct searching context. `hydra` always searches from
-/// the last anchor it finds, if and only if it detects that it is outside of the top-margin.
+/// An anchor used to search from.
+/// When using `hydra` ouside of the page header, this should be placed inside the pge header to
+/// find the correct searching hydra-context.
+/// `hydra` always searches from the last anchor it finds, if and only if it detects that it is
+/// outside of the top-margin.
 #let anchor() = [#metadata(()) <hydra-anchor>]
 
 /// Query for an element within the bounds of its ancestors.
 ///
-/// The context passed to various callbacks contains the resolved top-margin, the current location,
-/// as well as the binding direction, primary and ancestor element selectors and customized
-/// functions.
+/// The hydra-context passed to various callbacks contains the resolved top-margin, the current
+/// location, as well as the binding direction, primary and ancestor element selectors and
+/// customized functions.
 ///
 /// This function is contextual.
 ///
-/// - ..sel (any): The element to look for, to use other elements than headings, read the
-///   documentation on selectors. This can be an element function or selector, or an integer
-///   declaring a heading level.
-/// - prev-filter (function, auto): A function which receives the `context` and `candidates`, and
-///   returns if they are eligible for display. This function is called at most once. The primary
-///   next candidate may be none. If this is `auto` no filter is applied.
-/// - next-filter (function, auto): A function which receives the `context` and `candidates`, and
-///   returns if they are eligible for display. This function is called at most once. The primary
-///   prev candidate may be none. If this is `auto` no filter is applied.
-/// - display (function, auto): A function which receives the `context` and candidate element to
-///   display. If this is `auto`, the default implementaion will be used.
+/// - ..sel (queryable, full-selector, int): The element to look for, to use other elements than
+///   headings, read the documentation on selectors. This can be an element function or selector,
+///   or an integer declaring a heading level.
+/// - prev-filter (function, auto): A function which receives the `hydra-context` and `candidates`,
+///   and returns if they are eligible for display. This function is called at most once. The
+///   primary next candidate may be none. If this is `auto` no filter is applied.
+/// - next-filter (function, auto): A function which receives the `hydra-context` and `candidates`,
+///   and returns if they are eligible for display. This function is called at most once. The
+///   primary prev candidate may be none. If this is `auto` no filter is applied.
+/// - display (function, auto): A function which receives the `hydra-context` and candidate element
+///   to display. If this is `auto`, the default implementaion will be used.
 /// - skip-starting (bool): Whether `hydra` should show the current candidate even if it's on top of
 ///   the current page.
 /// - use-last (bool): If hydra should show the name of the first or last candidate on the page.
-//    Defaults to false.
 /// - dir (direction, auto): The reading direction of the document. If this is `auto`, the text
 ///   direction is used. Be cautious about leaving this option on `auto` if you switch text
 ///   direction mid-page and use hydra outside of footers or headers.
-/// - binding (alignement, auto): The binding of the document. If this is `auto`, the binding is
+/// - binding (alignment, auto): The binding of the document. If this is `auto`, the binding is
 ///   inferred from `dir`, similar to how it is done in page. Be cautious about leaving this on
 ///   option on `auto` if you switch text direction mid-page and use hydra outside of footers or
 ///   headers.

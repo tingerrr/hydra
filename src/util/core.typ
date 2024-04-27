@@ -29,7 +29,7 @@
 /// Source: #link("https://github.com/typst/typst/blob/9646a132a80d11b37649b82c419833003ac7f455/crates/typst/src/layout/page.rs#L368-L373")[`page.rs#L368-L373`]
 ///
 /// dir (direction): The direction to get the page binding for.
-/// -> alignement
+/// -> alignment
 #let page-binding(dir) = (ltr: left, rtl: right).at(repr(dir))
 
 /// A list of queryable element functions.
