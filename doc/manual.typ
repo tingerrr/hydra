@@ -1,22 +1,41 @@
-#import "template.typ": project, raw-bg
-#import "util.typ": package, bbox
+#import "util.typ": package, mantys
 
-#show: project.with(
-  package: package,
-  subtitle: [/ˈhaɪdrə/ \ Of headings and headers],
-  date: datetime.today(),
-  abstract: package.description,
+#show: mantys.mantys(
+  ..package,
+  title: [hydra],
+  subtitle: [/ˈhaɪdrə/],
+  date: datetime.today().display(),
+  abstract: [
+    Hydra provides a simple API to query for headings und section like elements and display them in your document's headers.
+    It aids in creating headers and footers with navigational snippets.
+  ],
+  theme: mantys.create-theme(
+    fonts: (sans: "TeX Gyre Heros"),
+    heading: (font: "TeX Gyre Heros"),
+  )
 )
 
-#[
-  #show raw.where(block: false): bbox.with(fill: raw-bg)
+// replace the version in all examples with the current version
+#show raw.line: it => {
+  show "{{VERSION}}": package.version
+  it
+}
 
-  = Introduction
-  #include "chapters/1-intro.typ"
+// use codesnippet by default
+#show raw.where(block: true): mantys.codesnippet
 
-  = Features
-  #include "chapters/2-features.typ"
-]
+// prettify figures
+#show figure.caption: it => context block(inset: (x: 0.7em), grid(
+  columns: 2,
+  gutter: 0.5em,
+  align: (right, left),
+  text(font: "TeX Gyre Heros", weight: "bold", {
+    it.supplement
+    [ ]
+    numbering(it.numbering, ..counter(figure.where(kind: it.kind)).get())
+  }),
+  it.body
+))
 
-= Reference
-#include "chapters/3-reference.typ"
+#include "chapters/guide.typ"
+#include "chapters/reference.typ"
