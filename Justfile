@@ -47,8 +47,12 @@ publish output:
 	alabaster package {{ output }}
 
 # run the test suite
-test filter='':
-	typst-test run {{ filter }}
+test *args:
+	typst-test run {{ args }}
+
+# update the test suite
+update *args:
+	typst-test update {{ args }}
 
 # run the ci test suite
 ci:
