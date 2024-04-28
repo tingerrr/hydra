@@ -1,7 +1,10 @@
 #import "template.typ": project, raw-bg
-#import "util.typ": package, bbox, mantys
+#import "util.typ": package, bbox, mantys, issues, sub-file
+
+#import "/src/lib.typ" as hydra
 
 #show "Hydra": mantys.package
+#show link: text.with(eastern)
 
 #show: mantys.mantys.with(
   ..package,
@@ -32,15 +35,11 @@ Hydra aims to be:
 - minimal
   - it should only provide features which are specifically used for heading and section querying and display
 
-If you think its behvior is surprising, you believe you found a bug or you think its defaults or parameters are not sufficient for your use case, please open an issue at #text(eastern, link("https://github.com/tingerrr/hydra")[GitHub:tingerrr/hydra]).
+If you think its behvior is surprising, you believe you found a bug or you think its defaults or parameters are not sufficient for your use case, please open an issue at #issues.
 Contributions are also welcome!
 
 = Guide
-== Introduction
-#include "chapters/1-intro.typ"
+#sub-file("chapters/2-guide.typ")
 
-== Features
-#include "chapters/2-features.typ"
-
-= Reference
-#include "chapters/3-reference.typ"
+= Reference <api>
+#sub-file("chapters/3-reference.typ")

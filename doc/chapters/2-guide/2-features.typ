@@ -1,12 +1,12 @@
 #import "/doc/util.typ": load-examples, show-examples, issue, mantys
 #import mantys: package
 
-== Contextual
+= Contextual
 Hydra will take contextual information into account to provide good defaults, such as inferring the
 reading direction and binding from the page and text styles to offer correct handling of books as
 seen in @book-mode.
 
-== Custom Elements <custom>
+= Custom Elements <custom>
 Because some documents may use custom elements of some kind to display chapters or section like
 elements, Hydra allows defining its own selectors for tight control over how elements are
 semantically related.
@@ -43,12 +43,12 @@ The usage of `custom` allows specifying an element's ancestors, to ensure the sc
 The selectors module also contains some useful default selectors.
 
 #pagebreak()
-== Redundancy Checks
+= Redundancy Checks <redundancy>
 Generally Hydra is used for heading like elements, i.e. elements which semantically describe a section of a document.
 Whenever Hydra is used in a place where its output would be redundant, it will not show any output by default.
 The following sections explain those checks more closely and will generally assume that Hydra is looking for headings for simplicity.
 
-=== Starting Page <starting-page>
+== Starting Page <starting-page>
 Given a page which starts with a primary element, it will not show anything.
 If `skip-starting` is set to `false`, it will fallback to the next element, in this case the heading at the top of the page.
 
@@ -64,7 +64,7 @@ For more complex selectors this will not correctly work if the first element on 
 See #issue(8).
 
 #pagebreak()
-=== Book Mode <book-mode>
+== Book Mode <book-mode>
 Given a leading page, if `book` is set to `true`, then if the previous primary element is still
 visible on the previous (trailing) page it is also skipped.
 
@@ -77,7 +77,7 @@ visible on the previous (trailing) page it is also skipped.
 This may produce unexpected results with Hydra is used outside the header and the text direction where it is used is different to where its anchor (see @anchor) is placed.
 This can be prevented by explicitly setting its `binding` and `dir` arguments.
 
-== Anchoring <anchor>
+= Anchoring <anchor>
 To use Hydra outside of the header, an anchor must be placed to get the correct active elements.
 Hydra will always use the last anchor it finds to search, it doesn't have to be inside the header, but should generally be, otherwise the behavior may be unexpected.
 
