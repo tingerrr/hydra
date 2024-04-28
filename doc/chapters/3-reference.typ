@@ -7,7 +7,7 @@
   bbox(fill: yellow.lighten(50%), `unstable`)
 }
 
-== Stability
+= Stability
 The following stability guarantees are made, this package tries to adhere to semantic versioning.
 
 #table(columns: 2, gutter: 0.25em, align: (right, left), stroke: none,
@@ -19,7 +19,7 @@ The following stability guarantees are made, this package tries to adhere to sem
 )
 
 #let ref-heading(is-stable, body) = {
-  heading(depth: 3, body)
+  heading(depth: 2, body)
   place(
     right,
     dy: -2.4em,
@@ -27,7 +27,7 @@ The following stability guarantees are made, this package tries to adhere to sem
   )
 }
 
-== Custom Types
+= Custom Types
 The following custom types are used to pass around information easily, they are regular Typst dictionaries with expected keys.
 
 #ref-heading(true)[queryable]
@@ -117,5 +117,5 @@ let hydra-context = (
   #tidy-module(read(path), name: name)
 ]
 
-== Modules
+= Modules
 #mods.map(x => render-module(..x)).join(pagebreak(weak: true))

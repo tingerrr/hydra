@@ -3,7 +3,7 @@
 #import "/src/selectors.typ"
 
 /// An anchor used to search from.
-/// When using `hydra` ouside of the page header, this should be placed inside the pge header to find the correct searching hydra-context.
+/// When using `hydra` ouside of the page header, this should be placed inside the page header to find the correct searching hydra-context.
 /// `hydra` always searches from the last anchor it finds, if and only if it detects that it is outside of the top-margin.
 #let anchor() = [#metadata(()) <hydra-anchor>]
 

@@ -3,7 +3,7 @@
 
 Hydra is a package which aims to query and display section elements, such as headings,legal paragraphs, documentation sections, and whatever else may semantically declare the start of a document's section.
 
-== Terminology & Semantics
+= Terminology & Semantics
 The following terms are frequently used in the remainider of this document.
 
 / primary: The element which is primarily looked for and meant to be displayed.
