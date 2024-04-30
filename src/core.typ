@@ -47,7 +47,7 @@
 }
 
 /// Get the last anchor location.
-/// Panics if the last anchor was not on the page of this `hydra-context`.
+/// Panics if the last anchor was not on the page of this context.
 ///
 /// This function is contextual.
 ///
@@ -72,7 +72,7 @@
   anchor
 }
 
-/// Get the element candidates for the given `hydra-context`.
+/// Get the element candidates for the given context.
 ///
 /// This function is contextual.
 ///
@@ -164,9 +164,8 @@
 ///
 /// This function is contextual.
 ///
-/// - ctx (hydra-context): The hydra-context in which the visibility of the previous primary
-///   candidate should be checked.
-/// - candidates (candidates): The candidates for this hydra-context.
+/// - ctx (hydra-context): The context in which the visibility of the previous primary candidate should be checked.
+/// - candidates (candidates): The candidates for this context.
 /// -> bool
 #let is-active-visible(ctx, candidates) = {
   // depending on the reading direction and binding combination the leading page is either on an odd
@@ -188,13 +187,12 @@
   is-leading-page and active-on-prev-page
 }
 
-/// Check if showing the active element would be redudnant in the current hydra-context.
+/// Check if showing the active element would be redudnant in the given context.
 ///
 /// This function is contextual.
 ///
-/// - ctx (hydra-context): The hydra-context in which the redundancy of the previous primary
-///   candidate should be checked.
-/// - candidates (candidates): The candidates for this hydra-context.
+/// - ctx (hydra-context): The context in which the redundancy of the previous primary candidate should be checked.
+/// - candidates (candidates): The candidates for this context.
 /// -> bool
 #let is-active-redundant(ctx, candidates) = {
   let active-visible = (
@@ -207,7 +205,7 @@
 
 /// Display a heading's numbering and body.
 ///
-/// - ctx (hydra-context): The hydra-context in which the element was found.
+/// - ctx (hydra-context): The context in which the element was found.
 /// - candidate (content): The heading to display, panics if this is not a heading.
 /// -> content
 #let display(ctx, candidate) = {
@@ -223,8 +221,8 @@
   candidate.body
 }
 
-/// Execute the core logic to find and display elements for the given `hydra-context`.
-/// The `anchor-loc` of the context will be augmented.
+/// Execute the core logic to find and display elements for the given context.
+/// The `anchor-loc` of the context will be augmented using the current typst context.
 ///
 /// This function is contextual.
 ///
