@@ -4,7 +4,6 @@
 #import "/src/lib.typ" as hydra
 
 #show "Hydra": mantys.package
-#show link: text.with(eastern)
 
 #show: mantys.mantys.with(
   ..package,

@@ -18,8 +18,8 @@ The following stability guarantees are made, this package tries to adhere to sem
   ],
 )
 
-#let ref-heading(is-stable, body) = {
-  heading(depth: 2, body)
+#let ref-heading(is-stable, body, label: none) = {
+  [#heading(depth: 2, body) #label]
   place(
     right,
     dy: -2.4em,
@@ -27,17 +27,31 @@ The following stability guarantees are made, this package tries to adhere to sem
   )
 }
 
-= Custom Types
-The following custom types are used to pass around information easily, they are regular Typst dictionaries with expected keys.
+#let type-def(is-stable, color: auto, name) = {
+  let name = name.text
+  let l = label("type-" + name)
+  ref-heading(is-stable, label: l)[#name]
+  let args = if color != auto {
+    (color: color)
+  } else {
+    ()
+  }
+  add-type(name, target: l, ..args)
+}
 
-#ref-heading(true)[queryable]
-Any type which can be used in `query`.
+#let lime = color.hsv(80deg, 30%, 100%)
+
+= Custom Types
+The following type definitions are used to simplify the documentation. The type definitions follow  a simple grammar similar to Typescript types.
+
+#type-def(true)[queryable]
+Any type which can be used in `query`, `function` refers to the subset of element functions which are locatable.
 
 ```typc
 let queryable = label | function | selector
 ```
 
-#ref-heading(true)[hydra-selector]
+#type-def(true, color: lime)[hydra-selector]
 Defines a selector for an ancestor or primary element.
 
 ```typc
@@ -47,7 +61,7 @@ let hydra-selector = (
 )
 ```
 
-#ref-heading(true)[full-selector]
+#type-def(true, color: lime)[full-selector]
 Defines a pair of primary and ancestor element selectors.
 
 ```typc
@@ -57,7 +71,7 @@ let full-selector = (
 )
 ```
 
-#ref-heading(true)[candidates]
+#type-def(true, color: lime)[candidates]
 Defines the candidates that have been found in a specific context.
 
 ```typc
@@ -67,7 +81,7 @@ let candidates = (
 )
 ```
 
-#ref-heading(false)[hydra-context]
+#type-def(false, color: lime)[hydra-context]
 Defines the options passed to Hydra and resolved contextual information needed for querying and
 displaying.
 
