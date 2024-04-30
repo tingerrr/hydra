@@ -1,4 +1,4 @@
-#import "@local/mantys:0.1.2"
+#import "@local/mantys:0.1.3"
 
 #let package = toml("/typst.toml").package
 
@@ -27,9 +27,9 @@
   include path
 }
 
-#let issue(num) = link(package.repository + "/issues/" + str(num))[hydra\##num]
+#let issue(num) = text(eastern, link(package.repository + "/issues/" + str(num))[hydra\##num])
 
-#let issues = link(package.repository + "/issues/")[GitHub:tingerrr/hydra]
+#let issues = text(eastern, link(package.repository + "/issues/")[GitHub:tingerrr/hydra])
 
 #let raw-bg = gray.lighten(50%)
 #let bbox = box.with(inset: (x: 0.25em), outset: (y: 0.25em), radius: 0.25em)
