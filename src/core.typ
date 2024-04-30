@@ -221,7 +221,7 @@
 /// - ctx (context): The context for which to find and display the element.
 /// -> content
 #let execute(ctx) = {
-  ctx.anchor-loc = if ctx.anchor != none and here().position().y >= get-top-margin() {
+  ctx.anchor-loc = if ctx.anchor != none and here().position().y > get-top-margin() {
     locate-last-anchor(ctx)
   } else {
     here()
