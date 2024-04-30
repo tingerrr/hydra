@@ -55,12 +55,9 @@
 #let locate-last-anchor(ctx) = {
   let starting-locs = query(selector(ctx.anchor).before(here()))
 
-  let message = (
-    "No `anchor()` found while searching from outside the page header, did you forget to set",
-    "`paper`/`page-size` or `top-margin`?",
-  ).join(" ")
-
-  assert.ne(starting-locs.len(), 0, message: message)
+  assert.ne(starting-locs.len(), 0,
+    message: "No `anchor()` found while searching from outside the page header",
+  )
 
   let anchor = starting-locs.last().location()
 
