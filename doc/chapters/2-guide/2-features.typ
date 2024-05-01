@@ -1,5 +1,5 @@
 #import "/doc/util.typ": load-examples, show-examples, issue, mantys
-#import mantys: package
+#import mantys: *
 
 = Contextual
 HYDRA will take contextual information into account to provide good defaults, such as inferring the
@@ -12,32 +12,36 @@ elements, HYDRA allows defining its own selectors for tight control over how ele
 semantically related.
 
 Given a custom element like so:
-```typst
-#let chapter = figure.with(kind: "chapter", supplement: [Chapter])
-// ... show rules and additional setup
+#codesnippet[
+  ```typst
+  #let chapter = figure.with(kind: "chapter", supplement: [Chapter])
+  // ... show rules and additional setup
 
-#chapter[Introduction]
-#chapter[Main]
-= Section 1.1
-== Subsection 1.1.1
-= Section 1.2
-#chapter[Annex]
-```
+  #chapter[Introduction]
+  #chapter[Main]
+  = Section 1.1
+  == Subsection 1.1.1
+  = Section 1.2
+  #chapter[Annex]
+  ```
+]
 
 A user my want to query for the current chapter and section respectively:
-```typst
-#import "@preview/hydra:{{VERSION}}": hydra, selectors
-#import selectors: custom
+#codesnippet[
+  ```typst
+  #import "@preview/hydra:{{VERSION}}": hydra, selectors
+  #import selectors: custom
 
-#let chap = figure.where(kind: "chapter")
-#let sect = custom(heading.where(level: 1), ancestor: chap)
+  #let chap = figure.where(kind: "chapter")
+  #let sect = custom(heading.where(level: 1), ancestor: chap)
 
-#set page(header: context if calc.odd(here().page()) {
-  align(left, hydra(chap))
-} else {
-  align(right, hydra(sect))
-})
-```
+  #set page(header: context if calc.odd(here().page()) {
+    align(left, hydra(chap))
+  } else {
+    align(right, hydra(sect))
+  })
+  ```
+]
 
 The usage of `custom` allows specifying an element's ancestors, to ensure the scope is correctly defined.
 The selectors module also contains some useful default selectors.
@@ -81,7 +85,9 @@ This can be prevented by explicitly setting its `binding` and `dir` arguments.
 To use HYDRA outside of the header, an anchor must be placed to get the correct active elements.
 HYDRA will always use the last anchor it finds to search, it doesn't have to be inside the header, but should generally be, otherwise the behavior may be unexpected.
 
-```typst
-#import "@preview/hydra:{{VERSION}}": hydra, anchor
-#set page(header: anchor(), footer: context hydra())
-```
+#codesnippet[
+  ```typst
+  #import "@preview/hydra:{{VERSION}}": hydra, anchor
+  #set page(header: anchor(), footer: context hydra())
+  ```
+]

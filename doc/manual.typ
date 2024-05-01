@@ -13,10 +13,19 @@
   ],
 )
 
-#show raw: it => {
+#show raw.line: it => {
   show "{{VERSION}}": package.version
   it
 }
+
+#show terms: it => table(
+  columns: 2,
+  gutter: 0.25em,
+  align: (right, left),
+  stroke: none,
+  table.vline(x: 1),
+  ..it.children.map(i => (strong(i.term), i.description)).flatten(),
+)
 
 = Manifest
 HYDRA aims to be:

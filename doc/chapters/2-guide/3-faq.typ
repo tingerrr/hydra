@@ -7,7 +7,7 @@ The following questions and answers largely use the simple heading use case, but
   row-gutter: 1em,
   inset: (x: 0.5em),
   [*Q*], strong(q),
-  [*A*], grid.vline(start: 1), a,
+  [*A*], a,
 )
 
 #qna[
