@@ -46,11 +46,12 @@
   margin.length.to-absolute() + (min * margin.ratio)
 }
 
-/// Get the last anchor location. Panics if the last anchor was not on the page of this context.
+/// Get the last anchor location.
+/// Panics if the last anchor was not on the page of this context.
 ///
 /// This function is contextual.
 ///
-/// - ctx (context): The context from which to start.
+/// - ctx (hydra-context): The context from which to start.
 /// -> location
 #let locate-last-anchor(ctx) = {
   let starting-locs = query(selector(ctx.anchor).before(here()))
@@ -75,7 +76,7 @@
 ///
 /// This function is contextual.
 ///
-/// - ctx (context): The context for which to get the candidates.
+/// - ctx (hydra-context): The context for which to get the candidates.
 /// -> candidates
 #let get-candidates(ctx) = {
   let look-behind = selector(ctx.primary.target).before(ctx.anchor-loc)
@@ -121,12 +122,11 @@
   )
 }
 
-/// Checks if the current context is on a starting page, i.e. if the next candidates are on top of
-/// this context's page.
+/// Checks if the given context is on a starting page, i.e. if the next candidates are on top of this context's page.
 ///
 /// This function is contextual.
 ///
-/// - ctx (context): The context in which the visibility of the next candidates should be checked.
+/// - ctx (hydra-context): The context in which the visibility of the next candidates should be checked.
 /// - candidates (candidates): The candidates for this context.
 /// -> bool
 #let is-on-starting-page(ctx, candidates) = {
@@ -152,8 +152,7 @@
 ///
 /// This function is contextual.
 ///
-/// - ctx (context): The context in which the visibility of the previous primary candidate should be
-///   checked.
+/// - ctx (hydra-context): The context in which the visibility of the previous primary candidate should be checked.
 /// - candidates (candidates): The candidates for this context.
 /// -> bool
 #let is-active-visible(ctx, candidates) = {
@@ -176,12 +175,11 @@
   is-leading-page and active-on-prev-page
 }
 
-/// Check if showing the active element would be redudnant in the current context.
+/// Check if showing the active element would be redudnant in the given context.
 ///
 /// This function is contextual.
 ///
-/// - ctx (context): The context in which the redundancy of the previous primary candidate should be
-///   checked.
+/// - ctx (hydra-context): The context in which the redundancy of the previous primary candidate should be checked.
 /// - candidates (candidates): The candidates for this context.
 /// -> bool
 #let is-active-redundant(ctx, candidates) = {
@@ -195,7 +193,7 @@
 
 /// Display a heading's numbering and body.
 ///
-/// - ctx (context): The context in which the element was found.
+/// - ctx (hydra-context): The context in which the element was found.
 /// - candidate (content): The heading to display, panics if this is not a heading.
 /// -> content
 #let display(ctx, candidate) = {
@@ -211,11 +209,12 @@
   candidate.body
 }
 
-/// Execute the core logic to find and display elements for the current context.
+/// Execute the core logic to find and display elements for the given context.
+/// The `anchor-loc` of the context will be augmented using the current typst context.
 ///
 /// This function is contextual.
 ///
-/// - ctx (context): The context for which to find and display the element.
+/// - ctx (hydra-context): The context for which to find and display the element.
 /// -> content
 #let execute(ctx) = {
   ctx.anchor-loc = if ctx.anchor != none and here().position().y > get-top-margin() {

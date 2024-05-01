@@ -2,9 +2,9 @@
 
 /// Create a custom selector for `hydra`.
 ///
-/// - element (function, selector): The primary element to search for.
+/// - element (queryable): The primary element to search for.
 /// - filter (function): The filter to apply to the element.
-/// - ancestors (function, selector): The ancestor elements, this should match all of its ancestors.
+/// - ancestors (queryable): The ancestor elements, this should match all of its ancestors.
 /// - ancestors-filter (function): The filter applied to the ancestors.
 /// -> hydra-selector
 #let custom(
@@ -36,9 +36,9 @@
 
 /// Create a heading selector for a given range of levels.
 ///
-/// - ..exact (int, none): The exact level to consider as the primary element
-/// - min (int, none): The inclusive minimum level to consider as the primary heading
-/// - max (int, none): The inclusive maximum level to consider as the primary heading
+/// - ..exact (int, none): The exact level to consider as the primary element.
+/// - min (int, none): The inclusive minimum level to consider as the primary heading.
+/// - max (int, none): The inclusive maximum level to consider as the primary heading.
 /// -> hydra-selector
 #let by-level(
   min: none,
@@ -95,12 +95,12 @@
   )
 }
 
-/// Turn a selector or function into a hydra selector.
+/// Turn a selector or function into a `hydra-selector`.
 ///
 /// *This function is considered unstable.*
 ///
 /// - name (str): The name to use in the assertion message.
-/// - sel (any): The selector to sanitize.
+/// - sel (queryable, full-selector, int): The selector to sanitize.
 /// - message (str, auto): The assertion message to use.
 /// -> hydra-selector
 #let sanitize(name, sel, message: auto) = {
