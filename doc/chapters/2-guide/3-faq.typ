@@ -24,7 +24,7 @@ The following questions and answers largely use the simple heading use case, but
 #qna[
   Why does hydra not show a heading where I want it to?
 ][
-  Hydra will automatically detect where showing a heading would be redundant and refuse showing it.
+  HYDRA will automatically detect where showing a heading would be redundant and refuse showing it.
   See @redundancy on when that is the case, as well as how it is detected.
 ]
 
@@ -44,7 +44,7 @@ The following questions and answers largely use the simple heading use case, but
       #show heading: it => v(8cm) + it
       ```
 
-  - If you encounter an issue with Hydra not detecting redundant sections, please report it at #issues
+  - If you encounter an issue with HYDRA not detecting redundant sections, please report it at #issues
 ]
 
 #qna[
@@ -53,5 +53,5 @@ The following questions and answers largely use the simple heading use case, but
   - Similar to the previous question, if your document is largely empty save for a few headings, you may encounter a bug like #issue(7) and can resolve it the same way.
   - As before, if you use custom selectors make sure to read @custom on how to correctly define ancestors
 
-  If you encounter an issue with Hydra reporting the wrong active element, please report it at #issues.
+  If you encounter an issue with HYDRA reporting the wrong active element, please report it at #issues.
 ]

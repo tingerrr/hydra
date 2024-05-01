@@ -82,7 +82,7 @@ let candidates = (
 ```
 
 #type-def(false, color: lime)[hydra-context]
-Defines the options passed to Hydra and resolved contextual information needed for querying and
+Defines the options passed to HYDRA and resolved contextual information needed for querying and
 displaying.
 
 ```typc

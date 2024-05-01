@@ -2,13 +2,13 @@
 #import mantys: package
 
 = Contextual
-Hydra will take contextual information into account to provide good defaults, such as inferring the
+HYDRA will take contextual information into account to provide good defaults, such as inferring the
 reading direction and binding from the page and text styles to offer correct handling of books as
 seen in @book-mode.
 
 = Custom Elements <custom>
 Because some documents may use custom elements of some kind to display chapters or section like
-elements, Hydra allows defining its own selectors for tight control over how elements are
+elements, HYDRA allows defining its own selectors for tight control over how elements are
 semantically related.
 
 Given a custom element like so:
@@ -44,9 +44,9 @@ The selectors module also contains some useful default selectors.
 
 #pagebreak()
 = Redundancy Checks <redundancy>
-Generally Hydra is used for heading like elements, i.e. elements which semantically describe a section of a document.
-Whenever Hydra is used in a place where its output would be redundant, it will not show any output by default.
-The following sections explain those checks more closely and will generally assume that Hydra is looking for headings for simplicity.
+Generally HYDRA is used for heading like elements, i.e. elements which semantically describe a section of a document.
+Whenever HYDRA is used in a place where its output would be redundant, it will not show any output by default.
+The following sections explain those checks more closely and will generally assume that HYDRA is looking for headings for simplicity.
 
 == Starting Page <starting-page>
 Given a page which starts with a primary element, it will not show anything.
@@ -74,12 +74,12 @@ visible on the previous (trailing) page it is also skipped.
   caption: [An example document showing `book: false` (left) and `book: true` (right).],
 )
 
-This may produce unexpected results with Hydra is used outside the header and the text direction where it is used is different to where its anchor (see @anchor) is placed.
+This may produce unexpected results with HYDRA is used outside the header and the text direction where it is used is different to where its anchor (see @anchor) is placed.
 This can be prevented by explicitly setting its `binding` and `dir` arguments.
 
 = Anchoring <anchor>
-To use Hydra outside of the header, an anchor must be placed to get the correct active elements.
-Hydra will always use the last anchor it finds to search, it doesn't have to be inside the header, but should generally be, otherwise the behavior may be unexpected.
+To use HYDRA outside of the header, an anchor must be placed to get the correct active elements.
+HYDRA will always use the last anchor it finds to search, it doesn't have to be inside the header, but should generally be, otherwise the behavior may be unexpected.
 
 ```typst
 #import "@preview/hydra:{{VERSION}}": hydra, anchor

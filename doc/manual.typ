@@ -2,8 +2,6 @@
 
 #import "/src/lib.typ" as hydra
 
-#show "Hydra": mantys.package
-
 #show: mantys.mantys.with(
   ..package,
   title: [hydra],
@@ -21,7 +19,7 @@
 }
 
 = Manifest
-Hydra aims to be:
+HYDRA aims to be:
 - simple to use
   - importing a function and using it should be all that is needed
   - setup required to make the package work should be avoided
@@ -29,7 +27,7 @@ Hydra aims to be:
   - parameters should have sensible names and behave as one would expect
   - deviations from this must be documented and easily accesible to Typst novices
 - interoperable
-  - Hydra should be easy to use with other packages by default or provide sufficient configuration to allow this in other ways
+  - HYDRA should be easy to use with other packages by default or provide sufficient configuration to allow this in other ways
 - minimal
   - it should only provide features which are specifically used for heading and section querying and display
 
