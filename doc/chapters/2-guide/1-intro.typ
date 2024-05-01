@@ -1,7 +1,7 @@
 #import "/doc/util.typ": mantys
 #import mantys: package
 
-Hydra is a package which aims to query and display section elements, such as headings,legal paragraphs, documentation sections, and whatever else may semantically declare the start of a document's section.
+HYDRA is a package which aims to query and display section elements, such as headings,legal paragraphs, documentation sections, and whatever else may semantically declare the start of a document's section.
 
 = Terminology & Semantics
 The following terms are frequently used in the remainider of this document.
@@ -34,8 +34,8 @@ Chapter 2
   └ Subsection 2.0.1
 ```
 
-Hydra will only search within its current chapter as it is looking for active sections.
-In this case Hydra would not find a suitable candidate.
+HYDRA will only search within its current chapter as it is looking for active sections.
+In this case HYDRA would not find a suitable candidate.
 For this the ancestors of an element must be known.
 For headings this is simple:
 #align(center, (
@@ -46,5 +46,5 @@ For headings this is simple:
   `...`,
 ).join([ #sym.arrow ]))
 
-If Hydra is used to query for level 2 headings it will only do so within the bounds of the closest level 1 headings.
+If HYDRA is used to query for level 2 headings it will only do so within the bounds of the closest level 1 headings.
 In principle, elements other than headings can be used (see @custom), as long as their semantic relationships are established.
