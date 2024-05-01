@@ -47,57 +47,67 @@ The following type definitions are used to simplify the documentation. The type 
 #type-def(true)[queryable]
 Any type which can be used in `query`, `function` refers to the subset of element functions which are locatable.
 
-```typc
-let queryable = label | function | selector
-```
+#codesnippet[
+  ```typc
+  let queryable = label | function | selector
+  ```
+]
 
 #type-def(true, color: lime)[hydra-selector]
 Defines a selector for an ancestor or primary element.
 
-```typc
-let hydra-selector = (
-  target: queryable,
-  filter: ((hydra-context, candidates) => bool) | none,
-)
-```
+#codesnippet[
+  ```typc
+  let hydra-selector = (
+    target: queryable,
+    filter: ((hydra-context, candidates) => bool) | none,
+  )
+  ```
+]
 
 #type-def(true, color: lime)[full-selector]
 Defines a pair of primary and ancestor element selectors.
 
-```typc
-let full-selector = (
-  primary: hydra-selector,
-  ancestors: hydra-selector | none,
-)
-```
+#codesnippet[
+  ```typc
+  let full-selector = (
+    primary: hydra-selector,
+    ancestors: hydra-selector | none,
+  )
+  ```
+]
 
 #type-def(true, color: lime)[candidates]
 Defines the candidates that have been found in a specific context.
 
-```typc
-let candidates = (
-  primary: (prev: content | none, next: content | none),
-  ancestor: (prev: content | none, next: content | none),
-)
-```
+#codesnippet[
+  ```typc
+  let candidates = (
+    primary: (prev: content | none, next: content | none),
+    ancestor: (prev: content | none, next: content | none),
+  )
+  ```
+]
 
 #type-def(false, color: lime)[hydra-context]
 Defines the options passed to HYDRA and resolved contextual information needed for querying and
 displaying.
 
-```typc
-let hydra-context = (
-  prev-filter: (hydra-context, candidates) => bool,
-  next-filter: (hydra-context, candidates) => bool,
-  display: (hydra-context, content) => content,
-  skip-starting: bool,
-  book: bool,
-  anchor: label | none,
-  anchor-loc: location,
-  primary: hydra-selector,
-  ancestors: hydra-selector,
-)
-```
+#codesnippet[
+  ```typc
+  let hydra-context = (
+    prev-filter: (hydra-context, candidates) => bool,
+    next-filter: (hydra-context, candidates) => bool,
+    display: (hydra-context, content) => content,
+    skip-starting: bool,
+    book: bool,
+    anchor: label | none,
+    anchor-loc: location,
+    primary: hydra-selector,
+    ancestors: hydra-selector,
+  )
+  ```
+]
 
 #pagebreak()
 

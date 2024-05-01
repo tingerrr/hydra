@@ -1,5 +1,5 @@
 #import "/doc/util.typ": mantys
-#import mantys: package
+#import mantys: *
 
 HYDRA is a package which aims to query and display section elements, such as headings,legal paragraphs, documentation sections, and whatever else may semantically declare the start of a document's section.
 
@@ -18,21 +18,25 @@ The following terms are frequently used in the remainider of this document.
 The search for a primary element is always bounded to its scope.
 For the following simplified document:
 
-```typst
-= Chapter 1
-== Section 1.1
+#codesnippet[
+  ```typst
+  = Chapter 1
+  == Section 1.1
 
-= Chapter 2
-=== Subsection 2.0.1
-#hydra(2)
-```
-```txt
-Chapter 1
-└ Section 1.1
-Chapter 2
-└ <none>
-  └ Subsection 2.0.1
-```
+  = Chapter 2
+  === Subsection 2.0.1
+  #hydra(2)
+  ```
+]
+#codesnippet[
+  ```txt
+  Chapter 1
+  └ Section 1.1
+  Chapter 2
+  └ <none>
+    └ Subsection 2.0.1
+  ```
+]
 
 HYDRA will only search within its current chapter as it is looking for active sections.
 In this case HYDRA would not find a suitable candidate.
