@@ -1,4 +1,3 @@
-#import "template.typ": project, raw-bg
 #import "util.typ": package, bbox, mantys, issues, sub-file
 
 #import "/src/lib.typ" as hydra
