@@ -76,10 +76,14 @@
 /// This function is contextual.
 ///
 /// - ctx (context): The context for which to get the candidates.
+/// - scope-prev (bool): Whether the search should be scoped by the first ancestor element in this
+///   direction.
+/// - scope-next (bool): Whether the search should be scoped by the first ancestor element in this
+///   direction.
 /// -> candidates
-#let get-candidates(ctx) = {
-  let look-behind = selector(ctx.primary.target).before(ctx.anchor-loc)
-  let look-ahead = selector(ctx.primary.target).after(ctx.anchor-loc)
+#let get-candidates(ctx, scope-prev: true, scope-next: true) = {
+  let look-prev = selector(ctx.primary.target).before(ctx.anchor-loc)
+  let look-next = selector(ctx.primary.target).after(ctx.anchor-loc)
 
   let prev-ancestor = none
   let next-ancestor = none
@@ -93,19 +97,19 @@
       next = next.filter(x => (ctx.ancestors.filter)(ctx, x))
     }
 
-    if prev != () {
+    if scope-prev and prev != () {
       prev-ancestor = prev.last()
-      look-behind = look-behind.after(prev-ancestor.location())
+      look-prev = look-prev.after(prev-ancestor.location())
     }
 
-    if next != () {
+    if scope-next and next != () {
       next-ancestor = next.first()
-      look-ahead = look-ahead.before(next-ancestor.location())
+      look-next = look-next.before(next-ancestor.location())
     }
   }
 
-  let prev = query(look-behind)
-  let next = query(look-ahead)
+  let prev = query(look-prev)
+  let next = query(look-next)
 
   if ctx.primary.filter != none {
     prev = prev.filter(x => (ctx.primary.filter)(ctx, x))
