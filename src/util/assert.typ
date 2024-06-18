@@ -62,13 +62,13 @@
   let given-func = element.func()
   expected-funcs = expected-funcs.pos()
   let message = _core.or-default(check: auto, message, () => if expected-funcs.len() == 1 {
-    _core.fmt("`{}` must be a `{}`, was `{}`", name, expected-funcs.first(), given-type)
+    _core.fmt("`{}` must be a `{}`, was `{}`", name, expected-funcs.first(), given-func)
   } else {
     _core.fmt(
       "`{}` must be one of a {}, was `{}`",
       name,
       expected-funcs.map(_core.fmt.with("`{}`")).join(", ", last: " or a"),
-      given-type,
+      given-func,
     )
   })
 
