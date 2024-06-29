@@ -84,43 +84,48 @@
 #let get-candidates(ctx, scope-prev: true, scope-next: true) = {
   let look-prev = selector(ctx.primary.target).before(ctx.anchor-loc)
   let look-next = selector(ctx.primary.target).after(ctx.anchor-loc)
+  let look-last = look-next
 
   let prev-ancestor = none
   let next-ancestor = none
 
   if ctx.ancestors != none {
-    let prev = query(selector(ctx.ancestors.target).before(ctx.anchor-loc))
-    let next = query(selector(ctx.ancestors.target).after(ctx.anchor-loc))
+    let prev-ancestors = query(selector(ctx.ancestors.target).before(ctx.anchor-loc))
+    let next-ancestors = query(selector(ctx.ancestors.target).after(ctx.anchor-loc))
 
     if ctx.ancestors.filter != none {
-      prev = prev.filter(x => (ctx.ancestors.filter)(ctx, x))
-      next = next.filter(x => (ctx.ancestors.filter)(ctx, x))
+      prev-ancestors = prev-ancestors.filter(x => (ctx.ancestors.filter)(ctx, x))
+      next-ancestors = next-ancestors.filter(x => (ctx.ancestors.filter)(ctx, x))
     }
 
-    if scope-prev and prev != () {
-      prev-ancestor = prev.last()
+    if scope-prev and prev-ancestors != () {
+      prev-ancestor = prev-ancestors.last()
       look-prev = look-prev.after(prev-ancestor.location())
     }
 
-    if scope-next and next != () {
-      next-ancestor = next.first()
+    if scope-next and next-ancestors != () {
+      next-ancestor = next-ancestors.first()
       look-next = look-next.before(next-ancestor.location())
     }
   }
 
-  let prev = query(look-prev)
-  let next = query(look-next)
+  let prev-targets = query(look-prev)
+  let next-targets = query(look-next)
+  let last-targets = query(look-last)
 
   if ctx.primary.filter != none {
-    prev = prev.filter(x => (ctx.primary.filter)(ctx, x))
-    next = next.filter(x => (ctx.primary.filter)(ctx, x))
+    prev-targets = prev-targets.filter(x => (ctx.primary.filter)(ctx, x))
+    next-targets = next-targets.filter(x => (ctx.primary.filter)(ctx, x))
+    last-targets = last-targets.filter(x => (ctx.primary.filter)(ctx, x))
   }
+  last-targets = last-targets.filter(x => x.location().page() == ctx.anchor-loc.page())
 
-  let prev = if prev != () { prev.last() }
-  let next = if next != () { next.first() }
+  let prev = if prev-targets != () { prev-targets.last() }
+  let next = if next-targets != () { next-targets.first() }
+  let last = if last-targets != () { last-targets.last() }
 
   (
-    primary: (prev: prev, next: next),
+    primary: (prev: prev, next: next, last: last),
     ancestor: (prev: prev-ancestor, next: next-ancestor),
   )
 }
@@ -231,11 +236,18 @@
   let candidates = get-candidates(ctx)
   let prev-eligible = candidates.primary.prev != none and (ctx.prev-filter)(ctx, candidates)
   let next-eligible = candidates.primary.next != none and (ctx.next-filter)(ctx, candidates)
+  let last-eligible = candidates.primary.last != none and (ctx.next-filter)(ctx, candidates)
   let active-redundant = is-active-redundant(ctx, candidates)
 
-  if prev-eligible and not active-redundant {
+  if active-redundant and ctx.skip-starting {
+    return
+  }
+
+  if ctx.use-last and last-eligible {
+    (ctx.display)(ctx, candidates.primary.last)
+  } else if prev-eligible and not active-redundant {
     (ctx.display)(ctx, candidates.primary.prev)
-  } else if next-eligible and not ctx.skip-starting {
+  } else if next-eligible {
     (ctx.display)(ctx, candidates.primary.next)
   }
 }

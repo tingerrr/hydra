@@ -46,7 +46,7 @@ Defines the candidates that have been found in a specific context.
 
 ```typc
 (
-  primary: (prev: content | none, next: content | none),
+  primary: (prev: content | none, next: content | none, last: content | none),
   ancestor: (prev: content | none, next: content | none),
 )
 ```
@@ -61,6 +61,7 @@ displaying.
   next-filter: (context, candidates) => bool,
   display: (context, content) => content,
   skip-starting: bool,
+  use-last: bool,
   book: bool,
   anchor: label | none,
   anchor-loc: location,
