@@ -28,6 +28,8 @@
 ///   display. If this is `auto`, the default implementaion will be used.
 /// - skip-starting (bool): Whether `hydra` should show the current candidate even if it's on top of
 ///   the current page.
+/// - use-last (bool): If hydra should show the name of the first or last candidate on the page.
+//    Defaults to false.
 /// - dir (direction, auto): The reading direction of the document. If this is `auto`, the text
 ///   direction is used. Be cautious about leaving this option on `auto` if you switch text
 ///   direction mid-page and use hydra outside of footers or headers.
@@ -47,6 +49,7 @@
   next-filter: auto,
   display: auto,
   skip-starting: true,
+  use-last: false,
   dir: auto,
   binding: auto,
   book: false,
@@ -57,6 +60,7 @@
   util.assert.types("next-filter", next-filter, function, auto)
   util.assert.types("display", display, function, auto)
   util.assert.types("skip-starting", skip-starting, bool)
+  util.assert.types("use-last", use-last, bool)
   util.assert.enum("dir", dir, ltr, rtl, auto)
   util.assert.enum("binding", binding, left, right, auto)
   util.assert.types("book", book, bool)
@@ -78,6 +82,7 @@
     next-filter: util.auto-or(next-filter, () => default-filter),
     display: util.auto-or(display, () => core.display),
     skip-starting: skip-starting,
+    use-last: use-last,
     dir: dir,
     binding: binding,
     book: book,
