@@ -1,9 +1,18 @@
 # [unreleased](https://github.com/tingerrr/hydra/releases/tags/)
 ## Added
+
+## Removed
+
+## Changed
+
+---
+
+# [v0.5.0](https://github.com/tingerrr/hydra/releases/tags/v0.5.0)
+## Added
 - `use-last` parameter on `hydra` for a more LaTeX style heading look up, thanks @freundTech!
   - `hydra` now has a new `use-last` parameter
   - `context` now has a new `use-last` field
-  - **BREAKING CHANGE** `candidates` now has a new `last` field containiing a suitable match for the last primary candidate on this page
+  - **BREAKING CHANGE** `candidates` now has a new `last` field containing a suitable match for the last primary candidate on this page
 
 ## Removed
 
