@@ -118,6 +118,7 @@
     next-targets = next-targets.filter(x => (ctx.primary.filter)(ctx, x))
     last-targets = last-targets.filter(x => (ctx.primary.filter)(ctx, x))
   }
+  next-targets = next-targets.filter(x => x.location().page() == ctx.anchor-loc.page())
   last-targets = last-targets.filter(x => x.location().page() == ctx.anchor-loc.page())
 
   let prev = if prev-targets != () { prev-targets.last() }
