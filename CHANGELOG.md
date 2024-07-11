@@ -5,6 +5,9 @@
 
 ## Changed
 
+## Fixed
+- hydra no longer considers candidates on pages after the current page (https://github.com/tingerrr/hydra/pull/21)
+
 ---
 
 # [v0.5.0](https://github.com/tingerrr/hydra/releases/tags/v0.5.0)
