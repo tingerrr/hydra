@@ -2,11 +2,10 @@
 #import "/src/util.typ"
 #import "/src/selectors.typ"
 
-/// An anchor used to search from.
-/// When using `hydra` outside of the page header, this should be placed inside the page header to
-/// find the correct searching hydra-context.
-/// `hydra` always searches from the last anchor it finds, if and only if it detects that it is
-/// outside of the top-margin.
+/// An anchor used to search from. When using `hydra` outside of the page header, this should be
+/// placed inside the page header to find the correct searching hydra-context. `hydra` always
+/// searches from the last anchor it finds, if and only if it detects that it is outside of the
+/// top-margin.
 #let anchor() = [#metadata(()) <hydra-anchor>]
 
 /// Query for an element within the bounds of its ancestors.
