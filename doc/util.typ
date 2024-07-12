@@ -1,3 +1,5 @@
+#import "@local/mantys:0.1.4"
+
 #let package = toml("/typst.toml").package
 
 #let load-examples(example) = {
@@ -20,8 +22,14 @@
   grid(columns: (1fr, 1fr), gutter: 0.5em, align(center + horizon)[Binding], ..examples),
 )
 
-#let issue(num) = link(package.repository + "/issues/" + str(num))[hydra\##num]
+#let sub-file(path) = {
+  set heading(offset: path.split("/").len() - 1)
+  include path
+}
+
+#let issue(num) = text(eastern, link(package.repository + "/issues/" + str(num))[hydra\##num])
+
+#let issues = text(eastern, link(package.repository + "/issues/")[GitHub:tingerrr/hydra])
 
 #let raw-bg = gray.lighten(50%)
 #let bbox = box.with(inset: (x: 0.25em), outset: (y: 0.25em), radius: 0.25em)
-
