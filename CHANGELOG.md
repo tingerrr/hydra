@@ -6,6 +6,11 @@
 ## Changed
 
 ## Fixed
+
+---
+
+# [v0.5.1](https://github.com/tingerrr/hydra/releases/tags/v0.5.1)
+## Fixed
 - hydra no longer considers candidates on pages after the current page (https://github.com/tingerrr/hydra/pull/21)
 
 ---
@@ -16,10 +21,6 @@
   - `hydra` now has a new `use-last` parameter
   - `context` now has a new `use-last` field
   - **BREAKING CHANGE** `candidates` now has a new `last` field containing a suitable match for the last primary candidate on this page
-
-## Removed
-
-## Changed
 
 ---
 

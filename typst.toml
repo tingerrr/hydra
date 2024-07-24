@@ -1,7 +1,7 @@
 [package]
 entrypoint = "src/lib.typ"
 name = "hydra"
-version = "0.5.0"
+version = "0.5.1"
 compiler = "0.11.0"
 authors = ["tinger <me@tinger.dev>"]
 repository = "https://github.com/tingerrr/hydra"
