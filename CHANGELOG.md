@@ -9,6 +9,12 @@
 
 ---
 
+# [v0.5.2](https://github.com/tingerrr/hydra/releases/tags/v0.5.2)
+## Fixed
+- Fixed a panic on the development version of typst caused by an outdated version of oxifmt
+
+---
+
 # [v0.5.1](https://github.com/tingerrr/hydra/releases/tags/v0.5.1)
 ## Fixed
 - hydra no longer considers candidates on pages after the current page (https://github.com/tingerrr/hydra/pull/21)
