@@ -42,10 +42,6 @@ gen-doc-examples:
 doc: gen-doc-examples
 	typst compile doc/manual.typ doc/manual.pdf
 
-# copy the files relevant for the package repo
-publish output:
-	alabaster package {{ output }}
-
 # run the test suite
 test *args:
 	typst-test run {{ args }}
