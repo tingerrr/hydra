@@ -31,7 +31,7 @@ gen-doc-examples:
 					$"($it).typ"
 					$"out/($it){n}.png")
 			};
-			let pages = (ls out | length) / 2;
+			let pages = (ls out | length) / 2 | into int;
 			{ pages: $pages } | to toml | save -f out.toml
 		}
 		| ignore

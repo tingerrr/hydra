@@ -8,7 +8,7 @@
   body,
 ) = {
   set document(author: package.authors, title: package.name)
-  set text(font: "Linux Libertine")
+  set text(font: "Libertinus Serif")
 
   show heading.where(level: 1): smallcaps
  

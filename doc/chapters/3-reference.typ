@@ -1,7 +1,7 @@
 #import "@preview/tidy:0.2.0"
 #import "/doc/util.typ": bbox
 
-#let stable(is) = if is {
+#let stable(is-stable) = if is-stable {
   bbox(fill: green.lighten(50%), `stable`)
 } else {
   bbox(fill: yellow.lighten(50%), `unstable`)
