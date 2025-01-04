@@ -1,4 +1,4 @@
-#import "@preview/oxifmt:0.2.0": strfmt as fmt
+#import "@preview/oxifmt:0.2.1": strfmt as fmt
 
 /// Substitute `value` for the return value of `default()` if it is a sentinel value.
 ///
