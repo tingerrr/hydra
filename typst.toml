@@ -9,4 +9,4 @@ description = "Query and display headings in your documents and templates."
 categories = ["components", "scripting"]
 keywords = ["context", "chapter", "section", "heading"]
 license = "MIT"
-exclude = ["examples", "README.md"]
+exclude = ["examples"]
