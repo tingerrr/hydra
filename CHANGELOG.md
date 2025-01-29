@@ -4,6 +4,10 @@
 ## Removed
 
 ## Changed
+The following internal types have been renamed, because the types are only named in the documentation and did not change signature their renames are semver compatible.
+- `context` -> `hydra-context`
+- `hydra-selector` -> `full-selector`
+- `sanitized-selector` -> `hydra-selector`
 
 ## Fixed
 

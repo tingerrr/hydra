@@ -1,0 +1,5 @@
+# fonts are currently temporary
+/assets/fonts/**
+
+# all out diretories are temporary
+/**/out/**
