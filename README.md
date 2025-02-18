@@ -5,7 +5,7 @@ your document only when it is needed.
 
 ## Example
 ```typst
-#import "@preview/hydra:0.5.2": hydra
+#import "@preview/hydra:0.6.0": hydra
 
 #set page(paper: "a7", margin: (y: 4em), numbering: "1", header: context {
   if calc.odd(here().page()) {

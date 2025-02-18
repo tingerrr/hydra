@@ -1,2 +1,10 @@
+# contain source and temporary files only
+assets/images/thumbnail/**
+docs/**
+
 # blob-heavy test suite
 tests/**
+
+# unecessary for users
+CONTRIBUTING.md
+Justfile

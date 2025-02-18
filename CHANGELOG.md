@@ -1,5 +1,13 @@
 # [unreleased](https://github.com/tingerrr/hydra/releases/tags/)
 
+## Changed
+
+## Fixed
+
+---
+
+# [v0.6.0](https://github.com/tingerrr/hydra/releases/tags/v0.6.0)
+
 ## Breaking Changes
 - Removed `hydra.dir`
 - Removed `hydra.binding`
@@ -9,8 +17,6 @@
 - Renamed `context` to `hydra-context`
 - Renamed `hydra-selector` to `full-selector`
 - Renamed `sanitized-selector` to `hydra-selector`
-
-## Fixed
 
 ---
 
