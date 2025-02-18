@@ -1,5 +1,3 @@
-/// [max-delta: 1]
-///
 /// Skipped because of minor floating point differences causing a mismatch.
 ///
 /// Synopsis:

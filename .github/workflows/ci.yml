@@ -1,4 +1,4 @@
-name: Tests
+name: Run tests and check assets
 on:
   push:
     branches: [ main ]
@@ -7,37 +7,77 @@ on:
 
 jobs:
   tests:
+    name: Tests
     runs-on: ubuntu-latest
+    needs: [test-matrix]
+    if: always()
+    steps:
+      - name: Tests successful
+        if: ${{ !(contains(needs.*.result, 'failure')) }}
+        run: exit 0
+
+      - name: Tests failing
+        if: ${{ contains(needs.*.result, 'failure') }}
+        run: exit 1
+
+  test-matrix:
+    name: Tests ${{ matrix.typst-version.typst }}
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        typst-version:
+          - typst: 0.12
+            tytanic: 0.1
+
+          - typst: 0.13.0-rc1
+            tytanic: 0.2.0-rc1
     steps:
       - name: Checkout
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
 
-      - name: Install just from crates.io
-        uses: baptiste0928/cargo-install@v2.2.0
+      - name: Install tytanic (binary)
+        if: ${{ !contains(matrix.typst-version.tytanic, '-rc') }}
+        uses: taiki-e/install-action@v2
         with:
-          crate: just
+          tool: tytanic@${{ matrix.typst-version.tytanic }}
 
-      - name: Install tytanic from crates.io
-        uses: baptiste0928/cargo-install@v2.2.0
+      - name: Install tytanic (source)
+        uses: taiki-e/cache-cargo-install-action@v2
+        if: ${{ contains(matrix.typst-version.tytanic, '-rc') }}
         with:
-          crate: tytanic
-          version: 0.2.0-rc1
+          tool: tytanic@${{ matrix.typst-version.tytanic }}
 
-      - name: Setup typst
-        uses: typst-community/setup-typst@v2
-        with:
-          version: 'v0.12.0'
-
-      - name: Run test suite and check assets
-        run: just ci
+      - name: Run test suite
+        id: run-suite
+        run: tt run --no-fail-fast --max-delta 1
 
       - name: Archive artifacts
         uses: actions/upload-artifact@v4
         if: always()
         with:
-          name: artifacts
+          name: test-artifacts-${{ matrix.typst-version.tytanic }}
           path: |
             tests/**/diff/*.png
             tests/**/out/*.png
             tests/**/ref/*.png
           retention-days: 5
+
+  assets:
+    name: Check assets and documentation
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Install just
+        uses: taiki-e/install-action@v2
+        with:
+          tool: just
+
+      - name: Install typst
+        uses: typst-community/setup-typst@v3
+        with:
+          typst-version: 0.12
+
+      - name: Check assets
+        run: just generate
