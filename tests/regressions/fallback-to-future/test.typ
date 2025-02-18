@@ -1,6 +1,8 @@
-// Synopsis:
-// - When both last and prev candidates where none hydra would fall back to a heading defined on a future page.
-//   Headings defined after the current page should never be displayed.
+/// Synopsis:
+/// - Not tracked.
+/// - When both last and prev candidates are none, hydra should not fall back to
+///   a candidate defined on a future page. Candidates defined after the current
+///   page should never be displayed.
 
 #import "/src/lib.typ": hydra
 
@@ -16,4 +18,3 @@
 
 = Introduction
 #lorem(100)
-

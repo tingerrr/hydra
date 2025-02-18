@@ -1,5 +1,6 @@
-// Synopsis:
-// - hydra can properly handle a zero margin and does not panic
+/// Synopsis:
+/// - Tracked in #15.
+/// - Hydra can properly handle a zero-length margin and does not panic.
 
 #import "/src/lib.typ": hydra
 

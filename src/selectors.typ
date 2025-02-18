@@ -1,16 +1,28 @@
 #import "/src/util.typ"
 
-/// Create a custom selector for `hydra`.
+/// Create a custom selector for @cmd:hydra.
 ///
-/// - element (function, selector): The primary element to search for.
-/// - filter (function): The filter to apply to the element.
-/// - ancestors (function, selector): The ancestor elements, this should match all of its ancestors.
-/// - ancestors-filter (function): The filter applied to the ancestors.
 /// -> hydra-selector
 #let custom(
+  /// The primary element to search for.
+  ///
+  /// -> queryable
   element,
+  /// The filter to apply to the element.
+  ///
+  /// Signature: #lambda("hydra-context", "candidates", ret: bool)
+  ///
+  /// -> function
   filter: none,
+  /// The ancestor elements, this should match all of its ancestors.
+  ///
+  /// -> queryable
   ancestors: none,
+  /// The filter applied to the ancestors.
+  ///
+  /// Signature: #lambda("hydra-context", "candidates", ret: bool)
+  ///
+  /// -> function
   ancestors-filter: none,
 ) = {
   util.assert.types("element", element, function, selector, label)
@@ -36,18 +48,30 @@
 
 /// Create a heading selector for a given range of levels.
 ///
-/// - ..exact (int, none): The exact level to consider as the primary element
-/// - min (int, none): The inclusive minimum level to consider as the primary heading
-/// - max (int, none): The inclusive maximum level to consider as the primary heading
 /// -> hydra-selector
 #let by-level(
+  /// The inclusive minimum level to consider as the primary heading.
+  ///
+  /// -> int | none
   min: none,
+  /// The inclusive maximum level to consider as the primary heading.
+  ///
+  /// -> int | none
   max: none,
+  /// The exact level to consider as the primary element.
+  ///
+  /// -> int | none
   ..exact,
 ) = {
   let (named, pos) = (exact.named(), exact.pos())
-  assert.eq(named.len(), 0, message: util.fmt("Unexected named arguments: `{}`", named))
-  assert(pos.len() <= 1, message: util.fmt("Unexpected positional arguments: `{}`", pos))
+  assert.eq(
+    named.len(), 0,
+    message: util.fmt("Unexected named arguments: `{}`", named),
+  )
+  assert(
+    pos.len() <= 1,
+    message: util.fmt("Unexpected positional arguments: `{}`", pos),
+  )
 
   exact = pos.at(0, default: none)
 
@@ -95,15 +119,26 @@
   )
 }
 
-/// Turn a selector or function into a hydra selector.
+/// Turn various values into a @type:hydra-selector.
 ///
-/// *This function is considered unstable.*
+/// *This function is considered unstable, it may change at any time or
+/// disappear entirely.*
 ///
-/// - name (str): The name to use in the assertion message.
-/// - sel (any): The selector to sanitize.
-/// - message (str, auto): The assertion message to use.
 /// -> hydra-selector
-#let sanitize(name, sel, message: auto) = {
+#let sanitize(
+  /// The name to use in the assertion message.
+  ///
+  /// -> str
+  name,
+  /// The selector to sanitize.
+  ///
+  /// -> queryable | full-selector | int
+  sel,
+  /// The assertion message to use.
+  ///
+  /// -> str | auto
+  message: auto,
+) = {
   let message = util.or-default(check: auto, message, () => util.fmt(
     "`{}` must be a `selector`, a level, or a custom hydra-selector, was {}", name, sel,
   ))

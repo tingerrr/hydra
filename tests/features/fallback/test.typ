@@ -1,19 +1,12 @@
-// Synopsis:
-// - when a page starts with a primary element it is displayed
+/// Synopsis:
+/// - When a page starts with a primary element and `skip-starting` is set to
+///   `false`, then the element on this page is displayed.
 
 #import "/src/lib.typ": hydra
 
-#set page(paper: "a7", header: context hydra(skip-starting: false, 2))
-#set heading(numbering: "1.1")
-#show heading.where(level: 1): it => pagebreak(weak: true) + it
-#set par(justify: true)
+#set page(
+  paper: "a7",
+  header: context hydra(skip-starting: false, 2),
+)
 
-= Content
-== First Section
-#lorem(150)
-== Second Section
-#lorem(50)
-
-= Second Chapter
-== Another Section
-#lorem(10)
+#include "document.typ"

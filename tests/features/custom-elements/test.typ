@@ -1,7 +1,6 @@
-// Synopsis:
-// - the figure doesnt interfere with chapter numbering
-// - the use of `loc: loc` ensures that return values can be used for logic
-// - the use of `custom` ensures that heading searches are scoped by chapters
+/// Synopsis:
+/// - The figure doesnt interfere with chapter numbering.
+/// - The use of `custom` ensures that heading searches are scoped by chapters.
 
 #import "/src/lib.typ" as hydra
 #import hydra.selectors: custom

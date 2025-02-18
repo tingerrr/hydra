@@ -1,0 +1,43 @@
+name: Tests
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  tests:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+
+      - name: Install just from crates.io
+        uses: baptiste0928/cargo-install@v2.2.0
+        with:
+          crate: just
+
+      - name: Install tytanic from crates.io
+        uses: baptiste0928/cargo-install@v2.2.0
+        with:
+          crate: tytanic
+          version: 0.2.0-rc1
+
+      - name: Setup typst
+        uses: typst-community/setup-typst@v2
+        with:
+          version: 'v0.12.0'
+
+      - name: Run test suite and check assets
+        run: just ci
+
+      - name: Archive artifacts
+        uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: artifacts
+          path: |
+            tests/**/diff/*.png
+            tests/**/out/*.png
+            tests/**/ref/*.png
+          retention-days: 5
