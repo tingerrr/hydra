@@ -3,11 +3,25 @@
 
 /// Assert that `value` is any of the given `expected-values`.
 ///
-/// - name (str): The name use for the value in the assertion message.
-/// - value (any): The value to check for.
-/// - message (str, auto): The assertion message to use.
-/// - ..expected-values (type): The expected variants of `value`.
-#let enum(name, value, ..expected-values, message: auto) = {
+/// -> none
+#let enum(
+  /// The to name use for the value in the assertion message.
+  ///
+  /// -> str
+  name,
+  /// The value to check for.
+  ///
+  /// -> any
+  value,
+  /// The expected variants of `value`.
+  ///
+  /// -> type
+  ..expected-values,
+  /// The assertion message to use.
+  ///
+  /// -> str | auto
+  message: auto,
+) = {
   expected-values = expected-values.pos()
   let message = _core.or-default(check: auto, message, () => if expected-values.len() == 1 {
     _core.fmt("`{}` must be `{}`, was `{}`", name, expected-values.first(), value)
@@ -25,11 +39,25 @@
 
 /// Assert that `value` is of any of the given `expected-types`.
 ///
-/// - name (str): The name use for the value in the assertion message.
-/// - value (any): The value to check for.
-/// - message (str, auto): The assertion message to use.
-/// - ..expected-types (type): The expected types of `value`.
-#let types(name, value, ..expected-types, message: auto) = {
+/// -> none
+#let types(
+  /// The name to use for the value in the assertion message.
+  ///
+  /// -> str
+  name,
+  /// The value to check for.
+  ///
+  /// -> any
+  value,
+  /// The expected types of `value`.
+  ///
+  /// -> type
+  ..expected-types,
+  /// The assertion message to use.
+  ///
+  /// -> str | auto
+  message: auto,
+) = {
   let given-type = type(value)
   expected-types = expected-types.pos().map(t => if t == none {
     type(none)
@@ -54,11 +82,25 @@
 
 /// Assert that `element` is an element creatd by one of the given `expected-funcs`.
 ///
-/// - name (str): The name use for the value in the assertion message.
-/// - element (any): The value to check for.
-/// - message (str, auto): The assertion message to use.
-/// - ..expected-funcs (type): The expected element functions of `element`.
-#let element(name, element, ..expected-funcs, message: auto) = {
+/// -> none
+#let element(
+  /// The name to use for the value in the assertion message.
+  ///
+  /// -> str
+  name,
+  /// The value to check for.
+  ///
+  /// -> any
+  element,
+  /// The assertion message to use.
+  ///
+  /// -> str | auto
+  ..expected-funcs,
+  /// The expected element functions of @cmd:element.element.
+  ///
+  /// -> type
+  message: auto,
+) = {
   let given-func = element.func()
   expected-funcs = expected-funcs.pos()
   let message = _core.or-default(check: auto, message, () => if expected-funcs.len() == 1 {
@@ -78,10 +120,20 @@
 
 /// Assert that `value` can be used in `query`.
 ///
-/// - name (str): The name use for the value in the assertion message.
-/// - value (any): The value to check for.
-/// - message (str, auto): The assertion message to use.
-#let queryable(name, value, message: auto) = {
+#let queryable(
+  /// The name to use for the value in the assertion message.
+  ///
+  /// -> str
+  name,
+  /// The value to check for.
+  ///
+  /// -> any
+  value,
+  /// The assertion message to use.
+  ///
+  /// -> str | auto
+  message: auto,
+) = {
   let given-type = type(value)
   let message = _core.or-default(check: auto, message, () => _core.fmt(
     "`{}` must be queryable, such as an element function, selector or label, `{}` is not queryable",

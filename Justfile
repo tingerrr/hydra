@@ -1,57 +1,92 @@
-set shell := ['nu', '-c']
+docs := 'docs'
+manual := docs / 'manual'
+examples := docs / 'examples'
+
+assets := 'assets'
+fonts := assets / 'fonts'
+images := assets / 'images'
+thumbnail := images / 'thumbnail'
 
 export TYPST_ROOT := justfile_directory()
+export TYPST_FONT_PATHS := fonts
 
 # list recipes
 [private]
 default:
-	just --list
+	@just --list --unsorted
 
-# generate example images
-gen-examples:
-	rm --recursive --force pages examples/pages
-	mkdir examples/pages
-	typst compile --ppi 300 examples/pages.typ examples/pages/{n}.png
-	typst compile examples/main.typ examples/example.png
-	rm --recursive --force pages examples/pages
-	oxipng --opt max examples/example.png
+# run tytanic with the correct assets
+[positional-arguments]
+tt *args:
+	@tt "$@"
 
-# generate doc examples
-gen-doc-examples:
-	#! /usr/bin/env nu
-	ls doc/examples
-		| where type == dir
-		| get name
-		| each {|it|
-			cd $it
-			rm --recursive --force out
-			mkdir out
-			[a b] | each {|it|
-				(typst compile
-					$"($it).typ"
-					$"out/($it){n}.png")
-			};
-			let pages = (ls out | length) / 2 | into int;
-			{ pages: $pages } | to toml | save -f out.toml
-		}
-		| ignore
+# run the full test suite
+test:
+	tt run --no-fail-fast --expression 'all()'
 
-	oxipng --recursive --opt max doc
+# update all persistent assets
+update: update-manual update-thumbnail
+
+# generate all non-persistent assets
+generate: generate-manual generate-thumbnail
+
+# clean all output directories
+clean:
+	rm --recursive --force {{ manual / 'out' }}
+	rm --recursive --force {{ examples / 'book' / 'out' }}
+	rm --recursive --force {{ examples / 'skip' / 'out' }}
+	rm --recursive --force {{ thumbnail / 'out' }}
+	tt util clean
+
+# run the ci checks locally
+ci: generate test
+
+# update the package thumbnail
+update-thumbnail: generate-thumbnail
+	oxipng --opt max {{ thumbnail / 'out' / 'thumbnail.png' }}
+	cp {{ thumbnail / 'out' / 'thumbnail.png' }} {{ images / 'thumbnail.png' }}
+
+# generate the package thumbnail
+generate-thumbnail: (clear-directory (thumbnail / 'out'))
+	typst compile \
+		--ppi 300 \
+		{{ thumbnail / 'pages.typ' }} \
+		{{ thumbnail / 'out' / '{n}.png' }}
+	typst compile \
+		{{ thumbnail / 'thumbnail.typ' }} \
+		{{ thumbnail / 'out' / 'thumbnail.png' }}
+
+# generate all docs examples
+generate-examples: (generate-example 'book') (generate-example 'skip')
+
+# generate a single docs example
+generate-example example: (clear-directory (examples / example / 'out'))
+	typst compile \
+		--ppi 300 \
+		{{ examples / example / 'a.typ' }} \
+		{{ examples / example / 'out' / 'a{n}.png' }}
+	typst compile \
+		--ppi 300 \
+		{{ examples / example / 'b.typ' }} \
+		{{ examples / example / 'out' / 'b{n}.png' }}
+
+# generate a new manual and update it
+update-manual: generate-manual
+	cp {{ manual / 'out' / 'manual.pdf' }} {{ assets / 'manual.pdf' }}
 
 # generate the manual
-doc: gen-doc-examples
-	typst compile doc/manual.typ doc/manual.pdf
+generate-manual: (clear-directory (manual / 'out')) generate-examples
+	typst compile \
+		{{ manual / 'manual.typ' }} \
+		{{ manual / 'out' / 'manual.pdf' }}
 
-# run the test suite
-test *args:
-	typst-test run {{ args }}
+# watch the manual
+watch-manual: (clear-directory (manual / 'out')) generate-examples
+	typst watch \
+		{{ manual / 'manual.typ' }} \
+		{{ manual / 'out' / 'manual.pdf' }}
 
-# update the test suite
-update *args:
-	typst-test update {{ args }}
-
-# run the ci test suite
-ci:
-	# run one single test first to avoid a race condition on package downloads
-	typst-test run regressions/scoped-search
-	typst-test run
+[private]
+clear-directory dir:
+	rm --recursive --force {{ dir }}
+	mkdir {{ dir }}

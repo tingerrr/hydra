@@ -1,22 +1,7 @@
 #import "/src/util.typ"
 
-/// Returns the current text direction.
-///
-/// This function is contextual.
-///
-/// -> direction
-#let get-text-dir() = util.auto-or(text.dir, () => util.text-direction(text.lang))
-
-/// Returns the current page binding.
-///
-/// This function is contextual.
-///
-/// -> alignment
-#let get-page-binding() = util.auto-or(page.binding, () => util.page-binding(get-text-dir()))
-
+/// #property(requires-context: true)
 /// Returns the current top margin.
-///
-/// This function is contextual.
 ///
 /// -> length
 #let get-top-margin() = {
@@ -46,42 +31,61 @@
   margin.length.to-absolute() + (min * margin.ratio)
 }
 
-/// Get the last anchor location. Panics if the last anchor was not on the page of this context.
+/// #property(requires-context: true)
+/// Get the last anchor location.
 ///
-/// This function is contextual.
+/// Panics if the last @cmd:anchor was not on the page of this context.
 ///
-/// - ctx (context): The context from which to start.
 /// -> location
-#let locate-last-anchor(ctx) = {
+#let locate-last-anchor(
+  /// The context from which to start.
+  ///
+  /// -> hydra-context
+  ctx,
+) = {
   let starting-locs = query(selector(ctx.anchor).before(here()))
 
-  assert.ne(starting-locs.len(), 0,
+  assert.ne(
+    starting-locs.len(),
+    0,
     message: "No `anchor()` found while searching from outside the page header",
   )
 
   let anchor = starting-locs.last().location()
 
-  // NOTE: this check ensures that get rules are done within the same page as the queries
-  // ideally those would be done within the context of the anchor, such that a change in text
-  // direction between anchor and query does not cause any issues
-  assert.eq(anchor.page(), here().page(),
+  // NOTE: this check ensures that get rules are done within the same page as
+  // the queries ideally those would be done within the context of the anchor,
+  // such that a change in text direction between anchor and query does not
+  // cause any issues
+  assert.eq(
+    anchor.page(),
+    here().page(),
     message: "`anchor()` must be on every page before the first use of `hydra`"
   )
 
   anchor
 }
 
+/// #property(requires-context: true)
 /// Get the element candidates for the given context.
 ///
-/// This function is contextual.
-///
-/// - ctx (context): The context for which to get the candidates.
-/// - scope-prev (bool): Whether the search should be scoped by the first ancestor element in this
-///   direction.
-/// - scope-next (bool): Whether the search should be scoped by the first ancestor element in this
-///   direction.
 /// -> candidates
-#let get-candidates(ctx, scope-prev: true, scope-next: true) = {
+#let get-candidates(
+  /// The context for which to get the @type:candidates.
+  ///
+  /// -> hydra-context
+  ctx,
+  /// Whether the search should be scoped by the first ancestor element in this
+  /// direction.
+  ///
+  /// -> bool
+  scope-prev: true,
+  /// Whether the search should be scoped by the first ancestor element in this
+  /// direction.
+  ///
+  /// -> bool
+  scope-next: true,
+) = {
   let look-prev = selector(ctx.primary.target).before(ctx.anchor-loc)
   let look-next = selector(ctx.primary.target).after(ctx.anchor-loc)
   let look-last = look-next
@@ -131,15 +135,22 @@
   )
 }
 
-/// Checks if the current context is on a starting page, i.e. if the next candidates are on top of
-/// this context's page.
+/// #property(requires-context: true)
+/// Checks if the current @type:hydra-context is on a starting page, i.e. if the
+/// next candidates are on top of this @type:hydra-context's page.
 ///
-/// This function is contextual.
-///
-/// - ctx (context): The context in which the visibility of the next candidates should be checked.
-/// - candidates (candidates): The candidates for this context.
 /// -> bool
-#let is-on-starting-page(ctx, candidates) = {
+#let is-on-starting-page(
+  /// The context in which the visibility of the next @type:candidates should
+  /// be checked.
+  ///
+  /// -> hydra-context
+  ctx,
+  /// The candidates for this @type:hydra-context.
+  ///
+  /// -> candidates
+  candidates,
+) = {
   let next = if candidates.primary.next != none { candidates.primary.next.location() }
   let next-ancestor = if candidates.ancestor.next != none { candidates.ancestor.next.location() }
 
@@ -158,58 +169,73 @@
   next-starting or next-ancestor-starting
 }
 
+/// #property(requires-context: true)
 /// Checks if the previous primary candidate is still visible.
 ///
-/// This function is contextual.
-///
-/// - ctx (context): The context in which the visibility of the previous primary candidate should be
-///   checked.
-/// - candidates (candidates): The candidates for this context.
 /// -> bool
-#let is-active-visible(ctx, candidates) = {
-  // depending on the reading direction and binding combination the leading page is either on an odd
-  // or even number, if it is leading it means the previous page is visible
-  let cases = (
-    left: (
-      ltr: calc.odd,
-      rtl: calc.even,
-    ),
-    right: (
-      ltr: calc.even,
-      rtl: calc.odd,
-    ),
-  )
-
-  let is-leading-page = (cases.at(repr(ctx.binding)).at(repr(ctx.dir)))(here().page())
+#let is-active-visible(
+  /// The context in which the visibility of the previous primary candidate
+  /// should be checked.
+  ///
+  /// -> hydra-context
+  ctx,
+  /// The candidates for this context.
+  ///
+  /// -> candidates
+  candidates,
+) = {
+  let is-leading-page = calc.odd(here().page())
   let active-on-prev-page = candidates.primary.prev.location().page() == here().page() - 1
 
   is-leading-page and active-on-prev-page
 }
 
-/// Check if showing the active element would be redudnant in the current context.
+/// #property(requires-context: true)
+/// Check if showing the active element would be redundant in the given context.
 ///
-/// This function is contextual.
-///
-/// - ctx (context): The context in which the redundancy of the previous primary candidate should be
-///   checked.
-/// - candidates (candidates): The candidates for this context.
 /// -> bool
-#let is-active-redundant(ctx, candidates) = {
+#let is-active-redundant(
+  /// The context in which the redundancy of the previous primary candidate
+  /// should be checked.
+  ///
+  /// -> hydra-context
+  ctx,
+  /// The candidates for this context.
+  ///
+  /// -> candidates
+  candidates,
+) = {
   let active-visible = (
-    ctx.book and candidates.primary.prev != none and is-active-visible(ctx, candidates)
+    ctx.book
+    and candidates.primary.prev != none
+    and is-active-visible(ctx, candidates)
   )
   let starting-page = is-on-starting-page(ctx, candidates)
 
   active-visible or starting-page
 }
 
-/// Display a heading's numbering and body.
+/// Display a heading's numbering and body, this is the default implementation
+/// of @cmd:hydra.display.
 ///
-/// - ctx (context): The context in which the element was found.
-/// - candidate (content): The heading to display, panics if this is not a heading.
+/// This will panic if it doens't receive a #builtin("heading") as its
+/// @type:candidates.
+///
 /// -> content
-#let display(ctx, candidate) = {
-  util.assert.element("candidate", candidate, heading,
+#let display(
+  /// The context in which the element was found.
+  ///
+  /// -> hydra-context
+  ctx,
+  /// The heading to display.
+  ///
+  /// -> content
+  candidate,
+) = {
+  util.assert.element(
+    "candidate",
+    candidate,
+    heading,
     message: "Use a custom `display` function for elements other than headings",
   )
 
@@ -221,13 +247,18 @@
   candidate.body
 }
 
-/// Execute the core logic to find and display elements for the current context.
+/// #property(requires-context: true)
+/// Execute the core logic to find and display elements for the given context.
+/// The `anchor-loc` of the context will be augmented using the current typst
+/// context.
 ///
-/// This function is contextual.
-///
-/// - ctx (context): The context for which to find and display the element.
 /// -> content
-#let execute(ctx) = {
+#let execute(
+  /// The context for which to find and display the element.
+  ///
+  /// -> hydra-context
+  ctx,
+) = {
   ctx.anchor-loc = if ctx.anchor != none and here().position().y > get-top-margin() {
     locate-last-anchor(ctx)
   } else {

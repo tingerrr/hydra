@@ -27,7 +27,7 @@ your document only when it is needed.
 == Second Section
 #lorem(100)
 ```
-![ex]
+![thumbnail]
 
 ## Documentation
 For a more in-depth description of hydra's functionality and the reference read its [manual].
@@ -36,9 +36,9 @@ For a more in-depth description of hydra's functionality and the reference read 
 For contributing, please take a look [CONTRIBUTING][contrib].
 
 ## Etymology
-The package name hydra /ˈhaɪdrə/ is a word play headings and headers, inspired by the monster in
+The package name hydra /ˈhaɪdrə/ is a word play on headings and headers, inspired by the monster in
 greek and roman mythology resembling a serpent with many heads.
 
-[ex]: examples/example.png
-[manual]: doc/manual.pdf
+[thumbnail]: assets/images/thumbnail.png
+[manual]: assets/manual.pdf
 [contrib]: CONTRIBUTING.md
