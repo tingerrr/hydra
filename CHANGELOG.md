@@ -3,6 +3,7 @@
 ## Breaking Changes
 - Removed `hydra.dir`
 - Removed `hydra.binding`
+- Bumped MSTV to `v0.12.0`
 
 ## Changed
 - Renamed `context` to `hydra-context`
