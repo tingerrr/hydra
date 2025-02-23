@@ -29,8 +29,8 @@ jobs:
           - typst: 0.12
             tytanic: 0.1
 
-          - typst: 0.13.0-rc1
-            tytanic: 0.2.0-rc1
+          - typst: 0.13.0
+            tytanic: 0.2.1
     steps:
       - name: Checkout
         uses: actions/checkout@v4
