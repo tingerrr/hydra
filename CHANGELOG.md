@@ -3,6 +3,7 @@
 ## Changed
 
 ## Fixed
+- Use the correct page length when calculating the top margin
 
 ---
 
