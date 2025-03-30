@@ -1,5 +1,5 @@
-// Synopsis:
-// - <explanation>
+/// Synopsis:
+/// - <explanation>
 
 #import "/src/lib.typ": hydra
 
