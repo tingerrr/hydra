@@ -28,7 +28,7 @@
 
   // `+ 0%` forces this to be a relative length
   margin = util.auto-or(margin, () => (2.5 / 21) * min) + 0%
-  margin.length.to-absolute() + (min * margin.ratio)
+  margin.length.to-absolute() + (height * margin.ratio)
 }
 
 /// #property(requires-context: true)
