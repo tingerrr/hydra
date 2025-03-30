@@ -3,6 +3,11 @@
 ## Changed
 
 ## Fixed
+
+---
+
+# [v0.6.1](https://github.com/tingerrr/hydra/releases/tags/v0.6.1)
+## Fixed
 - Use the correct page length when calculating the top margin
 
 ---
