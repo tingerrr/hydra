@@ -6,10 +6,21 @@
 
 #import "/src/lib.typ": hydra, anchor
 
+#set heading(numbering: "1.1")
+#set par(justify: true)
+
 #set page(
   paper: "a7",
   header: anchor(),
   footer: context hydra(),
 )
 
-#include "document.typ"
+= Chapter
+#lorem(100)
+
+= Chapter
+== Section
+#lorem(100)
+
+== Section
+#lorem(100)

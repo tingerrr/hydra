@@ -1,5 +1,7 @@
 /// Synopsis:
-/// - <explanation>
+/// - The search for active elements is always scoped to its nearest transitive
+///   ancestors, if an ancestors is encountered the search does not prceed
+///   further.
 
 #import "/src/lib.typ": hydra
 

@@ -1,5 +1,5 @@
 /// Synopsis:
-/// - <explanation>
+/// - Hydra can properly handle a zero-length margin and does not panic.
 
 #import "/src/lib.typ": hydra
 
@@ -8,13 +8,16 @@
 
 #set page(
   paper: "a7",
-  header: context hydra(2),
+  margin: 0pt,
+  header: context hydra(),
 )
+
+= Chapter
+#lorem(100)
 
 = Chapter
 == Section
 #lorem(100)
 
-= Chapter
-=== Subsection
+== Section
 #lorem(100)
