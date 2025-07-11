@@ -38,8 +38,21 @@
   ///
   /// -> str
   lang,
-) = if lang in (
-  "ar", "dv", "fa", "he", "ks", "pa", "ps", "sd", "ug", "ur", "yi",
+) = if (
+  lang
+    in (
+      "ar",
+      "dv",
+      "fa",
+      "he",
+      "ks",
+      "pa",
+      "ps",
+      "sd",
+      "ug",
+      "ur",
+      "yi",
+    )
 ) { rtl } else { ltr }
 
 /// Returns the page binding for a text direction.

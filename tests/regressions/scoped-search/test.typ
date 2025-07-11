@@ -9,16 +9,13 @@
 #show heading.where(level: 1): it => pagebreak(weak: true) + it
 #set par(justify: true)
 
-#set page(
-  paper: "a7",
-  header: context {
-    if calc.even(here().page()) {
-      align(left, hydra(1))
-    } else {
-      align(right, hydra(2))
-    }
-  },
-)
+#set page(paper: "a7", header: context {
+  if calc.even(here().page()) {
+    align(left, hydra(1))
+  } else {
+    align(right, hydra(2))
+  }
+})
 
 = First Chapter
 == First section

@@ -1,4 +1,4 @@
-#import "/docs/manual/util.typ": issues, issue, mantys
+#import "/docs/manual/util.typ": issue, issues, mantys
 #import mantys: *
 
 == Frequently Asked Questions <sec:faq>

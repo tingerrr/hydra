@@ -42,7 +42,9 @@
 
   (
     primary: (target: element, filter: filter),
-    ancestors: if ancestors != none { (target: ancestors, filter: ancestors-filter) },
+    ancestors: if ancestors != none {
+      (target: ancestors, filter: ancestors-filter)
+    },
   )
 }
 
@@ -64,14 +66,14 @@
   ..exact,
 ) = {
   let (named, pos) = (exact.named(), exact.pos())
-  assert.eq(
-    named.len(), 0,
-    message: util.fmt("Unexected named arguments: `{}`", named),
-  )
-  assert(
-    pos.len() <= 1,
-    message: util.fmt("Unexpected positional arguments: `{}`", pos),
-  )
+  assert.eq(named.len(), 0, message: util.fmt(
+    "Unexected named arguments: `{}`",
+    named,
+  ))
+  assert(pos.len() <= 1, message: util.fmt(
+    "Unexpected positional arguments: `{}`",
+    pos,
+  ))
 
   exact = pos.at(0, default: none)
 
@@ -80,7 +82,9 @@
   util.assert.types("exact", exact, int, none)
 
   if min == none and max == none and exact == none {
-    panic("Use `heading` directly if you have no `min`, `max` or `exact` level bound")
+    panic(
+      "Use `heading` directly if you have no `min`, `max` or `exact` level bound",
+    )
   }
 
   if exact != none and (min != none or max != none) {
@@ -105,7 +109,7 @@
 
   let (ancestors, ancestors-filter) = if exact != none {
     (heading, (ctx, e) => e.level < exact)
-  } else  if min != none and min > 1 {
+  } else if min != none and min > 1 {
     (heading, (ctx, e) => e.level < min)
   } else {
     (none, none)
@@ -140,7 +144,9 @@
   message: auto,
 ) = {
   let message = util.or-default(check: auto, message, () => util.fmt(
-    "`{}` must be a `selector`, a level, or a custom hydra-selector, was {}", name, sel,
+    "`{}` must be a `selector`, a level, or a custom hydra-selector, was {}",
+    name,
+    sel,
   ))
 
   if type(sel) == selector {
@@ -148,17 +154,23 @@
 
     // NOTE: because `repr(math.equation) == equation` we add it to the scope
     // NOTE: No, I don't like this either
-    let func = eval(if parts.len() == 1 {
-      parts.first()
-    } else {
-      parts.slice(0, -1).join(".")
-    }, scope: (equation: math.equation))
+    let func = eval(
+      if parts.len() == 1 {
+        parts.first()
+      } else {
+        parts.slice(0, -1).join(".")
+      },
+      scope: (equation: math.equation),
+    )
 
     if func == heading {
       let fields = (:)
       if parts.len() > 1 {
         let args = parts.remove(-1)
-        for arg in args.trim("where").trim(regex("\(|\)"), repeat: false).split(",") {
+        for arg in args
+          .trim("where")
+          .trim(regex("\(|\)"), repeat: false)
+          .split(",") {
           let (name, val) = arg.split(":").map(str.trim)
           fields.insert(name, eval(val))
         }
@@ -174,7 +186,9 @@
     by-level(sel)
   } else if type(sel) == function {
     custom(sel)
-  } else if type(sel) == dictionary and "primary" in sel and "ancestors" in sel {
+  } else if (
+    type(sel) == dictionary and "primary" in sel and "ancestors" in sel
+  ) {
     sel
   } else {
     panic(message)

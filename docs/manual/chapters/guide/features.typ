@@ -1,4 +1,4 @@
-#import "/docs/manual/util.typ": load-examples, show-examples, issue, mantys
+#import "/docs/manual/util.typ": issue, load-examples, mantys, show-examples
 #import mantys: *
 
 == Features
@@ -22,7 +22,11 @@ This is turned on by default.
 
 #let skip = load-examples("skip")
 #figure(
-  frame(grid(columns: 2, gutter: 1em, show-examples(skip.a), show-examples(skip.b))),
+  frame(grid(
+    columns: 2,
+    gutter: 1em,
+    show-examples(skip.a), show-examples(skip.b),
+  )),
   caption: [
     Two example documents showing the difference between #arg(skip-starting: true) (left) and #arg(skip-starting: false) (right).
   ],
@@ -58,7 +62,11 @@ This is turned off by default.
 
 #let book = load-examples("book")
 #figure(
-  frame(grid(columns: 2, gutter: 1em, show-examples(book.a), show-examples(book.b))),
+  frame(grid(
+    columns: 2,
+    gutter: 1em,
+    show-examples(book.a), show-examples(book.b),
+  )),
   caption: [
     Two example documents showing the difference between #arg(book: false) (left) and #arg(book: true) (right).
   ],

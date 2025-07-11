@@ -4,11 +4,10 @@
 
 #import "/src/lib.typ": hydra
 
-#set page(
-  paper: "a4",
-  margin: (top: 10%),
-  header: context hydra(1, skip-starting: false),
-)
+#set page(paper: "a4", margin: (top: 10%), header: context hydra(
+  1,
+  skip-starting: false,
+))
 
 #show heading.where(level: 1): it => pagebreak(weak: true) + it
 

@@ -82,6 +82,7 @@ Defines the options passed to @cmd:hydra and resolved contextual information nee
 
 #pagebreak()
 
+// @typstyle off
 #let mods = (
   ("hydra", "/src/lib.typ", true, [
     The package entry point.
@@ -107,15 +108,11 @@ Defines the options passed to @cmd:hydra and resolved contextual information nee
 
 #let render-module(name, path, is-stable, description) = [
   #heading(depth: 3, name) #label("sec:mod:" + name)
-  #place(
-    right,
-    dy: -2.4em,
-    if is-stable {
-      bbox(fill: green.lighten(50%), `stable`)
-    } else {
-      bbox(fill: yellow.lighten(50%), `unstable`)
-    },
-  )
+  #place(right, dy: -2.4em, if is-stable {
+    bbox(fill: green.lighten(50%), `stable`)
+  } else {
+    bbox(fill: yellow.lighten(50%), `unstable`)
+  })
 
   #import "/docs/manual/util.typ": mantys
   #description

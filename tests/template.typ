@@ -3,10 +3,7 @@
 
 #import "/src/lib.typ": hydra
 
-#set page(
-  paper: "a7",
-  header: context hydra(),
-)
+#set page(paper: "a7", header: context hydra())
 #set heading(numbering: "1.1")
 #show heading.where(level: 1): it => pagebreak(weak: true) + it
 #set par(justify: true)

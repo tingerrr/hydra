@@ -60,7 +60,7 @@
   assert.eq(
     anchor.page(),
     here().page(),
-    message: "`anchor()` must be on every page before the first use of `hydra`"
+    message: "`anchor()` must be on every page before the first use of `hydra`",
   )
 
   anchor
@@ -94,12 +94,26 @@
   let next-ancestor = none
 
   if ctx.ancestors != none {
-    let prev-ancestors = query(selector(ctx.ancestors.target).before(ctx.anchor-loc))
-    let next-ancestors = query(selector(ctx.ancestors.target).after(ctx.anchor-loc))
+    let prev-ancestors = query(
+      selector(ctx.ancestors.target).before(
+        ctx.anchor-loc,
+      ),
+    )
+    let next-ancestors = query(
+      selector(ctx.ancestors.target).after(
+        ctx.anchor-loc,
+      ),
+    )
 
     if ctx.ancestors.filter != none {
-      prev-ancestors = prev-ancestors.filter(x => (ctx.ancestors.filter)(ctx, x))
-      next-ancestors = next-ancestors.filter(x => (ctx.ancestors.filter)(ctx, x))
+      prev-ancestors = prev-ancestors.filter(x => (ctx.ancestors.filter)(
+        ctx,
+        x,
+      ))
+      next-ancestors = next-ancestors.filter(x => (ctx.ancestors.filter)(
+        ctx,
+        x,
+      ))
     }
 
     if scope-prev and prev-ancestors != () {
@@ -122,8 +136,12 @@
     next-targets = next-targets.filter(x => (ctx.primary.filter)(ctx, x))
     last-targets = last-targets.filter(x => (ctx.primary.filter)(ctx, x))
   }
-  next-targets = next-targets.filter(x => x.location().page() == ctx.anchor-loc.page())
-  last-targets = last-targets.filter(x => x.location().page() == ctx.anchor-loc.page())
+  next-targets = next-targets.filter(x => (
+    x.location().page() == ctx.anchor-loc.page()
+  ))
+  last-targets = last-targets.filter(x => (
+    x.location().page() == ctx.anchor-loc.page()
+  ))
 
   let prev = if prev-targets != () { prev-targets.last() }
   let next = if next-targets != () { next-targets.first() }
@@ -151,8 +169,12 @@
   /// -> candidates
   candidates,
 ) = {
-  let next = if candidates.primary.next != none { candidates.primary.next.location() }
-  let next-ancestor = if candidates.ancestor.next != none { candidates.ancestor.next.location() }
+  let next = if candidates.primary.next != none {
+    candidates.primary.next.location()
+  }
+  let next-ancestor = if candidates.ancestor.next != none {
+    candidates.ancestor.next.location()
+  }
 
   let next-starting = if next != none {
     next.page() == here().page() and next.position().y <= get-top-margin()
@@ -161,7 +183,10 @@
   }
 
   let next-ancestor-starting = if next-ancestor != none {
-    next-ancestor.page() == here().page() and next-ancestor.position().y <= get-top-margin()
+    (
+      next-ancestor.page() == here().page()
+        and next-ancestor.position().y <= get-top-margin()
+    )
   } else {
     false
   }
@@ -185,7 +210,9 @@
   candidates,
 ) = {
   let is-leading-page = calc.odd(here().page())
-  let active-on-prev-page = candidates.primary.prev.location().page() == here().page() - 1
+  let active-on-prev-page = (
+    candidates.primary.prev.location().page() == here().page() - 1
+  )
 
   is-leading-page and active-on-prev-page
 }
@@ -207,8 +234,8 @@
 ) = {
   let active-visible = (
     ctx.book
-    and candidates.primary.prev != none
-    and is-active-visible(ctx, candidates)
+      and candidates.primary.prev != none
+      and is-active-visible(ctx, candidates)
   )
   let starting-page = is-on-starting-page(ctx, candidates)
 
@@ -259,16 +286,24 @@
   /// -> hydra-context
   ctx,
 ) = {
-  ctx.anchor-loc = if ctx.anchor != none and here().position().y > get-top-margin() {
+  ctx.anchor-loc = if (
+    ctx.anchor != none and here().position().y > get-top-margin()
+  ) {
     locate-last-anchor(ctx)
   } else {
     here()
   }
 
   let candidates = get-candidates(ctx)
-  let prev-eligible = candidates.primary.prev != none and (ctx.prev-filter)(ctx, candidates)
-  let next-eligible = candidates.primary.next != none and (ctx.next-filter)(ctx, candidates)
-  let last-eligible = candidates.primary.last != none and (ctx.next-filter)(ctx, candidates)
+  let prev-eligible = (
+    candidates.primary.prev != none and (ctx.prev-filter)(ctx, candidates)
+  )
+  let next-eligible = (
+    candidates.primary.next != none and (ctx.next-filter)(ctx, candidates)
+  )
+  let last-eligible = (
+    candidates.primary.last != none and (ctx.next-filter)(ctx, candidates)
+  )
   let active-redundant = is-active-redundant(ctx, candidates)
 
   if active-redundant and ctx.skip-starting {

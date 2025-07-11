@@ -1,4 +1,4 @@
-#import "util.typ": package, mantys
+#import "util.typ": mantys, package
 
 #show: mantys.mantys(
   ..package,
@@ -9,10 +9,11 @@
     Hydra provides a simple API to query for headings und section like elements and display them in your document's headers.
     It aids in creating headers and footers with navigational snippets.
   ],
-  theme: mantys.create-theme(
+  // TODO(tinger): This seems to be unaffected in typstyle `0.13.14`.
+  theme: /* @typstyle off */ mantys.create-theme(
     fonts: (sans: "TeX Gyre Heros"),
     heading: (font: "TeX Gyre Heros"),
-  )
+  ),
 )
 
 // replace the version in all examples with the current version
@@ -34,7 +35,7 @@
     [ ]
     numbering(it.numbering, ..counter(figure.where(kind: it.kind)).get())
   }),
-  it.body
+  it.body,
 ))
 
 #include "chapters/guide.typ"
