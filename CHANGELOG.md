@@ -1,6 +1,7 @@
 # [unreleased](https://github.com/tingerrr/hydra/releases/tags/)
 
 ## Changed
+- Bumped `oxifmt` from `0.2.1` to `1.0.0`
 
 ## Fixed
 
