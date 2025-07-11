@@ -35,6 +35,11 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
 
+      - name: Install just
+        uses: taiki-e/install-action@v2
+        with:
+          tool: just
+
       - name: Install tytanic (binary)
         if: ${{ !contains(matrix.typst-version.tytanic, '-rc') }}
         uses: taiki-e/install-action@v2
@@ -48,8 +53,7 @@ jobs:
           tool: tytanic@${{ matrix.typst-version.tytanic }}
 
       - name: Run test suite
-        id: run-suite
-        run: tt run --no-fail-fast --max-delta 1
+        run: just test
 
       - name: Archive artifacts
         uses: actions/upload-artifact@v4
@@ -61,6 +65,26 @@ jobs:
             tests/**/out/*.png
             tests/**/ref/*.png
           retention-days: 5
+
+  formatting:
+    name: Check formatting
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Install just
+        uses: taiki-e/install-action@v2
+        with:
+          tool: just
+
+      - name: Install typstyle
+        uses: taiki-e/install-action@v2
+        with:
+          tool: typstyle@0.13
+
+      - name: Check formatting
+        run: just check-format
 
   assets:
     name: Check assets and documentation
@@ -77,7 +101,7 @@ jobs:
       - name: Install typst
         uses: typst-community/setup-typst@v3
         with:
-          typst-version: 0.12
+          typst-version: 0.13
 
       - name: Check assets
-        run: just generate
+        run: just check-doc
