@@ -2,6 +2,7 @@
 
 ## Changed
 - Bumped `oxifmt` from `0.2.1` to `1.0.0`
+- Bumped `mantys` from `1.0.0` to `1.0.2`
 
 ## Fixed
 
