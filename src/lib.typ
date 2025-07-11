@@ -82,15 +82,14 @@
   util.assert.types("anchor", anchor, label, none)
 
   let (named, pos) = (sel.named(), sel.pos())
-  assert.eq(
-    named.len(),
-    0,
-    message: util.fmt("Unexected named arguments: `{}`", named),
-  )
-  assert(
-    pos.len() <= 1,
-    message: util.fmt("Unexpected positional arguments: `{}`", pos),
-  )
+  assert.eq(named.len(), 0, message: util.fmt(
+    "Unexected named arguments: `{}`",
+    named,
+  ))
+  assert(pos.len() <= 1, message: util.fmt(
+    "Unexpected positional arguments: `{}`",
+    pos,
+  ))
 
   let sanitized = selectors.sanitize("sel", pos.at(0, default: heading))
 

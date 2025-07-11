@@ -17,11 +17,22 @@
   radius: 0.25em,
   fill: theme.muted.bg,
   inset: 0.5em,
-  grid(columns: (1fr, 1fr), gutter: 0.5em, align(center + horizon)[Binding], ..examples),
+  grid(
+    columns: (1fr, 1fr),
+    gutter: 0.5em,
+    align(
+      center + horizon,
+    )[Binding],
+    ..examples,
+  ),
 )
 
-#let issue(num) = text(eastern, link(package.repository + "/issues/" + str(num))[hydra\##num])
+#let issue(num) = text(eastern, link(
+  package.repository + "/issues/" + str(num),
+)[hydra\##num])
 
-#let issues = text(eastern, link(package.repository + "/issues/")[GitHub:tingerrr/hydra])
+#let issues = text(eastern, link(
+  package.repository + "/issues/",
+)[GitHub:tingerrr/hydra])
 
 #let bbox = box.with(inset: (x: 0.25em), outset: (y: 0.25em), radius: 0.25em)
