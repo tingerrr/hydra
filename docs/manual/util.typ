@@ -1,4 +1,4 @@
-#import "@preview/mantys:1.0.0"
+#import "@preview/mantys:1.0.2"
 
 #let package = toml("/typst.toml").package
 
