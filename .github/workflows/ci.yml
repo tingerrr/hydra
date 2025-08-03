@@ -40,17 +40,10 @@ jobs:
         with:
           tool: just
 
-      - name: Install tytanic (binary)
-        if: ${{ !contains(matrix.typst-version.tytanic, '-rc') }}
-        uses: taiki-e/install-action@v2
+      - name: Install tytanic
+        uses: typst-community/setup-tytanic@v1
         with:
-          tool: tytanic@${{ matrix.typst-version.tytanic }}
-
-      - name: Install tytanic (source)
-        uses: taiki-e/cache-cargo-install-action@v2
-        if: ${{ contains(matrix.typst-version.tytanic, '-rc') }}
-        with:
-          tool: tytanic@${{ matrix.typst-version.tytanic }}
+          tytanic-version: ${{ matrix.typst-version.tytanic }}
 
       - name: Run test suite
         run: just test
