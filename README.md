@@ -1,6 +1,6 @@
 # hydra
 Hydra is a Typst package allowing you to easily display the heading like elements anywhere in your
-document. It's primary focus is to provide the reader with a reminder of where they currently are in
+document. Its primary focus is to provide the reader with a reminder of where they currently are in
 your document only when it is needed.
 
 ## Example
