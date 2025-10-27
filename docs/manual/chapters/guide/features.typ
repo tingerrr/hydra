@@ -16,7 +16,7 @@ The following sections explain those checks more closely and will generally assu
 
 ==== Skip Starting Pages <sec:starting-page>
 When a new page starts and introduced a chapter or heading it's usually unecessary to show that same chapter or section in the header.
-Infact, for chapters this is undesirable too.
+In fact, for chapters this is undesirable too.
 If @cmd:hydra is used with #arg(skip-starting: true) on such a starting page, it will not show anything.
 This is turned on by default.
 
