@@ -1,5 +1,3 @@
-#import "/src/_pkgs.typ": oxifmt.strfmt as fmt
-
 /// Substitute @cmd:or-default.value for the return value of
 /// @cmd:or-default.default if it is equal to @cmd:or-default.check value.
 ///

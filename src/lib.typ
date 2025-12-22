@@ -73,6 +73,8 @@
   /// -> queryable | full-selector | int
   ..sel,
 ) = {
+  import "/src/_pkgs.typ"
+
   util.assert.types("prev-filter", prev-filter, function, auto)
   util.assert.types("next-filter", next-filter, function, auto)
   util.assert.types("display", display, function, auto)
@@ -82,14 +84,22 @@
   util.assert.types("anchor", anchor, label, none)
 
   let (named, pos) = (sel.named(), sel.pos())
-  assert.eq(named.len(), 0, message: util.fmt(
-    "Unexected named arguments: `{}`",
-    named,
-  ))
-  assert(pos.len() <= 1, message: util.fmt(
-    "Unexpected positional arguments: `{}`",
-    pos,
-  ))
+  util.assert.eq(
+    named.len(),
+    message: () => _pkgs.oxifmt().strfmt(
+      "Unexected named arguments: `{}`",
+      named,
+    )
+  )
+  if named.len() != 0 {
+    panic()
+  }
+  if pos.len() > 1 {
+    panic(_pkgs.oxifmt().strfmt(
+      "Unexpected positional arguments: `{}`",
+      pos,
+    ))
+  }
 
   let sanitized = selectors.sanitize("sel", pos.at(0, default: heading))
 

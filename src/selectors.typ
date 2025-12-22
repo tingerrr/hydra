@@ -66,11 +66,11 @@
   ..exact,
 ) = {
   let (named, pos) = (exact.named(), exact.pos())
-  assert.eq(named.len(), 0, message: util.fmt(
+  assert.eq(named.len(), 0, message: _pkgs.fmt(
     "Unexected named arguments: `{}`",
     named,
   ))
-  assert(pos.len() <= 1, message: util.fmt(
+  assert(pos.len() <= 1, message: _pkgs.fmt(
     "Unexpected positional arguments: `{}`",
     pos,
   ))
@@ -143,7 +143,7 @@
   /// -> str | auto
   message: auto,
 ) = {
-  let message = util.or-default(check: auto, message, () => util.fmt(
+  let message = util.or-default(check: auto, message, () => _pkgs.fmt(
     "`{}` must be a `selector`, a level, or a custom hydra-selector, was {}",
     name,
     sel,
