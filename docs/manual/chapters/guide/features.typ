@@ -119,7 +119,7 @@ If you now want to to be able to use these custom chapters with @cmd:hydra, you 
   #import "@preview/hydra:{{VERSION}}": hydra, selectors
 
   #let chap = figure.where(kind: "chapter")
-  #let sect = selectors.custom(heading.where(level: 1), ancestor: chap)
+  #let sect = selectors.custom(heading.where(level: 1), ancestors: chap)
 
   // Display the chapter on the left and the section on the right.
   #set page(header: context if calc.odd(here().page()) {
