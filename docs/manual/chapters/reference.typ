@@ -96,10 +96,10 @@ Defines the options passed to @cmd:hydra and resolved contextual information nee
     Contains functions used for creating custom selectors.
   ]),
   ("util", "/src/util.typ", false, [
-    Utlity functions and values.
+    Utility functions and values.
   ]),
   ("util/core", "/src/util/core.typ", false, [
-    Utlity functions.
+    Utility functions.
   ]),
   ("util/assert", "/src/util/assert.typ", false, [
     Assertions used for input and state validation.
