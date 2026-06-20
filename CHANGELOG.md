@@ -26,7 +26,7 @@
 ## Breaking Changes
 - Removed `hydra.dir`
 - Removed `hydra.binding`
-- Bumped MSTV to `v0.12.0`
+- Bumped MSRV to `v0.12.0`
 
 ## Changed
 - Renamed `context` to `hydra-context`
@@ -37,7 +37,7 @@
 
 # [v0.5.2](https://github.com/tingerrr/hydra/releases/tags/v0.5.2)
 ## Fixed
-- Fixed a panic on the development version of typst caused by an outdated version of oxifmt
+- Fixed a panic on the development version of Typst caused by an outdated version of oxifmt
 
 ---
 
@@ -60,7 +60,7 @@
 Almost all changes in this release are **BREAKING CHANGES**.
 
 ## Added
-- internal util functions and dictionaries for recreating `auto` fallbacks used within the typst
+- internal util functions and dictionaries for recreating `auto` fallbacks used within the Typst
   compiler
   - `core.get-text-dir` - returns the text direction
   - `core.get-binding` - returns the page binding
