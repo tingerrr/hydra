@@ -1,6 +1,14 @@
 # [unreleased](https://github.com/tingerrr/hydra/releases/tags/)
 
 ## Changed
+
+## Fixed
+
+---
+
+# [v0.6.3](https://github.com/tingerrr/hydra/releases/tags/v0.6.3)
+
+## Changed
 - Added CI matrix workflow for Typst 0.14
 
 ## Fixed
