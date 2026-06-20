@@ -12,7 +12,7 @@
     } else if "y" in margin {
       margin.y
     } else {
-      panic(util.fmt("Margin did not contain `top` or `y` key: `{}`", margin))
+      auto
     }
   }
 

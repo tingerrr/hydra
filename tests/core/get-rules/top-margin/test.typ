@@ -3,6 +3,8 @@
 ///   smaller one.
 /// - Height and width being `auto` causes fallback to `A4` paper size for
 ///   margin calculation.
+/// - An explicit margin dictionary without `top` or `y` key must assume a top
+///   margin of `auto` instead of panicking.
 
 #import "/src/lib.typ": core, util
 
@@ -15,5 +17,9 @@
 })
 
 #page([], height: auto, width: auto, header: context {
+  assert.eq(core.get-top-margin(), (2.5 / 21) * 210.0mm)
+})
+
+#page([], margin: (x: 10mm), height: auto, width: auto, header: context {
   assert.eq(core.get-top-margin(), (2.5 / 21) * 210.0mm)
 })

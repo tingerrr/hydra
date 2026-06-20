@@ -3,6 +3,7 @@
 ## Changed
 
 ## Fixed
+- Fixed panic in `get-top-margin` on Typst 0.15
 
 ---
 
