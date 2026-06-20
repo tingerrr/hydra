@@ -2,6 +2,7 @@
 
 ## Changed
 - Added alt text to `README.md`
+- Added `CONTRIBUTING.md` to package distribution
 
 ## Fixed
 
