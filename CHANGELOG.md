@@ -1,6 +1,7 @@
 # [unreleased](https://github.com/tingerrr/hydra/releases/tags/)
 
 ## Changed
+- Added alt text to `README.md`
 
 ## Fixed
 

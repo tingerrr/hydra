@@ -27,7 +27,7 @@ your document only when it is needed.
 == Second Section
 #lorem(100)
 ```
-![thumbnail]
+![A Lorem Ipsum example document of four pages showing "1 Introduction" at the top of the first page, but no header. The second page shows "2 Content" followed by "2.1 First Section" at the top, again with no header. On the third page the header shows "2 Contet" on the right side despite "2.2 Second Section" at the top. The final page shows "2.2 Second Section" on the left side of the header. The example document shows of the starting page and book mode checks in action.][thumbnail]
 
 ## Documentation
 For a more in-depth description of hydra's functionality and the reference read its [manual].
