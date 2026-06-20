@@ -1,6 +1,7 @@
 # [unreleased](https://github.com/tingerrr/hydra/releases/tags/)
 
 ## Changed
+- Added CI matrix workflow for Typst 0.14
 
 ## Fixed
 - Fixed panic in `get-top-margin` on Typst 0.15
