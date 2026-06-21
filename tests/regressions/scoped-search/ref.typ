@@ -5,12 +5,13 @@
 
 #import "/src/lib.typ": hydra
 
-#set page(header: context {
-  if calc.even(here().page()) {
-    align(left, hydra(1))
-  } else {
-    align(right, hydra(2))
-  }
-})
+#set page(header: context (
+  none,
+  align(left, [1 First Chapter]),
+  align(right, [1.1 First Section]),
+  none,
+  none,
+  none,
+).at(counter(page).get().first() - 1))
 
 #include "document.typ"

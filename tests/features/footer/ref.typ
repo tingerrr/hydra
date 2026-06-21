@@ -1,6 +1,4 @@
-#import "/src/lib.typ": hydra
-
-#set page(paper: "a7", footer: context (
+#set page(footer: context (
   none,
   [1 Introduction],
   [1 Introduction],

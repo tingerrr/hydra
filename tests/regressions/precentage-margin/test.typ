@@ -4,18 +4,9 @@
 
 #import "/src/lib.typ": hydra
 
-#set page(paper: "a4", margin: (top: 10%), header: context hydra(
+#set page(header: context hydra(
   1,
   skip-starting: false,
 ))
 
-#show heading.where(level: 1): it => pagebreak(weak: true) + it
-
-= Chapter 1
-#lorem(100)
-
-= Chapter 2
-#lorem(200)
-
-= Chapter 3
-#lorem(200)
+#include "document.typ"
