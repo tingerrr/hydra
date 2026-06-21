@@ -4,6 +4,6 @@
 
 #import "/src/lib.typ": hydra
 
-#set page(paper: "a7", header: context hydra(book: true))
+#set page(header: context hydra(book: true))
 
 #include "document.typ"

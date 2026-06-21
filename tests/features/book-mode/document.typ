@@ -1,6 +1,5 @@
-#set heading(numbering: "1.1")
-#show heading.where(level: 1): it => pagebreak(weak: true) + it
-#set par(justify: true)
+#import "/tests/style.typ": style
+#show: style
 
 = Introduction
 #lorem(30)

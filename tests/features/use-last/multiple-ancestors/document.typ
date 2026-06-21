@@ -1,5 +1,5 @@
-#set heading(numbering: "1.1")
-#set par(justify: true)
+#import "/tests/style.typ": style
+#show: style
 
 = Introduction
 == First Section

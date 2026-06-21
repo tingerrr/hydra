@@ -6,6 +6,6 @@
 
 #import "/src/lib.typ": anchor, hydra
 
-#set page(paper: "a7", header: anchor(), footer: context hydra())
+#set page(header: anchor(), footer: context hydra())
 
 #include "document.typ"

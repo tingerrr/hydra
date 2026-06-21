@@ -1,12 +1,10 @@
 #import "/tests/style.typ": style
 #show: style
 
-= Content
+= First Chapter
 == First Section
-#lorem(150)
-== Second Section
-#lorem(50)
+#lorem(180)
 
 = Second Chapter
-== Another Section
-#lorem(10)
+=== Second Subsection
+#lorem(100)
