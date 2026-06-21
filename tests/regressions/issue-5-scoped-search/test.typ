@@ -1,5 +1,4 @@
 /// Synopsis:
-/// - Tracked in #5.
 /// - If a level 2 heading cannot be found, then hydra will not go further than
 ///   a level 1 heading back, i.e. it respects ancestor boundaries.
 
