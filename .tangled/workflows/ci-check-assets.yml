@@ -1,0 +1,17 @@
+engine: nixery
+
+when:
+  - event: [push, pull_request, manual]
+    branch: [main]
+
+dependencies:
+  nixpkgs:
+    - just
+    - cargo-binstall
+
+steps:
+  - name: Install Typst
+    command: "cargo-binstall typst-cli@0.14.2"
+
+  - name: Check asset generation
+    command: 'PATH="/tangled/home/.cargo/bin:${PATH}" just check-doc'

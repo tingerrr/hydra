@@ -1,0 +1,17 @@
+engine: nixery
+
+when:
+  - event: [push, pull_request, manual]
+    branch: [main]
+
+dependencies:
+  nixpkgs:
+    - just
+    - cargo-binstall
+
+steps:
+  - name: Install Tytanic
+    command: "cargo-binstall tytanic@0.2.1"
+
+  - name: Run 0.13 tests
+    command: 'PATH="/tangled/home/.cargo/bin:${PATH}" just test'
