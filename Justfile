@@ -75,6 +75,17 @@ clean:
 tt *args:
 	@tt "$@"
 
+# benchmark the scenarios in bench/scenarios and store the results as `label`
+[positional-arguments]
+bench label *args:
+	@echo "{{prompt}} Benchmarking as {{ label }}"
+	@bench/run.sh "$@"
+
+# compare two benchmark results, or show a single one
+[positional-arguments]
+bench-compare base *new:
+	@bench/compare.sh "$@"
+
 # run the ci checks locally
 ci: test check
 

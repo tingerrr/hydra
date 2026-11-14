@@ -5,6 +5,9 @@ docs/**
 # blob-heavy test suite
 tests/**
 
+# benchmarks for development only
+bench/**
+
 # unecessary for users
 CONTRIBUTING.md
 Justfile
